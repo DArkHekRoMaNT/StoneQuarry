@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "modid": "quarryworks",
+  "name": "Quarry Works! (unofficial)",
+  "authors": ["Wraith"],
+  "description": "",
+  "version": "2.0.0-unofficial",
+  "dependencies": {
+    "game": "1.15.0"
+  }
+}

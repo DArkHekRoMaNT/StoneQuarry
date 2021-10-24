@@ -1,0 +1,23 @@
+{
+  "ingredient": {
+    "type": "item",
+    "code": "game:ingot-*",
+    "name": "metal",
+    "allowedVariants": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "iron" ]
+  },
+  "pattern": [
+    [
+      "_#####",
+      "######"
+    ],
+    [
+      "_#####",
+      "######"      
+    ]
+  ],
+  "name": "Plug",
+  "output": {
+    "type": "block",
+    "code": "plugnfeather-{metal}-one-down-north"
+  }
+}

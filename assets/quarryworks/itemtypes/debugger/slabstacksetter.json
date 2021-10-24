@@ -1,0 +1,76 @@
+{
+  "code": "slabstacksetter",
+  "class": "slabsetter",
+
+  "attributes": {
+    "slabstackdb": true
+  },
+
+  "shape": { "base": "items/tools/ballodirt" },
+  "textures": {
+    "all": { "base": "game:block/metal/plate/copper" }
+  },
+
+  "creativeinventory": {
+    "general": ["*"],
+    "quarryworks": ["*"]
+  },
+
+  "heldTpUseAnimation": "axechop",
+  "heldTpHitAnimation": "axechop",
+
+  "fpHandTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0.6,
+      "z": 1.2
+    },
+    "rotation": {
+      "x": 180,
+      "y": 160,
+      "z": -95
+    },
+    "origin": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "scale": 2.14
+  },
+  "tpHandTransform": {
+    "translation": {
+      "x": -0.167,
+      "y": -0.09,
+      "z": 0.037
+    },
+    "rotation": {
+      "x": 90,
+      "y": 25,
+      "z": 9
+    },
+    "origin": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "scale": 0.85
+  },
+  "guiTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": 123,
+      "y": -45,
+      "z": 9
+    },
+    "origin": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "scale": 1.29
+  }
+}

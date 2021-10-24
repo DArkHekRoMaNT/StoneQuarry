@@ -1,0 +1,21 @@
+[
+  {
+    "file": "game:itemtypes/tool/hammer",
+    "op": "add",
+    "path": "/attributes/quarryimpact",
+    "value": 5
+  },
+  {
+    "file": "game:itemtypes/tool/hammer",
+    "op": "add",
+    "path": "/attributes/quarrystarter",
+    "value": true
+  },
+  {
+    "file": "game:itemtypes/tool/chisel",
+    "op": "add",
+    "path": "/attributes/quarrystarter",
+    "value": true
+  }
+  
+]

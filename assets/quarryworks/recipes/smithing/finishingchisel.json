@@ -1,0 +1,20 @@
+{
+  "ingredient": {
+    "type": "item",
+    "code": "game:ingot-*",
+    "name": "metal",
+    "allowedVariants": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "silver", "gold", "iron", "meteoriciron", "steel" ]
+  },
+  "pattern": [
+    [
+      "#_____",
+      "######",
+      "#_____"
+    ]
+  ],
+  "name": "Finishing Chisle",
+  "output": {
+    "type": "item",
+    "code": "finishingchisel-{metal}"
+  }
+}

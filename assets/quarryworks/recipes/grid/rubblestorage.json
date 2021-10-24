@@ -1,0 +1,20 @@
+{
+  "ingredientPattern": "___,WPW,WWW",
+  "ingredients": {
+    "P": {
+      "type": "item",
+      "code": "game:metalplate-copper",
+    },
+    "W": {
+      "type": "item",
+      "code": "game:plank-*"
+    }
+  },
+  "width": 3,
+  "height": 3,
+  "output": {
+    "type": "block",
+    "code": "rubblestorage-sandstone-empty-north",
+    "quantity": 1
+  }
+}

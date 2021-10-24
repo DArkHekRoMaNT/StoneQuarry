@@ -1,0 +1,28 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+		"stone": "block/stone/rock/stone"
+	},
+	"elements": [
+		{
+			"name": "Cube2",
+			"from": [ 1.0, 0.0, 0.0 ], 
+			"to": [ 16.0, 16.0, 15.0 ], 
+			"rotationOrigin": [ 1.0, 0.0, 0.0 ],
+			"faces": {
+				"north": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 16.0 ] },
+				"east": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 16.0 ] },
+				"south": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 16.0 ] },
+				"west": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 16.0 ] },
+				"up": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 15.0 ] },
+				"down": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 15.0 ] }
+			}
+		}
+	]}

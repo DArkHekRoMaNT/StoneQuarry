@@ -1,0 +1,121 @@
+{
+  "code": "stonestoragemed",
+  "class": "RoughStoneStorage",
+  "entityclass": "StoneStorageCoreBE",
+
+  "variantgroups": [
+    {
+      "code": "stone",
+      "loadFromProperties": "block/rockwithdeposit"
+    },
+    {
+      "code": "dir",
+      "states": ["north", "south", "east", "west"]
+    }
+  ],
+  "creativeinventory": {
+    "general": ["*-north"]
+  },
+  "attributesByType": {
+    "*-east": {
+      "caps": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": 1,
+          "varType": [["dir", "west"]]
+        }
+      ]
+    },
+    "*-south": {
+      "caps": [
+        {
+          "x": -1,
+          "y": 0,
+          "z": 0,
+          "varType": [["dir", "north"]]
+        }
+      ]
+    },
+    "*-north": {
+      "caps": [
+        {
+          "x": 1,
+          "y": 0,
+          "z": 0,
+          "varType": [["dir", "south"]]
+        }
+      ]
+    },
+    "*-west": {
+      "caps": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": -1,
+          "varType": [["dir", "east"]]
+        }
+      ]
+    }
+  },
+  "textures": {
+    "stone": { "base": "game:block/stone/rock/{stone}1" }
+  },
+  "shapeByType": {
+    "*-north": {
+      "base": "blocks/stonestorage/mid/stonestoragemedium0"
+    },
+    "*-east": {
+      "base": "blocks/stonestorage/mid/stonestoragemedium0",
+      "rotatey": -90
+    },
+    "*-south": {
+      "base": "blocks/stonestorage/mid/stonestoragemedium0",
+      "rotatey": 180
+    },
+    "*-west": {
+      "base": "blocks/stonestorage/mid/stonestoragemedium0",
+      "rotatey": 90
+    }
+  },
+  "shapeinventory": { "base": "blocks/stonestorage/mid/stonestoragemediuminv" },
+  "drawtype": "json",
+  "facecullmode": "nevercull",
+  "sidesolid": {
+    "all": false
+  },
+  "sideopaque": {
+    "all": false
+  },
+  "materialDensity": 600,
+  "lightAbsorption": 99,
+  "emitSideAo": {
+    "all": true
+  },
+  "lightabsorption": 0,
+
+  "heldTpIdleAnimation": "holdbothhandslarge",
+  "heldTpUseAnimation": "twohandplaceblock",
+
+  "guiTransform": {
+    "translation": {
+      "x": -8,
+      "y": 2,
+      "z": 0
+    },
+    "scale": 0.87
+  },
+  "tpHandTransform": {
+    "translation": {
+      "x": -1.6,
+      "y": -0.8,
+      "z": -0.8
+    },
+    "rotation": {
+      "x": -82,
+      "y": 16,
+      "z": -100
+    },
+    "scale": 0.4
+  }
+}

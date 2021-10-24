@@ -1,0 +1,116 @@
+{
+  "code": "stonestorage",
+
+  "variantgroups": [
+    {
+      "code": "size",
+      "states": [ "one", "two", "three" ]
+    },
+    {
+      "code": "stone",
+      "loadFromProperties": "block/rockwithdeposit"
+    },
+    {
+      "code": "dir",
+      "states": [ "north", "south", "east", "west" ]
+    }
+  ],
+  "attributesByType": {
+    "*-east": {
+      "caps": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": 1,
+          "varType": [ [ "dir", "west" ] ]
+        }
+      ]
+    },
+    "*-south": {
+      "caps": [
+        {
+          "x": -1,
+          "y": 0,
+          "z": 0,
+          "varType": [ ["dir", "north" ] ]
+        }
+      ]
+    },
+    "*-north": {
+      "caps": [
+        {
+          "x": 1,
+          "y": 0,
+          "z": 0,
+          "varType": [ [ "dir", "south" ] ]
+        }
+      ]
+    },
+    "*-west": {
+      "caps": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": -1,
+          "varType": [
+            [ "dir", "east" ]          ]
+        }
+      ]
+    }
+  },
+  "textures": {
+    "stone": { "base": "game:block/stone/rock/{stone}1" }
+  },
+  "shapeByType": {
+    "*one-*-north": { "base": "blocks/stonestorage/stonestorage0" },
+    "*two-*-north": { "base": "blocks/stonestorage/stonestorage1" },
+    "*three-*-north": { "base": "blocks/stonestorage/stonestorage2" },
+
+    "*one-*-east": {
+      "base": "blocks/stonestorage/stonestorage0",
+      "rotatey": -90
+    },
+    "*two-*-east": {
+      "base": "blocks/stonestorage/stonestorage1",
+      "rotatey": -90
+    },
+    "*three-*-east": {
+      "base": "blocks/stonestorage/stonestorage2",
+      "rotatey": -90
+    },
+
+    "*one-*-south": {
+      "base": "blocks/stonestorage/stonestorage0",
+      "rotatey": 180
+    },
+    "*two-*-south": {
+      "base": "blocks/stonestorage/stonestorage1",
+      "rotatey": 180
+    },
+    "*three-*-south": {
+      "base": "blocks/stonestorage/stonestorage2",
+      "rotatey": 180
+    },
+
+    "*one-*-west": {
+      "base": "blocks/stonestorage/stonestorage0",
+      "rotatey": 90
+    },
+    "*two-*-west": {
+      "base": "blocks/stonestorage/stonestorage1",
+      "rotatey": 90
+    },
+    "*three-*-west": {
+      "base": "blocks/stonestorage/stonestorage2",
+      "rotatey": 90
+    }
+  },
+  "drawtype": "json",
+  "facecullmode": "nevercull",
+  "sidesolid": {
+    "all": false
+  },
+  "sideopaque": {
+    "all": false
+  }
+}

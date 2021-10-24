@@ -1,0 +1,74 @@
+{
+  "code": "stonestoragesmall",
+  "class": "RoughStoneStorage",
+  "entityclass": "StoneStorageCoreBE",
+
+  "variantgroups": [
+    {
+      "code": "stone",
+      "loadFromProperties": "block/rockwithdeposit"
+    },
+    {
+      "code": "dir",
+      "states": ["north", "south", "east", "west"]
+    }
+  ],
+  "creativeinventory": {
+    "general": ["*-north"]
+  },
+  "textures": {
+    "stone": { "base": "game:block/stone/rock/{stone}1" }
+  },
+  "shapeByType": {
+    "*north": {
+      "base": "blocks/stonestorage/small/stonestoragesmall0"
+    },
+
+    "*east": {
+      "base": "blocks/stonestorage/small/stonestoragesmall0",
+      "rotatey": -90
+    },
+
+    "*south": {
+      "base": "blocks/stonestorage/small/stonestoragesmall0",
+      "rotatey": 180
+    },
+
+    "*west": {
+      "base": "blocks/stonestorage/small/stonestoragesmall0",
+      "rotatey": 90
+    }
+  },
+  "drawtype": "json",
+  "facecullmode": "nevercull",
+
+  "materialDensity": 600,
+  "lightAbsorption": 99,
+  "emitSideAo": {
+    "all": true
+  },
+  "sidesolid": {
+    "all": false
+  },
+  "sideopaque": {
+    "all": false
+  },
+  "lightabsorption": 0,
+
+  "heldTpIdleAnimation": "holdbothhandslarge",
+  "heldTpUseAnimation": "twohandplaceblock",
+
+  "tpHandTransform": {
+    "translation": {
+      "x": -0.8,
+      "y": -1.1,
+      "z": -0.7
+    },
+    "rotation": {
+      "x": 13,
+      "y": 18,
+      "z": -67
+    },
+    "scale": 0.4
+  }
+}
