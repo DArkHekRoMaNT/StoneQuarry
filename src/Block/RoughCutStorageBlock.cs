@@ -132,77 +132,81 @@ namespace QuarryWorks
                 world.SpawnParticles(interactParticles, byPlayer);
 
                 world.PlaySoundAt(interactsound, byPlayer, byPlayer, true, 32, .5f);
-                if (pistack.ItemAttributes.KeyExists("polishedrrate"))
+
+                if (pistack.ItemAttributes != null)
                 {
-                    dropItemString = new AssetLocation("game", "rockpolished-" + rcbe.istack.Block.FirstCodePart(1));
-                    Block tblock = world.GetBlock(dropItemString);
-
-                    if (tblock != null)
+                    if (pistack.ItemAttributes.KeyExists("polishedrrate"))
                     {
-                        dropStack = new ItemStack(world.GetBlock(dropItemString), dropcount(pistack.ItemAttributes["rchances"].AsInt(), pistack.ItemAttributes["polishedrrate"].AsInt()));
-                        world.SpawnItemEntity(dropStack, blockSel.Position.ToVec3d() + blockSel.HitPosition, new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z));
-                        rcbe.istack.Attributes.SetInt("stonestored", rcbe.istack.Attributes.GetInt("stonestored") - 1);
-                        if (rcbe.istack.Attributes.GetInt("stonestored") <= 0)
-                        {
-                            world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
-                        }
-                        byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Item.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
+                        dropItemString = new AssetLocation("game", "rockpolished-" + rcbe.istack.Block.FirstCodePart(1));
+                        Block tblock = world.GetBlock(dropItemString);
 
+                        if (tblock != null)
+                        {
+                            dropStack = new ItemStack(world.GetBlock(dropItemString), dropcount(pistack.ItemAttributes["rchances"].AsInt(), pistack.ItemAttributes["polishedrrate"].AsInt()));
+                            world.SpawnItemEntity(dropStack, blockSel.Position.ToVec3d() + blockSel.HitPosition, new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z));
+                            rcbe.istack.Attributes.SetInt("stonestored", rcbe.istack.Attributes.GetInt("stonestored") - 1);
+                            if (rcbe.istack.Attributes.GetInt("stonestored") <= 0)
+                            {
+                                world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
+                            }
+                            byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Item.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
+
+                        }
                     }
-                }
 
-                else if (pistack.ItemAttributes.KeyExists("brickrrate"))
-                {
-                    dropItemString = new AssetLocation("game", "stonebrick-" + rcbe.istack.Block.FirstCodePart(1));
-                    Item titem = world.GetItem(dropItemString);
-
-                    if (titem != null)
+                    else if (pistack.ItemAttributes.KeyExists("brickrrate"))
                     {
-                        dropStack = new ItemStack(world.GetItem(dropItemString), dropcount(pistack.ItemAttributes["rchances"].AsInt(), pistack.ItemAttributes["brickrrate"].AsInt()));
-                        world.SpawnItemEntity(dropStack, blockSel.Position.ToVec3d() + blockSel.HitPosition, new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z));
-                        rcbe.istack.Attributes.SetInt("stonestored", rcbe.istack.Attributes.GetInt("stonestored") - 1);
-                        if (rcbe.istack.Attributes.GetInt("stonestored") <= 0)
-                        {
-                            world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
-                        }
-                        byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Item.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
+                        dropItemString = new AssetLocation("game", "stonebrick-" + rcbe.istack.Block.FirstCodePart(1));
+                        Item titem = world.GetItem(dropItemString);
 
+                        if (titem != null)
+                        {
+                            dropStack = new ItemStack(world.GetItem(dropItemString), dropcount(pistack.ItemAttributes["rchances"].AsInt(), pistack.ItemAttributes["brickrrate"].AsInt()));
+                            world.SpawnItemEntity(dropStack, blockSel.Position.ToVec3d() + blockSel.HitPosition, new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z));
+                            rcbe.istack.Attributes.SetInt("stonestored", rcbe.istack.Attributes.GetInt("stonestored") - 1);
+                            if (rcbe.istack.Attributes.GetInt("stonestored") <= 0)
+                            {
+                                world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
+                            }
+                            byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Item.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
+
+                        }
                     }
-                }
 
-                else if (pistack.ItemAttributes.KeyExists("stonerrate"))
-                {
-                    dropItemString = new AssetLocation("game", "stone-" + rcbe.istack.Block.FirstCodePart(1));
-                    Item titem = world.GetItem(dropItemString);
-
-                    if (titem != null)
+                    else if (pistack.ItemAttributes.KeyExists("stonerrate"))
                     {
-                        dropStack = new ItemStack(world.GetItem(dropItemString), dropcount(pistack.ItemAttributes["rchances"].AsInt(), pistack.ItemAttributes["stonerrate"].AsInt()));
-                        world.SpawnItemEntity(dropStack, blockSel.Position.ToVec3d() + blockSel.HitPosition, new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z));
-                        rcbe.istack.Attributes.SetInt("stonestored", rcbe.istack.Attributes.GetInt("stonestored") - 1);
-                        if (rcbe.istack.Attributes.GetInt("stonestored") <= 0)
+                        dropItemString = new AssetLocation("game", "stone-" + rcbe.istack.Block.FirstCodePart(1));
+                        Item titem = world.GetItem(dropItemString);
+
+                        if (titem != null)
                         {
-                            world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
+                            dropStack = new ItemStack(world.GetItem(dropItemString), dropcount(pistack.ItemAttributes["rchances"].AsInt(), pistack.ItemAttributes["stonerrate"].AsInt()));
+                            world.SpawnItemEntity(dropStack, blockSel.Position.ToVec3d() + blockSel.HitPosition, new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z));
+                            rcbe.istack.Attributes.SetInt("stonestored", rcbe.istack.Attributes.GetInt("stonestored") - 1);
+                            if (rcbe.istack.Attributes.GetInt("stonestored") <= 0)
+                            {
+                                world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
+                            }
+                            byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Item.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
                         }
-                        byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Item.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
                     }
-                }
 
-                else if (pistack.ItemAttributes.KeyExists("rockrrate"))
-                {
-                    dropItemString = new AssetLocation("game", "rock-" + rcbe.istack.Block.FirstCodePart(1));
-                    Block tblock = world.GetBlock(dropItemString);
-
-                    if (tblock != null)
+                    else if (pistack.ItemAttributes.KeyExists("rockrrate"))
                     {
-                        dropStack = new ItemStack(world.GetBlock(dropItemString), dropcount(pistack.ItemAttributes["rchances"].AsInt(), pistack.ItemAttributes["rockrrate"].AsInt()));
-                        world.SpawnItemEntity(dropStack, blockSel.Position.ToVec3d() + blockSel.HitPosition, new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z));
-                        rcbe.istack.Attributes.SetInt("stonestored", rcbe.istack.Attributes.GetInt("stonestored") - 1);
-                        if (rcbe.istack.Attributes.GetInt("stonestored") <= 0)
+                        dropItemString = new AssetLocation("game", "rock-" + rcbe.istack.Block.FirstCodePart(1));
+                        Block tblock = world.GetBlock(dropItemString);
+
+                        if (tblock != null)
                         {
-                            world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
+                            dropStack = new ItemStack(world.GetBlock(dropItemString), dropcount(pistack.ItemAttributes["rchances"].AsInt(), pistack.ItemAttributes["rockrrate"].AsInt()));
+                            world.SpawnItemEntity(dropStack, blockSel.Position.ToVec3d() + blockSel.HitPosition, new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z));
+                            rcbe.istack.Attributes.SetInt("stonestored", rcbe.istack.Attributes.GetInt("stonestored") - 1);
+                            if (rcbe.istack.Attributes.GetInt("stonestored") <= 0)
+                            {
+                                world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
+                            }
+                            byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Item.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
                         }
-                        byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Item.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
                     }
                 }
             }
