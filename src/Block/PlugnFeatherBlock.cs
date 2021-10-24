@@ -68,7 +68,7 @@ namespace QuarryWorks
                 {
                     ItemStack drop = drops[0];
                     drop.StackSize = masterEntity.slavecount + 1;
-                    world.SpawnItemEntity(drop, pos.ToVec3d());
+                    world.SpawnItemEntity(drop, byPlayer.Entity.Pos.XYZ);
                 }
 
                 foreach (Vec3i slave in masterEntity.slaves)
