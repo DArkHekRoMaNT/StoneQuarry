@@ -45,8 +45,7 @@ namespace QuarryWorks
         {
             if (!base.DoPlaceBlock(world, byPlayer, blockSel, byItemStack)) { return false; };
             RoughCutStorageBE be = world.BlockAccessor.GetBlockEntity(blockSel.Position) as RoughCutStorageBE;
-            be.istack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Clone();
-            byPlayer.InventoryManager.ActiveHotbarSlot.TakeOutWhole();
+            be.istack = byPlayer.InventoryManager.ActiveHotbarSlot.TakeOut(1);
             return true;
         }
 
