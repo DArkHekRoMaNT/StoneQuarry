@@ -67,7 +67,7 @@ namespace QuarryWorks
                 if (drops != null)
                 {
                     ItemStack drop = drops[0];
-                    drop.StackSize = masterEntity.slavecount + 1;
+                    drop.StackSize = masterEntity.slaveCount + 1;
                     world.SpawnItemEntity(drop, byPlayer.Entity.Pos.XYZ);
                 }
 
@@ -113,7 +113,7 @@ namespace QuarryWorks
 
                 //Debug.WriteLine("making network");
                 MakeNetwork(world, byPlayer, blockSel);
-                int maxwork = WorkNeeded(be.slavecount + 1);
+                int maxwork = WorkNeeded(be.slaveCount + 1);
                 be.SetMaxWork(maxwork);
 
                 if (be.master == null)
@@ -198,7 +198,7 @@ namespace QuarryWorks
 
                     foreach (Vec3i slave in slaves)
                     {
-                        be.addSlave(slave);
+                        be.AddSlave(slave);
                         PlugnFeatherBE tempbe = world.BlockAccessor.GetBlockEntity(slave.AsBlockPos) as PlugnFeatherBE;
                         tempbe.master = blockSel.Position.ToVec3i();
                         tempbe.maxwork = work;
@@ -259,7 +259,7 @@ namespace QuarryWorks
                 if (tempBE == null)
                 {
                     Debug.WriteLine(slave);
-                    Debug.WriteLine(master.slavecount);
+                    Debug.WriteLine(master.slaveCount);
                     Debug.WriteLine("tempBE == null");
                     return false;
                 }

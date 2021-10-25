@@ -7,12 +7,18 @@ namespace QuarryWorks
 {
     public class PlugnFeatherBE : BlockEntity
     {
-        public Vec3i master; // Position of master block.
-        public List<Vec3i> slaves = new List<Vec3i>(); // Positions of slave blocks.
-        public int slavecount = 0;
+        /// <summary>Position of master block.</summary>
+        public Vec3i master;
 
-        public string orientation; // Orientation that this block is facing. Up, Down, Horizontal.
-        public string facing; // Direction that this block is facing. North, South, East, West.
+        /// <summary>Positions of slave blocks.</summary>
+        public List<Vec3i> slaves = new List<Vec3i>();
+        public int slaveCount = 0;
+
+        /// <summary>Orientation that this block is facing. Up, Down, Horizontal.</summary>
+        public string orientation;
+
+        /// <summary>Direction that this block is facing. North, South, East, West.</summary>
+        public string facing;
 
         public int state = 0;
         public int maxstate = 2;
@@ -84,21 +90,21 @@ namespace QuarryWorks
         }
 
 
-        public bool addSlave(Vec3i slave)
+        public bool AddSlave(Vec3i slave)
         {
             if (slave == null)
             {
                 return false;
             }
             slaves.Add(slave);
-            slavecount = slaves.Count;
+            slaveCount = slaves.Count;
             return true;
         }
 
 
         public override void ToTreeAttributes(ITreeAttribute tree)
         {
-            tree.SetInt("slavecount", slavecount);
+            tree.SetInt("slavecount", slaveCount);
             tree.SetString("orientation", orientation);
             tree.SetString("facing", facing);
 
@@ -131,7 +137,7 @@ namespace QuarryWorks
 
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
         {
-            slavecount = tree.GetInt("slavecount");
+            slaveCount = tree.GetInt("slavecount");
             orientation = tree.GetString("orientation");
             facing = tree.GetString("facing");
 
@@ -139,9 +145,9 @@ namespace QuarryWorks
             work = tree.GetInt("work", work);
             maxwork = tree.GetInt("maxwork", maxwork);
 
-            if (slavecount != 0)
+            if (slaveCount != 0)
             {
-                for (int i = 0; i < slavecount; i++)
+                for (int i = 0; i < slaveCount; i++)
                 {
                     slaves.Add(new Vec3i(tree.GetInt("slave" + i + "x"), tree.GetInt("slave" + i + "y"), tree.GetInt("slave" + i + "z")));
                 }

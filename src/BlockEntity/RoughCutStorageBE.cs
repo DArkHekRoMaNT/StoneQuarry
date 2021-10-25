@@ -6,23 +6,23 @@ namespace QuarryWorks
     public class RoughCutStorageBE : GenericStorageCoreBE
     {
         //used to store the Item used to create this block.
-        public ItemStack istack = null;
+        public ItemStack blockStack = null;
 
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
         {
             if (tree.HasAttribute("istack"))
             {
-                istack = tree.GetItemstack("istack");
-                istack.ResolveBlockOrItem(worldAccessForResolve);
+                blockStack = tree.GetItemstack("istack");
+                blockStack.ResolveBlockOrItem(worldAccessForResolve);
             }
             base.FromTreeAttributes(tree, worldAccessForResolve);
         }
 
         public override void ToTreeAttributes(ITreeAttribute tree)
         {
-            if (istack != null)
+            if (blockStack != null)
             {
-                tree.SetItemstack("istack", istack);
+                tree.SetItemstack("istack", blockStack);
             }
             base.ToTreeAttributes(tree);
         }
