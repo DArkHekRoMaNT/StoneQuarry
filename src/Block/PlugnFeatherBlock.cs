@@ -274,8 +274,8 @@ namespace QuarryWorks
         public void BreakAll(PlugnFeatherBE be, IWorldAccessor world, IPlayer byPlayer)
         {
             PlugnFeatherBE master = world.BlockAccessor.GetBlockEntity(be.master.AsBlockPos) as PlugnFeatherBE;
-            List<Vec3i> points = new List<Vec3i>();
-            points.Add(be.master);
+            List<Vec3i> points = new List<Vec3i> { be.master };
+
             foreach (Vec3i slave in master.slaves)
             {
                 points.Add(slave);
@@ -301,9 +301,8 @@ namespace QuarryWorks
 
             foreach (BlockPos point in blocks)
             {
-                if (world.BlockAccessor.GetBlock(point).FirstCodePart() == "rock")
+                if (world.BlockAccessor.GetBlock(point).Code.Path == "rock-" + rockpath)
                 {
-
                     breakParticle2.ColorByBlock = world.BlockAccessor.GetBlock(point);
                     breakParticle2.MinQuantity = 5;
                     breakParticle2.AddQuantity = 2;
@@ -324,13 +323,15 @@ namespace QuarryWorks
             string dropItemFillerString = GetDropType(rockamount);
             string sizeModFillerString = GetSizeFillerString(dropItemFillerString);
             string dropItemString = "stonestorage" + dropItemFillerString + "-" + rockpath + sizeModFillerString + "north";
+
             Block dropItem = world.GetBlock(new AssetLocation(Code.Domain, dropItemString.ToLower()));
-            ItemStack dropItemStack = new ItemStack(dropItem, 1);
-            dropItemStack.Attributes.SetInt("stonestored", rockamount);
-
+            if (dropItem != null)
+            {
+                ItemStack dropItemStack = new ItemStack(dropItem, 1);
+                dropItemStack.Attributes.SetInt("stonestored", rockamount);
+                world.SpawnItemEntity(dropItemStack, new Vec3d(((cube[1].X - cube[0].X) / 2) + cube[0].X, ((cube[1].Y - cube[0].Y) / 2) + cube[0].Y, ((cube[1].Z - cube[0].Z) / 2) + cube[0].Z));
+            }
             world.BlockAccessor.BreakBlock(be.master.AsBlockPos, byPlayer);
-            world.SpawnItemEntity(dropItemStack, new Vec3d(((cube[1].X - cube[0].X) / 2) + cube[0].X, ((cube[1].Y - cube[0].Y) / 2) + cube[0].Y, ((cube[1].Z - cube[0].Z) / 2) + cube[0].Z));
-
         }
 
         public Vec3i GetCounterpart(IWorldAccessor world, IPlayer byPlayer, BlockPos blockSel)
