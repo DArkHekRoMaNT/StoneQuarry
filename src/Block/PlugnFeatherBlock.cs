@@ -104,7 +104,7 @@ namespace QuarryWorks
                 return false;
             }
 
-            if (playerStack.ItemAttributes.KeyExists("quarrystarter") && playerStack.ItemAttributes["quarrystarter"].AsBool() == true && be != null && be.master == null)
+            if (playerStack.ItemAttributes != null && playerStack.ItemAttributes.KeyExists("quarrystarter") && playerStack.ItemAttributes["quarrystarter"].AsBool() == true && be != null && be.master == null)
             {
                 if (world.Side == EnumAppSide.Client)
                 {
