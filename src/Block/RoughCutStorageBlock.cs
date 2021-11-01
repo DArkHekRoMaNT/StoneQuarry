@@ -29,7 +29,7 @@ namespace QuarryWorks
         {
             if (!base.DoPlaceBlock(world, byPlayer, blockSel, byItemStack)) return false;
 
-            if (byItemStack != null)
+            if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack != null)
             {
                 RoughCutStorageBE be = world.BlockAccessor.GetBlockEntity(blockSel.Position) as RoughCutStorageBE;
                 be.blockStack = byPlayer.InventoryManager.ActiveHotbarSlot.TakeOut(1);

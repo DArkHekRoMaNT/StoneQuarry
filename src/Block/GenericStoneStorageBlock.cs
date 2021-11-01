@@ -29,7 +29,7 @@ namespace QuarryWorks
             BlockFacing[] sughv = SuggestedHVOrientation(byPlayer, blockSel);
             Block ablock = world.GetBlock(CodeWithVariant("dir", sughv[0].Code));
 
-            if (ablock?.Attributes != null && ablock.Attributes.KeyExists("caps"))
+            if (ablock != null && ablock.Attributes != null && ablock.Attributes.KeyExists("caps"))
             {
                 for (int i = 0; i < ablock.Attributes["caps"].AsArray().Length; i++)
                 {
