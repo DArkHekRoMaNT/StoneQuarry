@@ -25,15 +25,15 @@ namespace QuarryWorks
             "slate",
             "bauxite"
         };
-        public enum storageLocksEnum : int
+        public enum StorageLocksEnum : int
         {
-            none = 0,
-            sand = 1,
-            gravel = 2,
-            stone = 3
+            None = 0,
+            Sand = 1,
+            Gravel = 2,
+            Stone = 3
         }
         public string storedType = "";
-        public storageLocksEnum storageLock = storageLocksEnum.none;
+        public StorageLocksEnum storageLock = StorageLocksEnum.None;
         public string lastAdded = "";
         public int maxStorable = 0;
 
@@ -44,7 +44,7 @@ namespace QuarryWorks
             { "stone", 0},
         };
 
-        public void checkDisplayVariant(IWorldAccessor world, BlockSelection blocksel)
+        public void CheckDisplayVariant(IWorldAccessor world, BlockSelection blocksel)
         {
             //Set's the displayed block to the type that has the largest amount of stored material.
             RubbleStorageBlock cblock = world.BlockAccessor.GetBlock(blocksel.Position) as RubbleStorageBlock;
@@ -87,7 +87,7 @@ namespace QuarryWorks
             }
         }
 
-        public bool removeResource(IWorldAccessor world, IPlayer byplayer, BlockSelection blockSel, string stype, int quant)
+        public bool RemoveResource(IWorldAccessor world, IPlayer byplayer, BlockSelection blockSel, string stype, int quant)
         {
             if (storedType == "" || storedtypes[stype] <= 0)
             {
@@ -118,7 +118,7 @@ namespace QuarryWorks
             return true;
         }
 
-        public bool addResource(ItemSlot islot, int quant)
+        public bool AddResource(ItemSlot islot, int quant)
         {
             string btype = "";
             string rtype = "";
@@ -180,7 +180,7 @@ namespace QuarryWorks
             return false;
         }
 
-        public bool addAll(IPlayer byPlayer)
+        public bool AddAll(IPlayer byPlayer)
         {
             // will attempt to add all of a set item type from the players inventory.
             bool psound = false;
@@ -188,7 +188,7 @@ namespace QuarryWorks
             {
                 if (isl.Itemstack != null && isl.Itemstack.Collectible.Code.Path == lastAdded)
                 {
-                    if (addResource(isl, isl.StackSize))
+                    if (AddResource(isl, isl.StackSize))
                     {
                         psound = true;
                     }
@@ -202,7 +202,7 @@ namespace QuarryWorks
                     {
                         if (isl.Itemstack != null && isl.Itemstack.Collectible.Code.Path == lastAdded)
                         {
-                            if (addResource(isl, isl.StackSize))
+                            if (AddResource(isl, isl.StackSize))
                             {
                                 psound = true;
                             }
@@ -214,13 +214,13 @@ namespace QuarryWorks
             return psound;
         }
 
-        public bool degrade()
+        public bool Degrade()
         {
-            if (storageLock == storageLocksEnum.stone)
+            if (storageLock == StorageLocksEnum.Stone)
             {
                 return false;
             }
-            else if (storageLock == storageLocksEnum.gravel)
+            else if (storageLock == StorageLocksEnum.Gravel)
             {
                 if (storedtypes["stone"] > 1)
                 {
@@ -230,7 +230,7 @@ namespace QuarryWorks
 
                 }
             }
-            else if (storageLock == storageLocksEnum.sand)
+            else if (storageLock == StorageLocksEnum.Sand)
             {
                 if (storedtypes["gravel"] > 0)
                 {
@@ -268,7 +268,7 @@ namespace QuarryWorks
             return true;
         }
 
-        public bool drench(IWorldAccessor world, BlockSelection blockSel)
+        public bool Drench(IWorldAccessor world, BlockSelection blockSel)
         {
             Block dropblock = world.GetBlock(new AssetLocation("game", "muddygravel"));
             if (storedtypes["gravel"] > 0)
@@ -287,7 +287,7 @@ namespace QuarryWorks
             storedtypes["sand"] = tree.GetInt("sand", 0);
             storedtypes["gravel"] = tree.GetInt("gravel", 0);
             storedtypes["stone"] = tree.GetInt("stone", 0);
-            storageLock = (storageLocksEnum)tree.GetInt("storageLock", 0);
+            storageLock = (StorageLocksEnum)tree.GetInt("storageLock", 0);
             maxStorable = tree.GetInt("maxStorable");
 
             base.FromTreeAttributes(tree, worldAccessForResolve);

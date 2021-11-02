@@ -46,7 +46,8 @@ namespace QuarryWorks
                 be = world.BlockAccessor.GetBlockEntity((be as GenericStorageCapBE).core);
             }
 
-            if (be is RoughCutStorageBE rcbe && rcbe.blockStack.Attributes.GetInt("stonestored") > 0)
+            var rcbe = be as RoughCutStorageBE;
+            if (rcbe != null && rcbe.blockStack.Attributes.GetInt("stonestored") > 0)
             {
                 world.SpawnItemEntity(rcbe.blockStack.Clone(), pos.ToVec3d());
             }
@@ -63,7 +64,8 @@ namespace QuarryWorks
                 be = world.BlockAccessor.GetBlockEntity((be as GenericStorageCapBE).core);
             }
 
-            if (!(be is RoughCutStorageBE rcbe) || rcbe.blockStack == null) return false;
+            var rcbe = be as RoughCutStorageBE;
+            if (rcbe == null || rcbe.blockStack == null) return false;
 
             if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack == null)
             {

@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
+    <LangVersion>5</LangVersion>
     <VSVersion>1.15.0</VSVersion>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <Reference Include="VintagestoryAPI">
       <HintPath>$(VINTAGE_STORY)/$(VSVersion)/VintagestoryAPI.dll</HintPath>
@@ -30,7 +31,7 @@
       <HintPath>$(VINTAGE_STORY)/$(VSVersion)/Lib/cairo-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
-  
+
   <Target Name="Copy" AfterTargets="PostBuildEvent">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ProjectDir)mods/$(ProjectName)" />
     <Copy SourceFiles="$(TargetDir)/$(TargetName).pdb" DestinationFolder="$(ProjectDir)mods/$(ProjectName)" />

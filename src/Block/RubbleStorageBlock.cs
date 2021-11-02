@@ -67,17 +67,17 @@ namespace QuarryWorks
 
             switch (rsbe.storageLock)
             {
-                case RubbleStorageBE.storageLocksEnum.stone:
+                case RubbleStorageBE.StorageLocksEnum.Stone:
                     {
                         stonelock = " : Locked";
                         break;
                     }
-                case RubbleStorageBE.storageLocksEnum.gravel:
+                case RubbleStorageBE.StorageLocksEnum.Gravel:
                     {
                         gravlock = " : Locked";
                         break;
                     }
-                case RubbleStorageBE.storageLocksEnum.sand:
+                case RubbleStorageBE.StorageLocksEnum.Sand:
                     {
                         sandlock = " : Locked";
                         break;
@@ -117,20 +117,20 @@ namespace QuarryWorks
             // if the player is looking at one of the buttons on the crate.
             if (blockSel.SelectionBoxIndex == 1 && byPlayer.Entity.Controls.Sneak)
             {
-                setLock(rcbe, RubbleStorageBE.storageLocksEnum.sand);
+                setLock(rcbe, RubbleStorageBE.StorageLocksEnum.Sand);
             }
             else if (blockSel.SelectionBoxIndex == 2 && byPlayer.Entity.Controls.Sneak)
             {
-                setLock(rcbe, RubbleStorageBE.storageLocksEnum.gravel);
+                setLock(rcbe, RubbleStorageBE.StorageLocksEnum.Gravel);
             }
             else if (blockSel.SelectionBoxIndex == 3 && byPlayer.Entity.Controls.Sneak)
             {
-                setLock(rcbe, RubbleStorageBE.storageLocksEnum.stone);
+                setLock(rcbe, RubbleStorageBE.StorageLocksEnum.Stone);
             }
 
             if (blockSel.SelectionBoxIndex == 1)
             {
-                if (rcbe.removeResource(world, byPlayer, blockSel, "sand", stockMod))
+                if (rcbe.RemoveResource(world, byPlayer, blockSel, "sand", stockMod))
                 {
                     if (world.Side == EnumAppSide.Client)
                     {
@@ -145,7 +145,7 @@ namespace QuarryWorks
             }
             else if (blockSel.SelectionBoxIndex == 2)
             {
-                if (rcbe.removeResource(world, byPlayer, blockSel, "gravel", stockMod))
+                if (rcbe.RemoveResource(world, byPlayer, blockSel, "gravel", stockMod))
                 {
                     if (world.Side == EnumAppSide.Client)
                     {
@@ -159,7 +159,7 @@ namespace QuarryWorks
             }
             else if (blockSel.SelectionBoxIndex == 3)
             {
-                if (rcbe.removeResource(world, byPlayer, blockSel, "stone", stockMod))
+                if (rcbe.RemoveResource(world, byPlayer, blockSel, "stone", stockMod))
                 {
                     if (world.Side == EnumAppSide.Client)
                     {
@@ -177,7 +177,7 @@ namespace QuarryWorks
                 // attempts to add the players resource to the block.
                 if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.ItemAttributes["rubbleable"].AsBool())
                 {
-                    if (rcbe.degrade())
+                    if (rcbe.Degrade())
                     {
                         if (world.Side == EnumAppSide.Client)
                         {
@@ -192,7 +192,7 @@ namespace QuarryWorks
                     ItemStack tstack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.GetTreeAttribute("contents").GetItemstack("0");
                     if (tstack.Collectible.Code.Domain == "game" && tstack.Collectible.Code.Path == "waterportion")
                     {
-                        if (rcbe.drench(world, blockSel))
+                        if (rcbe.Drench(world, blockSel))
                         {
                             if (world.Side == EnumAppSide.Client)
                             {
@@ -204,7 +204,7 @@ namespace QuarryWorks
                 }
                 else
                 {
-                    if (rcbe.addResource(byPlayer.InventoryManager.ActiveHotbarSlot, stockMod))
+                    if (rcbe.AddResource(byPlayer.InventoryManager.ActiveHotbarSlot, stockMod))
                     {
                         if (world.Side == EnumAppSide.Client)
                         {
@@ -217,7 +217,7 @@ namespace QuarryWorks
             else if (blockSel.SelectionBoxIndex == 0 && byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack == null)
             {
                 // if the players hand is empty we want to take all the matching blocks outs of their inventory.
-                if (rcbe.addAll(byPlayer))
+                if (rcbe.AddAll(byPlayer))
                 {
                     if (world.Side == EnumAppSide.Client)
                     {
@@ -226,12 +226,12 @@ namespace QuarryWorks
                     world.PlaySoundAt(new AssetLocation("game", "sounds/effect/stonecrush"), byPlayer, byPlayer);
                 }
             }
-            rcbe.checkDisplayVariant(world, blockSel);
+            rcbe.CheckDisplayVariant(world, blockSel);
 
             return true;
         }
 
-        public void setLock(RubbleStorageBE rsbe, RubbleStorageBE.storageLocksEnum toLock)
+        public void setLock(RubbleStorageBE rsbe, RubbleStorageBE.StorageLocksEnum toLock)
         {
             rsbe.storageLock = toLock;
         }
