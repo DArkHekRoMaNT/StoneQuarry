@@ -242,9 +242,9 @@ namespace QuarryWorks
             }
 
             PlugnFeatherBE master = world.BlockAccessor.GetBlockEntity(be.master.AsBlockPos) as PlugnFeatherBE;
-            if (master.state != master.maxstate)
+            if (master == null || master.state != master.maxstate)
             {
-                Debug.WriteLine("master is not maxed");
+                Debug.WriteLine("master is null or not maxed");
                 //Debug.WriteLine(master.state);
                 //Debug.WriteLine(master.maxstate);
 
