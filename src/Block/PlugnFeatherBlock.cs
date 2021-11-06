@@ -64,21 +64,23 @@ namespace QuarryWorks
                 PlugnFeatherBE masterEntity = world.BlockAccessor.GetBlockEntity(be.master.AsBlockPos) as PlugnFeatherBE;
                 ItemStack[] drops = GetDrops(world, pos, byPlayer);
 
-                if (drops != null)
+                if (masterEntity != null)
                 {
-                    ItemStack drop = drops[0];
-                    drop.StackSize = masterEntity.slaveCount + 1;
-                    world.SpawnItemEntity(drop, byPlayer.Entity.Pos.XYZ);
-                }
+                    if (drops != null)
+                    {
+                        ItemStack drop = drops[0];
+                        drop.StackSize = masterEntity.slaveCount + 1;
+                        world.SpawnItemEntity(drop, byPlayer.Entity.Pos.XYZ);
+                    }
 
-                foreach (Vec3i slave in masterEntity.slaves)
-                {
-                    world.BlockAccessor.SetBlock(0, slave.AsBlockPos);
-                    world.BlockAccessor.MarkBlockDirty(slave.AsBlockPos);
+                    foreach (Vec3i slave in masterEntity.slaves)
+                    {
+                        world.BlockAccessor.SetBlock(0, slave.AsBlockPos);
+                        world.BlockAccessor.MarkBlockDirty(slave.AsBlockPos);
+                    }
+                    world.BlockAccessor.SetBlock(0, be.master.AsBlockPos);
+                    world.BlockAccessor.MarkBlockDirty(be.master.AsBlockPos);
                 }
-                world.BlockAccessor.SetBlock(0, be.master.AsBlockPos);
-                world.BlockAccessor.MarkBlockDirty(be.master.AsBlockPos);
-
             }
         }
 
