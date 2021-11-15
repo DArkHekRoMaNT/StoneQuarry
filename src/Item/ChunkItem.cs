@@ -4,7 +4,7 @@ using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 
-namespace QuarryWorks
+namespace StoneQuarry
 {
     public class ChunksItem : Item
     {

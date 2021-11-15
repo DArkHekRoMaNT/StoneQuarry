@@ -63,7 +63,7 @@
 
   "creativeinventory": {
     "general": ["*"],
-    "quarryworks": ["*"]
+    "stonequarry": ["*"]
   },
 
   "heldTpUseAnimation": "axechop",

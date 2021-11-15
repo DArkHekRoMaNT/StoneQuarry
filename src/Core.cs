@@ -1,6 +1,6 @@
 ﻿using Vintagestory.API.Common;
 
-namespace QuarryWorks
+namespace StoneQuarry
 {
     public class Core : ModSystem
     {

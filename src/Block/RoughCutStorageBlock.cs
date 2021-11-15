@@ -3,7 +3,7 @@ using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 
-namespace QuarryWorks
+namespace StoneQuarry
 {
     /// <summary> Used to store what is dropped from the quarry </summary>
     public class RoughCutStorageBlock : GenericStoneStorageBlock

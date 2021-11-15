@@ -204,7 +204,7 @@
 
   "creativeinventory": {
     "general": ["*-one-down-north"],
-    "quarryworks": ["*-one-down-north"]
+    "stonequarry": ["*-one-down-north"]
   },
 
   "collisionboxByType": {

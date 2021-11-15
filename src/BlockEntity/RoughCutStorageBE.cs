@@ -1,7 +1,7 @@
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 
-namespace QuarryWorks
+namespace StoneQuarry
 {
     public class RoughCutStorageBE : GenericStorageCoreBE
     {

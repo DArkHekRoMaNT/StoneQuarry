@@ -25,7 +25,7 @@
 
   "creativeinventory": {
     "general": ["*"],
-    "quarryworks": ["*"]
+    "stonequarry": ["*"]
   },
 
   "fpHandTransform": {

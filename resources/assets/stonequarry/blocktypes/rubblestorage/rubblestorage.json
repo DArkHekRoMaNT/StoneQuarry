@@ -20,7 +20,7 @@
 
   "creativeinventory": {
     "general": ["*-sandstone-empty-north"],
-    "quarryworks": ["*-sandstone-empty-north"]
+    "stonequarry": ["*-sandstone-empty-north"]
   },
   "attributesByType": {
     "*-east": {

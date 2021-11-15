@@ -50,7 +50,7 @@
   "creativeinventory": {
     "general": ["*"],
     "construction": ["*"],
-    "quarryworks": ["*"]
+    "stonequarry": ["*"]
   },
   "replaceable": 700,
   "resistance": 1.5,

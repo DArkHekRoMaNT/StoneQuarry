@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "modid": "stonequarry",
+  "name": "Stone Quarry",
+  "authors": ["DArkHekRoMaNT", "Wraith"],
+  "description": "",
+  "version": "1.0.0",
+  "dependencies": {
+    "game": "1.15.0"
+  }
+}
