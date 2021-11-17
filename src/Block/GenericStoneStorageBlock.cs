@@ -7,7 +7,7 @@ namespace StoneQuarry
 {
     public class GenericStoneStorageBlock : Block
     {
-        static readonly SimpleParticleProperties breakParticle = new SimpleParticleProperties()
+        readonly SimpleParticleProperties breakParticle = new SimpleParticleProperties()
         {
             MinPos = new Vec3d(),
             AddPos = new Vec3d(1, 1, 1),

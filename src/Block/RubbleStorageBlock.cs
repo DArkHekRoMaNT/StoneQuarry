@@ -7,36 +7,22 @@ namespace StoneQuarry
 {
     public class RubbleStorageBlock : GenericStoneStorageBlock
     {
-        static SimpleParticleProperties interactParticles = new SimpleParticleProperties()
+        readonly SimpleParticleProperties interactParticles = new SimpleParticleProperties()
         {
             MinPos = new Vec3d(),
-            AddPos = new Vec3d(),
-            MinQuantity = 0,
-            AddQuantity = 3,
+            AddPos = new Vec3d(.5, .5, .5),
+            MinQuantity = 5,
+            AddQuantity = 20,
             GravityEffect = .9f,
             WithTerrainCollision = true,
             ParticleModel = EnumParticleModel.Quad,
-            LifeLength = 0.5f,
-            MinVelocity = new Vec3f(-1, 2, -1),
-            AddVelocity = new Vec3f(2, 0, 2),
-            MinSize = 0.07f,
-            MaxSize = 0.1f,
+            LifeLength = 2.5f,
+            MinVelocity = new Vec3f(-0.4f, -0.4f, -0.4f),
+            AddVelocity = new Vec3f(0.8f, 1.2f, 0.8f),
+            MinSize = 0.1f,
+            MaxSize = 0.4f,
+            DieOnRainHeightmap = false
         };
-
-        static RubbleStorageBlock()
-        {
-            interactParticles.ParticleModel = EnumParticleModel.Quad;
-            interactParticles.AddPos.Set(.5, .5, .5);
-            interactParticles.MinQuantity = 5;
-            interactParticles.AddQuantity = 20;
-            interactParticles.LifeLength = 2.5f;
-            interactParticles.MinSize = 0.1f;
-            interactParticles.MaxSize = 0.4f;
-            interactParticles.MinVelocity.Set(-0.4f, -0.4f, -0.4f);
-            interactParticles.AddVelocity.Set(0.8f, 1.2f, 0.8f);
-            interactParticles.DieOnRainHeightmap = false;
-        }
-
 
         //Adds sand, gravel, and muddy gravel production.
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)

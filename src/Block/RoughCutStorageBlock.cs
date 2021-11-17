@@ -8,7 +8,7 @@ namespace StoneQuarry
     /// <summary> Used to store what is dropped from the quarry </summary>
     public class RoughCutStorageBlock : GenericStoneStorageBlock
     {
-        static readonly SimpleParticleProperties interactParticles = new SimpleParticleProperties()
+        readonly SimpleParticleProperties interactParticles = new SimpleParticleProperties()
         {
             MinPos = new Vec3d(),
             AddPos = new Vec3d(.5, .5, .5),

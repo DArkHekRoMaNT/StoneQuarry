@@ -9,7 +9,7 @@ namespace StoneQuarry
 {
     public class PlugnFeatherBlock : Block
     {
-        public static SimpleParticleProperties breakParticle2 = new SimpleParticleProperties(32, 32, ColorUtil.ColorFromRgba(122, 76, 23, 50), new Vec3d(), new Vec3d(), new Vec3f(), new Vec3f());
+        readonly SimpleParticleProperties breakParticle2 = new SimpleParticleProperties(32, 32, ColorUtil.ColorFromRgba(122, 76, 23, 50), new Vec3d(), new Vec3d(), new Vec3f(), new Vec3f());
         public AssetLocation cracksound = new AssetLocation("game", "sounds/block/heavyice");
         public AssetLocation hammersound = new AssetLocation("game", "sounds/block/meteoriciron-hit-pickaxe");
 
