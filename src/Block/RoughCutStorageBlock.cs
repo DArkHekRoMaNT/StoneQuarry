@@ -1,6 +1,7 @@
 using System;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 
 namespace StoneQuarry
@@ -125,23 +126,38 @@ namespace StoneQuarry
             }
 
 
-            if (dropCode != null)
+            if (dropCode == null)
             {
-                var colObj = (CollectibleObject)world.GetItem(dropCode) ?? world.GetBlock(dropCode);
-                var stackSize = DropCount(activeStack.ItemAttributes["rchances"].AsInt(), dropRate, world.Rand);
-                var dropStack = new ItemStack(colObj, stackSize);
-
-                var dropPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
-                var dropVel = new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z);
-                world.SpawnItemEntity(dropStack, dropPos, dropVel);
-
-                rcbe.blockStack.Attributes.SetInt("stonestored", rcbe.blockStack.Attributes.GetInt("stonestored") - 1);
-                if (rcbe.blockStack.Attributes.GetInt("stonestored") <= 0)
+                if (api.Side == EnumAppSide.Client)
                 {
-                    world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
+                    (byPlayer as IClientPlayer).ShowChatNotification(Lang.Get(Code.Domain + ":slaberror-unknown-tool"));
                 }
-                byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Item.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
+                return false;
             }
+
+            var colObj = (CollectibleObject)world.GetItem(dropCode) ?? world.GetBlock(dropCode);
+            if (colObj == null)
+            {
+                if (api.Side == EnumAppSide.Client)
+                {
+                    (byPlayer as IClientPlayer).ShowChatNotification(Lang.Get(Code.Domain + ":slaberror-unknown-drop"));
+                }
+                return false;
+            }
+
+            var stackSize = DropCount(activeStack.ItemAttributes["rchances"].AsInt(), dropRate, world.Rand);
+            var dropStack = new ItemStack(colObj, stackSize);
+
+            var dropPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
+            var dropVel = new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z);
+            world.SpawnItemEntity(dropStack, dropPos, dropVel);
+
+            rcbe.blockStack.Attributes.SetInt("stonestored", rcbe.blockStack.Attributes.GetInt("stonestored") - 1);
+            if (rcbe.blockStack.Attributes.GetInt("stonestored") <= 0)
+            {
+                world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
+            }
+            byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Item.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
 
             return true;
         }
