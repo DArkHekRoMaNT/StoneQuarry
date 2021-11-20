@@ -81,6 +81,10 @@ namespace StoneQuarry
                     world.BlockAccessor.SetBlock(0, be.master.AsBlockPos);
                     world.BlockAccessor.MarkBlockDirty(be.master.AsBlockPos);
                 }
+                else
+                {
+                    base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
+                }
             }
         }
 
