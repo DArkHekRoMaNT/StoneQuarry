@@ -1,11 +1,6 @@
 {
-  ingredient: {
-    type: "item",
-    code: "game:clay-*",
-    name: "type",
-    allowedVariants: [ "blue", "fire" ]
-  },
-  pattern: [
+  "ingredient": { "type": "item", "code": "game:clay-*", "name": "type", "allowedVariants": ["blue", "fire"] },
+  "pattern": [
     [
       "##############",
       "##############",
@@ -39,9 +34,6 @@
       "##############"
     ]
   ],
-  name: "PlugnFeather Mold",
-  output: {
-    "type": "block",
-    "code": "toolmold-raw-plugnfeather"
-  }
+  "name": "PlugnFeather Mold",
+  "output": { "type": "block", "code": "toolmold-raw-plugnfeather" }
 }

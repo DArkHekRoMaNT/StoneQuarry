@@ -1,0 +1,44 @@
+{
+  "code": "wedgechiselhead",
+  "variantgroups": [
+    {
+      "code": "material",
+      "states": [
+        "copper",
+        "tinbronze",
+        "bismuthbronze",
+        "blackbronze",
+        "gold",
+        "silver",
+        "iron",
+        "meteoriciron",
+        "steel"
+      ]
+    }
+  ],
+  "shape": { "base": "item/tool/wedgechisel" },
+  "textures": {
+    "metal": { "base": "game:block/metal/plate/{material}" },
+    "wood": { "base": "game:block/transparent" }
+  },
+  "creativeinventory": { "general": ["*"], "stonequarry": ["*"] },
+  "heldTpUseAnimation": "knap",
+  "fpHandTransform": {
+    "translation": { "x": -0.3, "y": 0.6, "z": 0.9 },
+    "rotation": { "x": 160, "y": 83, "z": -28 },
+    "origin": { "x": 0, "y": 0, "z": 0 },
+    "scale": 2.14
+  },
+  "tpHandTransform": {
+    "translation": { "x": 0.25, "y": 0.04, "z": 0.05 },
+    "rotation": { "x": 90, "y": 0, "z": 7 },
+    "origin": { "x": 0, "y": 0, "z": 0 },
+    "scale": 0.63
+  },
+  "guiTransform": {
+    "translation": { "x": 0, "y": 0, "z": 0 },
+    "rotation": { "x": -12, "y": 47, "z": -39 },
+    "origin": { "x": 0, "y": 0, "z": 0 },
+    "scale": 2.35
+  }
+}

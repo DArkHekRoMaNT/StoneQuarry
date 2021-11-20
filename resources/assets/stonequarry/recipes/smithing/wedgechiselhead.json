@@ -15,6 +15,19 @@
       "steel"
     ]
   },
-  "pattern": [["######"]],
-  "output": { "type": "item", "code": "roughcutchisel-{metal}" }
+  "pattern": [
+    ["_##___",
+	 "_##___",
+	 "_##___"],
+	 
+    ["#_____",
+	 "######",
+	 "#_____"],
+	 
+    ["_##___",
+	 "_##___",
+	 "_##___"]
+  ],
+  "name": "Finishing Chisle",
+  "output": { "type": "item", "code": "wedgechiselhead-{metal}" }
 }

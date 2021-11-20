@@ -1,0 +1,50 @@
+{
+  "code": "finishingchiselhead",
+  "variantgroups": [
+    {
+      "code": "material",
+      "states": [
+        "copper",
+        "tinbronze",
+        "bismuthbronze",
+        "blackbronze",
+        "gold",
+        "silver",
+        "iron",
+        "meteoriciron",
+        "steel"
+      ]
+    }
+  ],
+  "shape": { "base": "item/tool/finishingchisel" },
+  "textures": {
+    "metal": { "base": "game:block/metal/plate/{material}" },
+    "wood": { "base": "game:block/transparent" }
+  },
+  "creativeinventory": { "general": ["*"], "stonequarry": ["*"] },
+  "heldTpUseAnimation": "knap",
+  "fpHandTransform": {
+    "translation": { "x": 0.5, "y": 0.2, "z": 1 },
+    "rotation": { "x": 53, "y": -64, "z": 18 },
+    "origin": { "x": 0, "y": 0, "z": 0 },
+    "scale": 2.14
+  },
+  "tpHandTransform": {
+    "translation": { "x": 0.01, "y": 0.05, "z": 0.05 },
+    "rotation": { "x": 98, "y": -80, "z": -5 },
+    "origin": { "x": 0, "y": 0, "z": 0 },
+    "scale": 0.7
+  },
+  "guiTransform": {
+    "translation": { "x": 10.3, "y": 0, "z": 0 },
+    "rotation": { "x": -10, "y": 45, "z": -33 },
+    "origin": { "x": 0, "y": 0, "z": 0 },
+    "scale": 2.35
+  },
+  "groundTransform": {
+    "translation": { "x": 0, "y": 0.37, "z": 0 },
+    "rotation": { "x": 0, "y": 0, "z": 0 },
+    "origin": { "x": 0.5, "y": 0.5, "z": 0.5299 },
+    "scale": 3.52
+  }
+}

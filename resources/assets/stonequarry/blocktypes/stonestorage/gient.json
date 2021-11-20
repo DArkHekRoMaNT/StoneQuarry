@@ -2,28 +2,13 @@
   "code": "stonestoragegient",
   "class": "RoughStoneStorage",
   "entityclass": "StoneStorageCoreBE",
-
   "variantgroups": [
-    {
-      "code": "stone",
-      "loadFromProperties": "block/rockwithdeposit"
-    },
-    {
-      "code": "depth",
-      "states": ["zero", "one"]
-    },
-    {
-      "code": "height",
-      "states": ["zero", "one"]
-    },
-    {
-      "code": "dir",
-      "states": ["north", "south", "east", "west"]
-    }
+    { "code": "stone", "loadFromProperties": "block/rockwithdeposit" },
+    { "code": "depth", "states": ["zero", "one"] },
+    { "code": "height", "states": ["zero", "one"] },
+    { "code": "dir", "states": ["north", "south", "east", "west"] }
   ],
-  "creativeinventory": {
-    "general": ["*-zero-zero-north"]
-  },
+  "creativeinventory": { "general": ["*-zero-zero-north"], "stonequarry": ["*-zero-zero-north"] },
   "attributesByType": {
     "*-east": {
       "caps": [
@@ -57,7 +42,6 @@
             ["height", "zero"]
           ]
         },
-
         {
           "x": 0,
           "y": 1,
@@ -98,7 +82,6 @@
             ["height", "one"]
           ]
         },
-
         {
           "x": 0,
           "y": 2,
@@ -173,7 +156,6 @@
             ["height", "zero"]
           ]
         },
-
         {
           "x": -1,
           "y": 1,
@@ -214,7 +196,6 @@
             ["height", "one"]
           ]
         },
-
         {
           "x": -1,
           "y": 2,
@@ -289,7 +270,6 @@
             ["height", "zero"]
           ]
         },
-
         {
           "x": 1,
           "y": 1,
@@ -330,7 +310,6 @@
             ["height", "one"]
           ]
         },
-
         {
           "x": 1,
           "y": 2,
@@ -405,7 +384,6 @@
             ["height", "zero"]
           ]
         },
-
         {
           "x": 0,
           "y": 1,
@@ -446,7 +424,6 @@
             ["height", "one"]
           ]
         },
-
         {
           "x": 0,
           "y": 2,
@@ -490,112 +467,36 @@
       ]
     }
   },
-  "textures": {
-    "stone": { "base": "game:block/stone/rock/{stone}1" }
-  },
+  "textures": { "stone": { "base": "game:block/stone/rock/{stone}1" } },
   "shapeByType": {
-    "*zero-zero-north": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeB0"
-    },
-    "*zero-zero-east": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeB0",
-      "rotatey": -90
-    },
-    "*zero-zero-south": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeB0",
-      "rotatey": 180
-    },
-    "*zero-zero-west": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeB0",
-      "rotatey": 90
-    },
-
-    "*one-zero-north": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeB1"
-    },
-    "*one-zero-east": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeB1",
-      "rotatey": -90
-    },
-    "*one-zero-south": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeB1",
-      "rotatey": 180
-    },
-    "*one-zero-west": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeB1",
-      "rotatey": 90
-    },
-
-    "*zero-one-north": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeT0"
-    },
-    "*zero-one-east": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeT0",
-      "rotatey": -90
-    },
-    "*zero-one-south": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeT0",
-      "rotatey": 180
-    },
-    "*zero-one-west": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeT0",
-      "rotatey": 90
-    },
-
-    "*one-one-north": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeT1"
-    },
-    "*one-one-east": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeT1",
-      "rotatey": -90
-    },
-    "*one-one-south": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeT1",
-      "rotatey": 180
-    },
-    "*one-one-west": {
-      "base": "blocks/stonestorage/huge/stonestoragehugeT1",
-      "rotatey": 90
-    }
+    "*-zero-zero-north": { "base": "block/stonestorage/huge/stonestoragehugeb0" },
+    "*-zero-zero-east": { "base": "block/stonestorage/huge/stonestoragehugeb0", "rotatey": -90 },
+    "*-zero-zero-south": { "base": "block/stonestorage/huge/stonestoragehugeb0", "rotatey": 180 },
+    "*-zero-zero-west": { "base": "block/stonestorage/huge/stonestoragehugeb0", "rotatey": 90 },
+    "*-one-zero-north": { "base": "block/stonestorage/huge/stonestoragehugeb1" },
+    "*-one-zero-east": { "base": "block/stonestorage/huge/stonestoragehugeb1", "rotatey": -90 },
+    "*-one-zero-south": { "base": "block/stonestorage/huge/stonestoragehugeb1", "rotatey": 180 },
+    "*-one-zero-west": { "base": "block/stonestorage/huge/stonestoragehugeb1", "rotatey": 90 },
+    "*-zero-one-north": { "base": "block/stonestorage/huge/stonestoragehuget0" },
+    "*-zero-one-east": { "base": "block/stonestorage/huge/stonestoragehuget0", "rotatey": -90 },
+    "*-zero-one-south": { "base": "block/stonestorage/huge/stonestoragehuget0", "rotatey": 180 },
+    "*-zero-one-west": { "base": "block/stonestorage/huge/stonestoragehuget0", "rotatey": 90 },
+    "*-one-one-north": { "base": "block/stonestorage/huge/stonestoragehuget1" },
+    "*-one-one-east": { "base": "block/stonestorage/huge/stonestoragehuget1", "rotatey": -90 },
+    "*-one-one-south": { "base": "block/stonestorage/huge/stonestoragehuget1", "rotatey": 180 },
+    "*-one-one-west": { "base": "block/stonestorage/huge/stonestoragehuget1", "rotatey": 90 }
   },
-  "shapeinventory": { "base": "blocks/stonestorage/gient/stonestoragegientinv" },
-
+  "shapeinventory": { "base": "block/stonestorage/gient/stonestoragegientinv" },
   "drawtype": "json",
   "facecullmode": "nevercull",
-  "sidesolid": {
-    "all": false
-  },
-  "sideopaque": {
-    "all": false
-  },
+  "sidesolid": { "all": false },
+  "sideopaque": { "all": false },
   "materialDensity": 600,
   "lightAbsorption": 99,
-  "emitSideAo": {
-    "all": true
-  },
+  "emitSideAo": { "all": true },
   "lightabsorption": 0,
-
   "heldTpIdleAnimation": "holdbothhandslarge",
   "heldTpUseAnimation": "twohandplaceblock",
-
-  "guiTransform": {
-    "translation": {
-      "x": -9,
-      "y": 10,
-      "z": 0
-    },
-    "scale": 0.46
-  },
-  "tpHandTransform": {
-    "translation": {
-      "x": -0.7,
-      "y": -1.8,
-      "z": -1.5
-    },
-    "rotation": {
-      "x": 0,
-      "y": 13,
-      "z": -69
-    }
-  }
+  "guiTransform": { "translation": { "x": -9, "y": 10, "z": 0 }, "scale": 0.46 },
+  "tpHandTransform": { "translation": { "x": -0.7, "y": -1.8, "z": -1.5 }, "rotation": { "x": 0, "y": 13, "z": -69 } }
 }

@@ -3,25 +3,29 @@
     "type": "item",
     "code": "game:ingot-*",
     "name": "metal",
-    "allowedVariants": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "silver", "gold", "iron", "meteoriciron", "steel" ]
+    "allowedVariants": [
+      "copper",
+      "tinbronze",
+      "bismuthbronze",
+      "blackbronze",
+      "silver",
+      "gold",
+      "iron",
+      "meteoriciron",
+      "steel"
+    ]
   },
   "pattern": [
-    [
-      "######",
-      "__####",
-      "__####",
-      "######"
-    ],
-    [
-      "######",
-      "__####",
-      "__####",
-      "######"
-    ]
+    ["######",
+	 "__####",
+	 "__####",
+	 "######"],
+	 
+    ["######",
+	 "__####",
+	 "__####",
+	 "######"]
   ],
   "name": "Rubble Hammer",
-  "output": {
-    "type": "item",
-    "code": "rubblehammerhead-{metal}"
-  }
+  "output": { "type": "item", "code": "rubblehammerhead-{metal}" }
 }

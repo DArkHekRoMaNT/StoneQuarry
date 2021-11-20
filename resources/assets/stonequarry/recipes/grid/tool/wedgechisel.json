@@ -1,0 +1,10 @@
+{
+  "ingredientPattern": "T,S",
+  "ingredients": {
+    "T": { "type": "item", "code": "wedgechiselhead-*", "name": "material" },
+    "S": { "type": "item", "code": "game:stick" }
+  },
+  "width": 1,
+  "height": 2,
+  "output": { "type": "item", "code": "wedgechisel-{material}", "quantity": 1 }
+}

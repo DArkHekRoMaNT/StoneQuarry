@@ -1,0 +1,41 @@
+{
+  "code": "rubblehammerhead",
+  "variantgroups": [
+    {
+      "code": "material",
+      "states": [
+        "copper",
+        "tinbronze",
+        "bismuthbronze",
+        "blackbronze",
+        "gold",
+        "silver",
+        "iron",
+        "meteoriciron",
+        "steel"
+      ]
+    }
+  ],
+  "shape": { "base": "item/tool/rubblehammer" },
+  "textures": {
+    "metal": { "base": "game:block/metal/plate/{material}" },
+    "wood": { "base": "game:block/transparent" }
+  },
+  "maxstacksize": 1,
+  "creativeinventory": { "general": ["*"], "stonequarry": ["*"] },
+  "fpHandTransform": {
+    "translation": { "x": 0.15, "y": 0.3, "z": 0.4 },
+    "rotation": { "x": -131, "y": -12, "z": -74 },
+    "scale": 2.14
+  },
+  "tpHandTransform": {
+    "translation": { "x": -0.75, "y": -0.4, "z": -0.2 },
+    "rotation": { "x": 85, "y": -8, "z": -5 },
+    "scale": 0.7
+  },
+  "guiTransform": {
+    "translation": { "x": 25, "y": 30, "z": 0 },
+    "rotation": { "x": 18, "y": 38, "z": -39 },
+    "scale": 2.35
+  }
+}

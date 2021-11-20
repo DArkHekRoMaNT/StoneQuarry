@@ -2,24 +2,12 @@
   "code": "stonestoragelarge",
   "class": "RoughStoneStorage",
   "entityclass": "StoneStorageCoreBE",
-
   "variantgroups": [
-    {
-      "code": "stone",
-      "loadFromProperties": "block/rockwithdeposit"
-    },
-    {
-      "code": "depth",
-      "states": ["zero", "one"]
-    },
-    {
-      "code": "dir",
-      "states": ["north", "south", "east", "west"]
-    }
+    { "code": "stone", "loadFromProperties": "block/rockwithdeposit" },
+    { "code": "depth", "states": ["zero", "one"] },
+    { "code": "dir", "states": ["north", "south", "east", "west"] }
   ],
-  "creativeinventory": {
-    "general": ["*-zero-north"]
-  },
+  "creativeinventory": { "general": ["*-zero-north"], "stonequarry": ["*-zero-north"] },
   "attributesByType": {
     "*-east": {
       "caps": [
@@ -146,81 +134,32 @@
       ]
     }
   },
-  "textures": {
-    "stone": { "base": "game:block/stone/rock/{stone}1" }
-  },
+  "textures": { "stone": { "base": "game:block/stone/rock/{stone}1" } },
   "shapeByType": {
-    "*zero-north": {
-      "base": "blocks/stonestorage/large/stonestoragelargeL0"
-    },
-    "*zero-east": {
-      "base": "blocks/stonestorage/large/stonestoragelargeL0",
-      "rotatey": -90
-    },
-    "*zero-south": {
-      "base": "blocks/stonestorage/large/stonestoragelargeL0",
-      "rotatey": 180
-    },
-    "*zero-west": {
-      "base": "blocks/stonestorage/large/stonestoragelargeL0",
-      "rotatey": 90
-    },
-
-    "*one-north": {
-      "base": "blocks/stonestorage/large/stonestoragelargeL1"
-    },
-    "*one-east": {
-      "base": "blocks/stonestorage/large/stonestoragelargeL1",
-      "rotatey": -90
-    },
-    "*one-south": {
-      "base": "blocks/stonestorage/large/stonestoragelargeL1",
-      "rotatey": 180
-    },
-    "*one-west": {
-      "base": "blocks/stonestorage/large/stonestoragelargeL1",
-      "rotatey": 90
-    }
+    "*zero-north": { "base": "block/stonestorage/large/stonestoragelargel0" },
+    "*zero-east": { "base": "block/stonestorage/large/stonestoragelargel0", "rotatey": -90 },
+    "*zero-south": { "base": "block/stonestorage/large/stonestoragelargel0", "rotatey": 180 },
+    "*zero-west": { "base": "block/stonestorage/large/stonestoragelargel0", "rotatey": 90 },
+    "*one-north": { "base": "block/stonestorage/large/stonestoragelargel1" },
+    "*one-east": { "base": "block/stonestorage/large/stonestoragelargel1", "rotatey": -90 },
+    "*one-south": { "base": "block/stonestorage/large/stonestoragelargel1", "rotatey": 180 },
+    "*one-west": { "base": "block/stonestorage/large/stonestoragelargel1", "rotatey": 90 }
   },
-  "shapeinventory": { "base": "blocks/stonestorage/large/stonestoragelargeLinv" },
-
+  "shapeinventory": { "base": "block/stonestorage/large/stonestoragelargelinv" },
   "drawtype": "json",
   "facecullmode": "nevercull",
-  "sidesolid": {
-    "all": false
-  },
-  "sideopaque": {
-    "all": false
-  },
+  "sidesolid": { "all": false },
+  "sideopaque": { "all": false },
   "materialDensity": 600,
   "lightAbsorption": 99,
-  "emitSideAo": {
-    "all": true
-  },
+  "emitSideAo": { "all": true },
   "lightabsorption": 0,
-
   "heldTpIdleAnimation": "holdbothhandslarge",
   "heldTpUseAnimation": "twohandplaceblock",
-
-  "guiTransform": {
-    "translation": {
-      "x": -11,
-      "y": 1,
-      "z": 0
-    },
-    "scale": 0.57
-  },
+  "guiTransform": { "translation": { "x": -11, "y": 1, "z": 0 }, "scale": 0.57 },
   "tpHandTransform": {
-    "translation": {
-      "x": -1.2,
-      "y": -0.8,
-      "z": -1
-    },
-    "rotation": {
-      "x": 11,
-      "y": 14,
-      "z": -71
-    },
+    "translation": { "x": -1.2, "y": -0.8, "z": -1 },
+    "rotation": { "x": 11, "y": 14, "z": -71 },
     "scale": 0.4
   }
 }
