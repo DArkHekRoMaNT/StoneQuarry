@@ -233,5 +233,13 @@
   "itemdesc-slabstacksetter": "Используется для установки количества камня в паллете (креативный режим).\n правый клик, чтобы увеличить,\n бег (ctrl)+правый клик, чтобы снизить,\n присесть (shift)+правый клик или ctrl+shift+правый клик чтобы увеличить/снизить кличества на 10\n Правый клик по паллете, чтобы применить",
 
   "slaberror-unknown-tool": "Неправильный инструмент",
-  "slaberror-unknown-drop": "Такой тип для этого камня не существует"
+  "slaberror-unknown-drop": "Такой тип для этого камня не существует",
+
+  "stonestorage-heldinfo(count={0},stone={1})": "Содержит: x{0} {1}",
+  "plugnfeather-heldinfo(range={0})": "Дальность: {0}x{0}x{0}",
+  "slabtool-heldinfo(result={0})": "Результат: {0}",
+  "slabtool-type-polished": "полированный камень",
+  "slabtool-type-rock": "камень",
+  "slabtool-type-stone": "камешки",
+  "slabtool-type-brick": "кирпичи"
 }

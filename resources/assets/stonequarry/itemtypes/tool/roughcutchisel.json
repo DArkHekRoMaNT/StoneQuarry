@@ -1,5 +1,6 @@
 {
   "code": "roughcutchisel",
+  "class": "SlabTool",
   "variantgroups": [
     {
       "code": "material",

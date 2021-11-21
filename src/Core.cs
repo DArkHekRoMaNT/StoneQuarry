@@ -8,8 +8,8 @@ namespace StoneQuarry
         {
             base.Start(api);
 
-            api.RegisterItemClass("chunk", typeof(ChunksItem));
-            api.RegisterItemClass("slabsetter", typeof(BlockStackSetterItem));
+            api.RegisterItemClass("SlabTool", typeof(SlabToolItem));
+            api.RegisterItemClass("SlabSetter", typeof(BlockStackSetterItem));
 
 
             api.RegisterBlockClass("RubbleStorage", typeof(RubbleStorageBlock));

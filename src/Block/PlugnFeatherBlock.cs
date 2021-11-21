@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 
 namespace StoneQuarry
@@ -721,6 +723,12 @@ namespace StoneQuarry
                 rstring = "Gient";
             }
             return rstring;
+        }
+
+        public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+        {
+            base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+            dsc.AppendLine(Lang.Get(Code.Domain + ":plugnfeather-heldinfo(range={0})", Attributes["searchrange"]));
         }
     }
 }

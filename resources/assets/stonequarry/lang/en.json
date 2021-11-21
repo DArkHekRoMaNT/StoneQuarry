@@ -233,5 +233,13 @@
   "itemdesc-slabstacksetter": "Used to set the amount of stone in a slab in creative mode.\n right click to increase,\n run+right click to decrease,\n sneek+rightclick or sneek+run+rightclick adjust increase/decrease amounts by 10\n rightclick on a slab to apply",
 
   "slaberror-unknown-tool": "Wrong tool",
-  "slaberror-unknown-drop": "This type does not exist for this stone"
+  "slaberror-unknown-drop": "This type does not exist for this stone",
+
+  "stonestorage-heldinfo(count={0},stone={1})": "Contains: x{0} {1}",
+  "plugnfeather-heldinfo(range={0})": "Range: {0}x{0}x{0}",
+  "slabtool-heldinfo(result={0})": "Result: {0}",
+  "slabtool-type-polished": "polished rock",
+  "slabtool-type-rock": "rock",
+  "slabtool-type-stone": "stones",
+  "slabtool-type-brick": "bricks"
 }

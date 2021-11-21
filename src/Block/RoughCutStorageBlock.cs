@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -173,6 +174,34 @@ namespace StoneQuarry
                 }
             }
             return rcount;
+        }
+
+        public override string GetPlacedBlockInfo(IWorldAccessor world, BlockPos pos, IPlayer forPlayer)
+        {
+            string info = base.GetPlacedBlockInfo(world, pos, forPlayer);
+
+            var be = world.BlockAccessor.GetBlockEntity(pos) as RoughCutStorageBE;
+            if (be != null)
+            {
+                var count = be.blockStack != null ? be.blockStack.Attributes.GetInt("stonestored") : 0;
+                var stone = Lang.Get("rock-" + FirstCodePart(1));
+
+                if (!string.IsNullOrEmpty(info)) info += "/n";
+                else info = "";
+
+                return info + Lang.Get(Code.Domain + ":stonestorage-heldinfo(count={0},stone={1})", count, stone);
+            }
+
+            return info;
+        }
+
+        public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+        {
+            base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+
+            var count = inSlot.Itemstack.Attributes.GetInt("stonestored");
+            var stone = Lang.Get("rock-" + FirstCodePart(1));
+            dsc.AppendLine(Lang.Get(Code.Domain + ":stonestorage-heldinfo(count={0},stone={1})", count, stone));
         }
     }
 }
