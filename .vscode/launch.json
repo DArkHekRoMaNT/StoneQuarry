@@ -8,8 +8,8 @@
       "preLaunchTask": "build (Debug)",
       "program": "${env:VINTAGE_STORY}/${config:vsversion}/Vintagestory.exe",
       "args": [
-        "--playstyle",
-        "surviveandbuild",
+        "--playStyle",
+        "preset-surviveandbuild",
         "--openWorld",
         "modding test world",
         "--dataPath",
@@ -27,8 +27,8 @@
       "preLaunchTask": "build (Debug)",
       "program": "${env:VINTAGE_STORY}/${config:vsversion}/Vintagestory.exe",
       "args": [
-        "--playstyle",
-        "surviveandbuild",
+        "--playStyle",
+        "preset-surviveandbuild",
         "--openWorld",
         "modding test world",
         "--dataPath",
