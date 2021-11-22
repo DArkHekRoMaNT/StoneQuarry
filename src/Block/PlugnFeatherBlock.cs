@@ -6,11 +6,13 @@ using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
+using Vintagestory.API.Util;
 
 namespace StoneQuarry
 {
     public class PlugnFeatherBlock : Block
     {
+        WorldInteraction[] interactions;
         readonly SimpleParticleProperties breakParticle2 = new SimpleParticleProperties(32, 32, ColorUtil.ColorFromRgba(122, 76, 23, 50), new Vec3d(), new Vec3d(), new Vec3f(), new Vec3f());
         public AssetLocation cracksound = new AssetLocation("game", "sounds/block/heavyice");
         public AssetLocation hammersound = new AssetLocation("game", "sounds/block/meteoriciron-hit-pickaxe");
@@ -18,6 +20,41 @@ namespace StoneQuarry
         public int maxSearchRange = 6;
         public int workMod = 2; // the amount to multaply the amount of work needed to break the chunk.
         public int baseWork = 5; // the base amount of work needed.
+
+        public override void OnLoaded(ICoreAPI api)
+        {
+            base.OnLoaded(api);
+
+            var quarryImpact = new List<ItemStack>();
+            var quarryStarter = new List<ItemStack>();
+            foreach (var colObj in api.World.Collectibles)
+            {
+                if (colObj.Attributes != null)
+                {
+                    if (colObj.Attributes["quarryimpact"].Exists)
+                    {
+                        quarryImpact.Add(new ItemStack(colObj));
+                    }
+                    if (colObj.Attributes["quarrystarter"].Exists)
+                    {
+                        quarryStarter.Add(new ItemStack(colObj));
+                    }
+                }
+            }
+
+            interactions = new WorldInteraction[] {
+                new WorldInteraction(){
+                    ActionLangCode = Code.Domain + ":plugnfeather-worldinteraction-quarrystarter",
+                    MouseButton = EnumMouseButton.Right,
+                    Itemstacks = quarryStarter.ToArray()
+                },
+                new WorldInteraction(){
+                    ActionLangCode = Code.Domain + ":plugnfeather-worldinteraction-quarryimpact",
+                    MouseButton = EnumMouseButton.Right,
+                    Itemstacks = quarryImpact.ToArray()
+                }
+            };
+        }
 
         public override bool DoPlaceBlock(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, ItemStack byItemStack)
         {
@@ -729,6 +766,11 @@ namespace StoneQuarry
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
             dsc.AppendLine(Lang.Get(Code.Domain + ":plugnfeather-heldinfo(range={0})", Attributes["searchrange"]));
+        }
+
+        public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
+        {
+            return interactions.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
         }
     }
 }

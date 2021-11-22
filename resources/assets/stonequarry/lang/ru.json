@@ -261,5 +261,13 @@
   "rubblestorage-worldinteraction-take-one-sand": "Забрать песок",
   "rubblestorage-worldinteraction-take-stack-sand": "Забрать песок",
   "rubblestorage-worldinteraction-take-one-gravel": "Забрать гравий",
-  "rubblestorage-worldinteraction-take-stack-gravel": "Забрать гравий"
+  "rubblestorage-worldinteraction-take-stack-gravel": "Забрать гравий",
+
+  "stonestorage-worldinteraction-polished": "Отрезать полированный камень",
+  "stonestorage-worldinteraction-rock": "Отрезать камень",
+  "stonestorage-worldinteraction-stone": "Отрезать камешки",
+  "stonestorage-worldinteraction-brick": "Отрезать кирпичи",
+
+  "plugnfeather-worldinteraction-quarrystarter": "Создать карьер",
+  "plugnfeather-worldinteraction-quarryimpact": "Ударить"
 }

@@ -247,7 +247,7 @@
   "rubblestorage-stone(count={0})": "Stone: {0}",
   "rubblestorage-gravel(count={0})": "Gravel: {0}",
   "rubblestorage-sand(count={0})": "Sand: {0}",
-  "rubblestorage-locked": " (*)",
+  "rubblestorage-locked": " (locked)",
   "rubblestorage-none": "None",
 
   "rubblestorage-worldinteraction-hammer": "Crashing",
@@ -261,5 +261,13 @@
   "rubblestorage-worldinteraction-take-one-sand": "Take sand",
   "rubblestorage-worldinteraction-take-stack-sand": "Take sand",
   "rubblestorage-worldinteraction-take-one-gravel": "Take gravel",
-  "rubblestorage-worldinteraction-take-stack-gravel": "Take gravel"
+  "rubblestorage-worldinteraction-take-stack-gravel": "Take gravel",
+
+  "stonestorage-worldinteraction-polished": "Cut polished rock",
+  "stonestorage-worldinteraction-rock": "Cut rock",
+  "stonestorage-worldinteraction-stone": "Cut stones",
+  "stonestorage-worldinteraction-brick": "Cut bricks",
+
+  "plugnfeather-worldinteraction-quarrystarter": "Create quarry",
+  "plugnfeather-worldinteraction-quarryimpact": "Hammer"
 }

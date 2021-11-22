@@ -18,7 +18,7 @@
     }
   ],
   "attributes": {
-    "stonerrate": 80,
+    "stonerate": 80,
     "rchances": 6,
     "rubbleable": true,
     "rackable": true,

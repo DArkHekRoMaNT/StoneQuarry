@@ -1,15 +1,18 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
+using Vintagestory.API.Util;
 
 namespace StoneQuarry
 {
     /// <summary> Used to store what is dropped from the quarry </summary>
     public class RoughCutStorageBlock : GenericStoneStorageBlock
     {
+        WorldInteraction[] interactions;
         readonly SimpleParticleProperties interactParticles = new SimpleParticleProperties()
         {
             MinPos = new Vec3d(),
@@ -26,6 +29,54 @@ namespace StoneQuarry
             MaxSize = 0.4f,
             DieOnRainHeightmap = false
         };
+
+        public override void OnLoaded(ICoreAPI api)
+        {
+            base.OnLoaded(api);
+
+            var dict = new Dictionary<string, List<ItemStack>>()
+            {
+                {"polished", new List<ItemStack>()},
+                {"rock", new List<ItemStack>()},
+                {"stone", new List<ItemStack>()},
+                {"brick", new List<ItemStack>()}
+            };
+
+            foreach (var obj in api.World.Collectibles)
+            {
+                if (obj is SlabToolItem)
+                {
+                    string type = (obj as SlabToolItem).GetToolType();
+                    if (type != "")
+                    {
+                        dict[type].Add(new ItemStack(obj));
+                    }
+                }
+            }
+
+            interactions = new WorldInteraction[] {
+                new WorldInteraction(){
+                    ActionLangCode = Code.Domain + ":stonestorage-worldinteraction-polished",
+                    MouseButton = EnumMouseButton.Right,
+                    Itemstacks = dict["polished"].ToArray()
+                },
+                new WorldInteraction(){
+                    ActionLangCode = Code.Domain + ":stonestorage-worldinteraction-rock",
+                    MouseButton = EnumMouseButton.Right,
+                    Itemstacks = dict["rock"].ToArray()
+                },
+                new WorldInteraction(){
+                    ActionLangCode = Code.Domain + ":stonestorage-worldinteraction-stone",
+                    MouseButton = EnumMouseButton.Right,
+                    Itemstacks = dict["stone"].ToArray()
+                },
+                new WorldInteraction(){
+                    ActionLangCode = Code.Domain + ":stonestorage-worldinteraction-brick",
+                    MouseButton = EnumMouseButton.Right,
+                    Itemstacks = dict["brick"].ToArray()
+                }
+            };
+        }
 
         public override bool DoPlaceBlock(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, ItemStack byItemStack)
         {
@@ -102,27 +153,14 @@ namespace StoneQuarry
 
             world.PlaySoundAt(interactsound, byPlayer, byPlayer, true, 32, .5f);
 
-            if (activeStack.ItemAttributes != null)
+            var tool = activeStack.Collectible as SlabToolItem;
+            if (tool != null)
             {
-                if (activeStack.ItemAttributes.KeyExists("polishedrrate"))
-                {
-                    dropCode = new AssetLocation("game", "rockpolished-" + rcbe.blockStack.Block.FirstCodePart(1));
-                    dropRate = activeStack.ItemAttributes["polishedrrate"].AsInt();
-                }
-                else if (activeStack.ItemAttributes.KeyExists("brickrrate"))
-                {
-                    dropCode = new AssetLocation("game", "stonebrick-" + rcbe.blockStack.Block.FirstCodePart(1));
-                    dropRate = activeStack.ItemAttributes["brickrrate"].AsInt();
-                }
-                else if (activeStack.ItemAttributes.KeyExists("stonerrate"))
-                {
-                    dropCode = new AssetLocation("game", "stone-" + rcbe.blockStack.Block.FirstCodePart(1));
-                    dropRate = activeStack.ItemAttributes["stonerrate"].AsInt();
-                }
-                else if (activeStack.ItemAttributes.KeyExists("rockrrate"))
+                var toolType = tool.GetToolType();
+                if (toolType != "")
                 {
                     dropCode = new AssetLocation("game", "rock-" + rcbe.blockStack.Block.FirstCodePart(1));
-                    dropRate = activeStack.ItemAttributes["rockrrate"].AsInt();
+                    dropRate = activeStack.ItemAttributes[toolType + "rate"].AsInt();
                 }
             }
 
@@ -176,25 +214,6 @@ namespace StoneQuarry
             return rcount;
         }
 
-        public override string GetPlacedBlockInfo(IWorldAccessor world, BlockPos pos, IPlayer forPlayer)
-        {
-            string info = base.GetPlacedBlockInfo(world, pos, forPlayer);
-
-            var be = world.BlockAccessor.GetBlockEntity(pos) as RoughCutStorageBE;
-            if (be != null)
-            {
-                var count = be.blockStack != null ? be.blockStack.Attributes.GetInt("stonestored") : 0;
-                var stone = Lang.Get("rock-" + FirstCodePart(1));
-
-                if (!string.IsNullOrEmpty(info)) info += "/n";
-                else info = "";
-
-                return info + Lang.Get(Code.Domain + ":stonestorage-heldinfo(count={0},stone={1})", count, stone);
-            }
-
-            return info;
-        }
-
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
@@ -202,6 +221,11 @@ namespace StoneQuarry
             var count = inSlot.Itemstack.Attributes.GetInt("stonestored");
             var stone = Lang.Get("rock-" + FirstCodePart(1));
             dsc.AppendLine(Lang.Get(Code.Domain + ":stonestorage-heldinfo(count={0},stone={1})", count, stone));
+        }
+
+        public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
+        {
+            return interactions.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
         }
     }
 }

@@ -33,6 +33,8 @@ namespace StoneQuarry
 
         public override void OnLoaded(ICoreAPI api)
         {
+            base.OnLoaded(api);
+
             if (api.Side == EnumAppSide.Client)
             {
                 var hammers = new List<ItemStack>();
