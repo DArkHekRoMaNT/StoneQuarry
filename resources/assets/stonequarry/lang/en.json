@@ -241,5 +241,25 @@
   "slabtool-type-polished": "polished rock",
   "slabtool-type-rock": "rock",
   "slabtool-type-stone": "stones",
-  "slabtool-type-brick": "bricks"
+  "slabtool-type-brick": "bricks",
+
+  "rubblestorage-type(type={0})": "Rock: {0}",
+  "rubblestorage-stone(count={0})": "Stone: {0}",
+  "rubblestorage-gravel(count={0})": "Gravel: {0}",
+  "rubblestorage-sand(count={0})": "Sand: {0}",
+  "rubblestorage-locked": " (*)",
+  "rubblestorage-none": "None",
+
+  "rubblestorage-worldinteraction-hammer": "Crashing",
+  "rubblestorage-worldinteraction-add-one": "Add one",
+  "rubblestorage-worldinteraction-add-stack": "Add stack",
+  "rubblestorage-worldinteraction-add-all": "Add all",
+  "rubblestorage-worldinteraction-water": "Muddy gravel",
+  "rubblestorage-worldinteraction-lock": "Lock",
+  "rubblestorage-worldinteraction-take-one-stone": "Take stone",
+  "rubblestorage-worldinteraction-take-stack-stone": "Take stone",
+  "rubblestorage-worldinteraction-take-one-sand": "Take sand",
+  "rubblestorage-worldinteraction-take-stack-sand": "Take sand",
+  "rubblestorage-worldinteraction-take-one-gravel": "Take gravel",
+  "rubblestorage-worldinteraction-take-stack-gravel": "Take gravel"
 }

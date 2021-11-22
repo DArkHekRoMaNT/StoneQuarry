@@ -8,56 +8,23 @@
     { "code": "dir", "states": ["north", "south", "east", "west"] }
   ],
   "creativeinventory": { "general": ["*-sandstone-empty-north"], "stonequarry": ["*-sandstone-empty-north"] },
-  "attributesByType": {
-    "*-east": {
-      "type": "null",
-      "sand": 0,
-      "gravel": 0,
-      "stone": 0,
-      "maxStorable": 500,
-      "caps": [{ "x": 0, "y": 0, "z": 1, "varType": [["dir", "west"]] }]
-    },
-    "*-south": {
-      "type": "null",
-      "sand": 0,
-      "gravel": 0,
-      "stone": 0,
-      "maxStorable": 500,
-      "caps": [{ "x": -1, "y": 0, "z": 0, "varType": [["dir", "north"]] }]
-    },
-    "*-north": {
-      "type": "null",
-      "sand": 0,
-      "gravel": 0,
-      "stone": 0,
-      "maxStorable": 500,
-      "caps": [{ "x": 1, "y": 0, "z": 0, "varType": [["dir", "south"]] }]
-    },
-    "*-west": {
-      "type": "null",
-      "sand": 0,
-      "gravel": 0,
-      "stone": 0,
-      "maxStorable": 500,
-      "caps": [{ "x": 0, "y": 0, "z": -1, "varType": [["dir", "east"]] }]
+  "attributes": {
+    "type": "null",
+    "sand": 0,
+    "gravel": 0,
+    "stone": 0,
+    "maxStorable": 512,
+    "capsByType": {
+      "*-east": [{ "x": 0, "y": 0, "z": 1, "varType": [["dir", "west"]] }],
+      "*-south": [{ "x": -1, "y": 0, "z": 0, "varType": [["dir", "north"]] }],
+      "*-north": [{ "x": 1, "y": 0, "z": 0, "varType": [["dir", "south"]] }],
+      "*-west": [{ "x": 0, "y": 0, "z": -1, "varType": [["dir", "east"]] }]
     }
   },
-  "texturesByType": {
-    "*-stone-*": {
-      "sand": { "base": "game:block/stone/sand/{stone}" },
-      "gravel": { "base": "game:block/stone/gravel/{stone}" },
-      "stone": { "base": "game:block/stone/rock/{stone}1" }
-    },
-    "*-gravel-*": {
-      "sand": { "base": "game:block/stone/sand/{stone}" },
-      "gravel": { "base": "game:block/stone/gravel/{stone}" },
-      "stone": { "base": "game:block/stone/rock/{stone}1" }
-    },
-    "*-sand-*": {
-      "sand": { "base": "game:block/stone/sand/{stone}" },
-      "gravel": { "base": "game:block/stone/gravel/{stone}" },
-      "stone": { "base": "game:block/stone/rock/{stone}1" }
-    }
+  "textures": {
+    "sand": { "base": "game:block/stone/sand/{stone}" },
+    "gravel": { "base": "game:block/stone/gravel/{stone}" },
+    "stone": { "base": "game:block/stone/rock/{stone}1" }
   },
   "shapeByType": {
     "*-north": { "base": "block/rubblestorage/rubblebin{type}" },

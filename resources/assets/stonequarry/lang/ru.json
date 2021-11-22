@@ -241,5 +241,25 @@
   "slabtool-type-polished": "полированный камень",
   "slabtool-type-rock": "камень",
   "slabtool-type-stone": "камешки",
-  "slabtool-type-brick": "кирпичи"
+  "slabtool-type-brick": "кирпичи",
+
+  "rubblestorage-type(type={0})": "Тип камня: {0}",
+  "rubblestorage-stone(count={0})": "Камни: {0}",
+  "rubblestorage-gravel(count={0})": "Гравий: {0}",
+  "rubblestorage-sand(count={0})": "Песок: {0}",
+  "rubblestorage-locked": " (*)",
+  "rubblestorage-none": "Нет",
+
+  "rubblestorage-worldinteraction-hammer": "Измельчать",
+  "rubblestorage-worldinteraction-add-one": "Добавить один",
+  "rubblestorage-worldinteraction-add-stack": "Добавить стак",
+  "rubblestorage-worldinteraction-add-all": "Добавить все",
+  "rubblestorage-worldinteraction-water": "Илистый гравий",
+  "rubblestorage-worldinteraction-lock": "Заблокировать",
+  "rubblestorage-worldinteraction-take-one-stone": "Забрать камень",
+  "rubblestorage-worldinteraction-take-stack-stone": "Забрать камень",
+  "rubblestorage-worldinteraction-take-one-sand": "Забрать песок",
+  "rubblestorage-worldinteraction-take-stack-sand": "Забрать песок",
+  "rubblestorage-worldinteraction-take-one-gravel": "Забрать гравий",
+  "rubblestorage-worldinteraction-take-stack-gravel": "Забрать гравий"
 }

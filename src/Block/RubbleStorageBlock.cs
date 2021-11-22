@@ -1,12 +1,18 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
+using Vintagestory.API.Util;
 
 namespace StoneQuarry
 {
     public class RubbleStorageBlock : GenericStoneStorageBlock
     {
+        readonly List<WorldInteraction[]> interactionsBySel = new List<WorldInteraction[]>();
+
         readonly SimpleParticleProperties interactParticles = new SimpleParticleProperties()
         {
             MinPos = new Vec3d(),
@@ -24,61 +30,114 @@ namespace StoneQuarry
             DieOnRainHeightmap = false
         };
 
-        //Adds sand, gravel, and muddy gravel production.
-        public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+
+        public override void OnLoaded(ICoreAPI api)
         {
-            dsc.AppendLine("Stone Type: " + inSlot.Itemstack.Attributes.GetString("type"));
-            dsc.AppendLine("Stone Amount: " + inSlot.Itemstack.Attributes.GetInt("stone").ToString());
-            dsc.AppendLine("Gravel Amount: " + inSlot.Itemstack.Attributes.GetInt("gravel").ToString());
-            dsc.AppendLine("Sand Amount: " + inSlot.Itemstack.Attributes.GetInt("sand").ToString());
-            base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+            if (api.Side == EnumAppSide.Client)
+            {
+                var hammers = new List<ItemStack>();
+                foreach (var colObj in api.World.Collectibles)
+                {
+                    if (colObj.Attributes != null && colObj.Attributes["rubbleable"].Exists)
+                    {
+                        hammers.Add(new ItemStack(colObj));
+                    }
+                }
+
+
+                var dict = new Dictionary<string, List<ItemStack>>{
+                    { "sand", new List<ItemStack>() },
+                    { "gravel", new List<ItemStack>() },
+                    { "stone", new List<ItemStack>() }
+                };
+
+                foreach (var type in RubbleStorageBE.allowedTypes)
+                {
+                    dict["stone"].Add(new ItemStack(
+                        api.World.GetItem(new AssetLocation("game:stone-" + type))
+                    ));
+                    dict["gravel"].Add(new ItemStack(
+                        api.World.GetBlock(new AssetLocation("game:gravel-" + type))
+                    ));
+                    dict["sand"].Add(new ItemStack(
+                       api.World.GetBlock(new AssetLocation("game:sand-" + type))
+                    ));
+                }
+
+                var waterPortion = api.World.GetItem(new AssetLocation("game:waterportion")).GetHandBookStacks(api as ICoreClientAPI);
+
+
+
+                interactionsBySel.Add(new WorldInteraction[] {
+                    new WorldInteraction() {
+                        ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-hammer",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = hammers.ToArray()
+                    },
+                    new WorldInteraction() {
+                        ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-add-one",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = dict["stone"].ToArray(),
+                        GetMatchingStacks = GetMatchingStacks_StoneType
+                    },
+                    new WorldInteraction() {
+                        ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-add-stack",
+                        MouseButton = EnumMouseButton.Right,
+                        HotKeyCode = "sprint",
+                        Itemstacks = dict["stone"].Select((i)=>{
+                            var r = i.Clone(); r.StackSize = r.Collectible.MaxStackSize; return r;
+                        }).ToArray(),
+                        GetMatchingStacks = GetMatchingStacks_StoneType
+                    },
+                    new WorldInteraction() {
+                        ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-add-all",
+                        MouseButton = EnumMouseButton.Right,
+                        RequireFreeHand = true
+                    },
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-water",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = waterPortion.ToArray()
+                    }
+                });
+
+                foreach (var type in new string[] { "stone", "gravel", "sand" })
+                {
+
+                    interactionsBySel.Add(new WorldInteraction[] {
+                        new WorldInteraction()
+                        {
+                            ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-lock",
+                            MouseButton = EnumMouseButton.Right,
+                            HotKeyCode = "sneak"
+                        },
+                        new WorldInteraction()
+                        {
+                            ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-take-one-" + type,
+                            MouseButton = EnumMouseButton.Right,
+                            Itemstacks = dict[type].ToArray(),
+                            GetMatchingStacks = GetMatchingStacks_StoneType
+                        },
+                        new WorldInteraction()
+                        {
+                            ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-take-stack-" + type,
+                            MouseButton = EnumMouseButton.Right,
+                            HotKeyCode = "sprint",
+                            Itemstacks = dict[type].Select((i)=>{
+                                var r = i.Clone(); r.StackSize = r.Collectible.MaxStackSize; return r;
+                            }).ToArray(),
+                            GetMatchingStacks = GetMatchingStacks_StoneType
+                        }
+                    });
+                }
+            }
         }
 
-        public override string GetPlacedBlockInfo(IWorldAccessor world, BlockPos pos, IPlayer forPlayer)
+        private ItemStack[] GetMatchingStacks_StoneType(WorldInteraction wi, BlockSelection blockSel, EntitySelection entitySel)
         {
-            BlockEntity be = world.BlockAccessor.GetBlockEntity(pos);
-            RubbleStorageBE rsbe = world.BlockAccessor.GetBlockEntity(pos) as RubbleStorageBE;
-
-            if (be is GenericStorageCapBE)
-            {
-                rsbe = world.BlockAccessor.GetBlockEntity((be as GenericStorageCapBE).core) as RubbleStorageBE;
-            }
-            if (rsbe == null)
-            {
-                return "";
-            }
-            string stonelock = "";
-            string gravlock = "";
-            string sandlock = "";
-
-            switch (rsbe.storageLock)
-            {
-                case RubbleStorageBE.StorageLocksEnum.Stone:
-                    {
-                        stonelock = " : Locked";
-                        break;
-                    }
-                case RubbleStorageBE.StorageLocksEnum.Gravel:
-                    {
-                        gravlock = " : Locked";
-                        break;
-                    }
-                case RubbleStorageBE.StorageLocksEnum.Sand:
-                    {
-                        sandlock = " : Locked";
-                        break;
-                    }
-                default:
-                    break;
-            }
-
-            string rstring = "Type: " + rsbe.storedType +
-                "\nStone Stored: " + rsbe.storedtypes["stone"].ToString() + stonelock +
-                "\nGravel Stored: " + rsbe.storedtypes["gravel"].ToString() + gravlock +
-                "\nSand Stored: " + rsbe.storedtypes["sand"].ToString() + sandlock;
-
-            return rstring;
-            //return base.GetPlacedBlockInfo(world, pos, forPlayer);
+            if (Variant["type"] == "empty") return wi.Itemstacks;
+            return wi.Itemstacks.Where((i) => i.Collectible.LastCodePart() == Variant["stone"]).ToArray();
         }
 
         public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
@@ -100,65 +159,39 @@ namespace StoneQuarry
                 return true;
             }
 
+
+            string rockType = "";
+            switch ((EnumStorageLock)blockSel.SelectionBoxIndex)
+            {
+                case EnumStorageLock.Stone: rockType = "stone"; break;
+                case EnumStorageLock.Gravel: rockType = "gravel"; break;
+                case EnumStorageLock.Sand: rockType = "sand"; break;
+            }
+
+
             // if the player is looking at one of the buttons on the crate.
-            if (blockSel.SelectionBoxIndex == 1 && byPlayer.Entity.Controls.Sneak)
+            if (byPlayer.Entity.Controls.Sneak && rockType != "")
             {
-                setLock(rcbe, RubbleStorageBE.StorageLocksEnum.Sand);
-            }
-            else if (blockSel.SelectionBoxIndex == 2 && byPlayer.Entity.Controls.Sneak)
-            {
-                setLock(rcbe, RubbleStorageBE.StorageLocksEnum.Gravel);
-            }
-            else if (blockSel.SelectionBoxIndex == 3 && byPlayer.Entity.Controls.Sneak)
-            {
-                setLock(rcbe, RubbleStorageBE.StorageLocksEnum.Stone);
+                if (rcbe.storageLock != (EnumStorageLock)blockSel.SelectionBoxIndex)
+                {
+                    rcbe.storageLock = (EnumStorageLock)blockSel.SelectionBoxIndex;
+                }
+                else rcbe.storageLock = EnumStorageLock.None;
             }
 
-            if (blockSel.SelectionBoxIndex == 1)
+            else if (rockType != "" && rcbe.RemoveResource(world, byPlayer, blockSel, rockType, stockMod))
             {
-                if (rcbe.RemoveResource(world, byPlayer, blockSel, "sand", stockMod))
+                if (world.Side == EnumAppSide.Client)
                 {
-                    if (world.Side == EnumAppSide.Client)
-                    {
-                        (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
-                    }
-                    world.PlaySoundAt(new AssetLocation("game", "sounds/effect/stonecrush"), byPlayer, byPlayer);
-                    interactParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
-                    interactParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
-                    world.SpawnParticles(interactParticles, byPlayer);
-
+                    (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                 }
-            }
-            else if (blockSel.SelectionBoxIndex == 2)
-            {
-                if (rcbe.RemoveResource(world, byPlayer, blockSel, "gravel", stockMod))
-                {
-                    if (world.Side == EnumAppSide.Client)
-                    {
-                        (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
-                    }
-                    world.PlaySoundAt(new AssetLocation("game", "sounds/effect/stonecrush"), byPlayer, byPlayer);
-                    interactParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
-                    interactParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
-                    world.SpawnParticles(interactParticles, byPlayer);
-                }
-            }
-            else if (blockSel.SelectionBoxIndex == 3)
-            {
-                if (rcbe.RemoveResource(world, byPlayer, blockSel, "stone", stockMod))
-                {
-                    if (world.Side == EnumAppSide.Client)
-                    {
-                        (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
-                    }
-                    world.PlaySoundAt(new AssetLocation("game", "sounds/effect/stonecrush"), byPlayer, byPlayer);
-                    interactParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
-                    interactParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
-                    world.SpawnParticles(interactParticles, byPlayer);
-                }
+                world.PlaySoundAt(new AssetLocation("game", "sounds/effect/stonecrush"), byPlayer, byPlayer);
+                interactParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
+                interactParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
+                world.SpawnParticles(interactParticles, byPlayer);
             }
 
-            else if (blockSel.SelectionBoxIndex == 0 && byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack != null)
+            else if (rockType == "" && byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack != null)
             {
                 // attempts to add the players resource to the block.
                 if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.ItemAttributes["rubbleable"].AsBool())
@@ -175,17 +208,13 @@ namespace StoneQuarry
                 else if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.GetTreeAttribute("contents") != null
                     && byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.GetTreeAttribute("contents").GetItemstack("0") != null)
                 {
-                    ItemStack tstack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.GetTreeAttribute("contents").GetItemstack("0");
-                    if (tstack.Collectible.Code.Domain == "game" && tstack.Collectible.Code.Path == "waterportion")
+                    if (rcbe.TryDrench(world, blockSel, byPlayer))
                     {
-                        if (rcbe.Drench(world, blockSel))
+                        if (world.Side == EnumAppSide.Client)
                         {
-                            if (world.Side == EnumAppSide.Client)
-                            {
-                                (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
-                            }
-                            world.PlaySoundAt(new AssetLocation("game", "sounds/environment/largesplash1"), byPlayer, byPlayer);
+                            (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                         }
+                        world.PlaySoundAt(new AssetLocation("game", "sounds/environment/largesplash1"), byPlayer, byPlayer);
                     }
                 }
                 else
@@ -217,11 +246,6 @@ namespace StoneQuarry
             return true;
         }
 
-        public void setLock(RubbleStorageBE rsbe, RubbleStorageBE.StorageLocksEnum toLock)
-        {
-            rsbe.storageLock = toLock;
-        }
-
         public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
         {
             BlockEntity be = world.BlockAccessor.GetBlockEntity(pos);
@@ -237,9 +261,9 @@ namespace StoneQuarry
             {
                 ItemStack dropstack = new ItemStack(world.BlockAccessor.GetBlock(pos));
                 dropstack.Attributes.SetString("type", rsbe.storedType);
-                dropstack.Attributes.SetInt("stone", rsbe.storedtypes["stone"]);
-                dropstack.Attributes.SetInt("gravel", rsbe.storedtypes["gravel"]);
-                dropstack.Attributes.SetInt("sand", rsbe.storedtypes["sand"]);
+                dropstack.Attributes.SetInt("stone", rsbe.storage["stone"]);
+                dropstack.Attributes.SetInt("gravel", rsbe.storage["gravel"]);
+                dropstack.Attributes.SetInt("sand", rsbe.storage["sand"]);
                 world.SpawnItemEntity(dropstack, pos.ToVec3d());
             }
             base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
@@ -254,15 +278,33 @@ namespace StoneQuarry
             }
             RubbleStorageBE rsbe = world.BlockAccessor.GetBlockEntity(blockSel.Position) as RubbleStorageBE;
             rsbe.storedType = byItemStack.Attributes.GetString("type", "");
-            rsbe.storedtypes["stone"] = byItemStack.Attributes.GetInt("stone", 0);
-            rsbe.storedtypes["gravel"] = byItemStack.Attributes.GetInt("gravel", 0);
-            rsbe.storedtypes["sand"] = byItemStack.Attributes.GetInt("sand", 0);
-            if (byItemStack.ItemAttributes.KeyExists("maxStorable"))
-            {
-                rsbe.maxStorable = byItemStack.ItemAttributes["maxStorable"].AsInt();
-            }
+            rsbe.storage["stone"] = byItemStack.Attributes.GetInt("stone", 0);
+            rsbe.storage["gravel"] = byItemStack.Attributes.GetInt("gravel", 0);
+            rsbe.storage["sand"] = byItemStack.Attributes.GetInt("sand", 0);
 
             return true;
+        }
+
+        public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+        {
+            base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+
+            string rockType = inSlot.Itemstack.Attributes.GetString("type");
+            int stoneCount = inSlot.Itemstack.Attributes.GetInt("stone");
+            int gravelCount = inSlot.Itemstack.Attributes.GetInt("gravel");
+            int sandCount = inSlot.Itemstack.Attributes.GetInt("sand");
+
+            if (rockType == "") rockType = Lang.Get(Code.Domain + ":rubblestorage-none");
+
+            dsc.AppendLine(Lang.Get(Code.Domain + ":rubblestorage-type(type={0})", rockType));
+            dsc.AppendLine(Lang.Get(Code.Domain + ":rubblestorage-stone(count={0})", stoneCount));
+            dsc.AppendLine(Lang.Get(Code.Domain + ":rubblestorage-gravel(count={0})", gravelCount));
+            dsc.AppendLine(Lang.Get(Code.Domain + ":rubblestorage-sand(count={0})", sandCount));
+        }
+
+        public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection blockSel, IPlayer forPlayer)
+        {
+            return interactionsBySel[blockSel.SelectionBoxIndex].Append(base.GetPlacedBlockInteractionHelp(world, blockSel, forPlayer));
         }
     }
 }

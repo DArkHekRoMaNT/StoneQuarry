@@ -1,3 +1,4 @@
+using System.Text;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
@@ -26,6 +27,12 @@ namespace StoneQuarry
                 tree.SetInt("capz", core.Z);
             }
             base.ToTreeAttributes(tree);
+        }
+
+        public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
+        {
+            var coreBE = Api.World.BlockAccessor.GetBlockEntity(core);
+            if (coreBE != null) coreBE.GetBlockInfo(forPlayer, dsc);
         }
     }
 

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 
@@ -9,7 +11,7 @@ namespace StoneQuarry
 {
     public class RubbleStorageBE : GenericStorageCoreBE
     {
-        string[] allowedTypes = {
+        public static readonly string[] allowedTypes = {
             "andesite",
             "chalk" ,
             "chert",
@@ -25,23 +27,17 @@ namespace StoneQuarry
             "slate",
             "bauxite"
         };
-        public enum StorageLocksEnum : int
-        {
-            None = 0,
-            Sand = 1,
-            Gravel = 2,
-            Stone = 3
-        }
-        public string storedType = "";
-        public StorageLocksEnum storageLock = StorageLocksEnum.None;
-        public string lastAdded = "";
-        public int maxStorable = 0;
 
-        public IDictionary<string, int> storedtypes = new Dictionary<string, int>()
+        public string storedType = "";
+        public EnumStorageLock storageLock = EnumStorageLock.None;
+        public string lastAdded = "";
+        public int MaxStorable { get { return Block.Attributes["maxStorable"].AsInt(0); } }
+
+        public IDictionary<string, int> storage = new Dictionary<string, int>()
         {
-            { "sand", 0},
-            { "gravel", 0},
-            { "stone", 0},
+            { "sand", 0 },
+            { "gravel", 0 },
+            { "stone", 0 },
         };
 
         public void CheckDisplayVariant(IWorldAccessor world, BlockSelection blocksel)
@@ -56,7 +52,7 @@ namespace StoneQuarry
 
             Dictionary<string, string> changeDict;
 
-            foreach (KeyValuePair<string, int> i in storedtypes)
+            foreach (KeyValuePair<string, int> i in storage)
             {
                 if (i.Value > maxAmountStored)
                 {
@@ -87,94 +83,91 @@ namespace StoneQuarry
             }
         }
 
-        public bool RemoveResource(IWorldAccessor world, IPlayer byplayer, BlockSelection blockSel, string stype, int quant)
+        public bool RemoveResource(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, string stoneType, int quant)
         {
-            if (storedType == "" || storedtypes[stype] <= 0)
+            if (storedType == "" || storage[stoneType] <= 0)
             {
                 return false;
             }
-            if (quant > storedtypes[stype])
+            if (quant > storage[stoneType])
             {
-                quant = storedtypes[stype];
+                quant = storage[stoneType];
             }
 
             ItemStack givestack;
-            if (stype == "sand" || stype == "gravel")
+            if (stoneType == "sand" || stoneType == "gravel")
             {
-                Block filler = world.GetBlock(new AssetLocation("game", stype + "-" + storedType));
+                Block filler = world.GetBlock(new AssetLocation("game", stoneType + "-" + storedType));
                 givestack = new ItemStack(filler, Math.Min(filler.MaxStackSize, quant));
             }
             else
             {
-                Item filler = world.GetItem(new AssetLocation("game", stype + "-" + storedType));
+                Item filler = world.GetItem(new AssetLocation("game", stoneType + "-" + storedType));
                 givestack = new ItemStack(filler, Math.Min(filler.MaxStackSize, quant));
             }
 
-            if (!byplayer.InventoryManager.TryGiveItemstack(givestack.Clone()))
+            if (!byPlayer.InventoryManager.TryGiveItemstack(givestack.Clone()))
             {
                 world.SpawnItemEntity(givestack.Clone(), blockSel.HitPosition + (blockSel.HitPosition.Normalize() * .5) + blockSel.Position.ToVec3d(), blockSel.HitPosition.Normalize() * .05);
             }
-            storedtypes[stype] -= givestack.StackSize;
+            storage[stoneType] -= givestack.StackSize;
             return true;
         }
 
-        public bool AddResource(ItemSlot islot, int quant)
+        public bool AddResource(ItemSlot slot, int quantity)
         {
-            string btype = "";
-            string rtype = "";
-            string lstype = "";
+            string blockType = "";
+            string rockType = "";
+            string lastType = "";
 
-            if (storedtypes["stone"] + storedtypes["gravel"] + storedtypes["sand"] + quant > maxStorable)
+            if (storage["stone"] + storage["gravel"] + storage["sand"] + quantity > MaxStorable)
             {
-                quant = maxStorable - (storedtypes["stone"] + storedtypes["gravel"] + storedtypes["sand"]);
-                if (quant == 0)
+                quantity = MaxStorable - (storage["stone"] + storage["gravel"] + storage["sand"]);
+                if (quantity == 0)
                 { return false; }
             }
-            if (islot.Itemstack.Item == null)
+            if (slot.Itemstack.Item == null)
             {
-                rtype = islot.Itemstack.Block.FirstCodePart(1);
-                btype = islot.Itemstack.Block.FirstCodePart(0);
-                lstype = islot.Itemstack.Block.Code.Path;
+                rockType = slot.Itemstack.Block.FirstCodePart(1);
+                blockType = slot.Itemstack.Block.FirstCodePart(0);
+                lastType = slot.Itemstack.Block.Code.Path;
             }
             else
             {
-                rtype = islot.Itemstack.Item.FirstCodePart(1);
-                btype = islot.Itemstack.Item.FirstCodePart(0);
-                lstype = islot.Itemstack.Item.Code.Path;
+                rockType = slot.Itemstack.Item.FirstCodePart(1);
+                blockType = slot.Itemstack.Item.FirstCodePart(0);
+                lastType = slot.Itemstack.Item.Code.Path;
             }
 
-            if (storedType == "" && allowedTypes.Any(rtype.Contains))
+            if (storedType == "" && allowedTypes.Any(rockType.Contains))
             {
-                storedType = rtype;
+                storedType = rockType;
             }
-            if (storedType == rtype)
+            if (storedType == rockType)
             {
-                if (islot.Itemstack.StackSize - quant < 0)
+                if (slot.Itemstack.StackSize - quantity < 0)
                 {
-                    quant = islot.Itemstack.StackSize;
+                    quantity = slot.Itemstack.StackSize;
                 }
-                switch (btype)
+                switch (blockType)
                 {
                     case "sand":
-                        {
-                            storedtypes["sand"] += quant;
-                            break;
-                        }
+                        storage["sand"] += quantity;
+                        break;
+
                     case "gravel":
-                        {
-                            storedtypes["gravel"] += quant;
-                            break;
-                        }
+                        storage["gravel"] += quantity;
+                        break;
+
                     case "stone":
-                        {
-                            storedtypes["stone"] += quant;
-                            break;
-                        }
+                        storage["stone"] += quantity;
+                        break;
+
                     default:
                         return false;
                 }
-                islot.TakeOut(quant);
-                lastAdded = lstype;
+                slot.TakeOut(quantity);
+                lastAdded = lastType;
                 return true;
             }
             return false;
@@ -184,11 +177,11 @@ namespace StoneQuarry
         {
             // will attempt to add all of a set item type from the players inventory.
             bool psound = false;
-            foreach (ItemSlot isl in byPlayer.InventoryManager.GetHotbarInventory())
+            foreach (ItemSlot slot in byPlayer.InventoryManager.GetHotbarInventory())
             {
-                if (isl.Itemstack != null && isl.Itemstack.Collectible.Code.Path == lastAdded)
+                if (slot.Itemstack != null && slot.Itemstack.Collectible.Code.Path == lastAdded)
                 {
-                    if (AddResource(isl, isl.StackSize))
+                    if (AddResource(slot, slot.StackSize))
                     {
                         psound = true;
                     }
@@ -198,11 +191,11 @@ namespace StoneQuarry
             {
                 if (!inv.Key.Contains("creative"))
                 {
-                    foreach (ItemSlot isl in inv.Value)
+                    foreach (ItemSlot slot in inv.Value)
                     {
-                        if (isl.Itemstack != null && isl.Itemstack.Collectible.Code.Path == lastAdded)
+                        if (slot.Itemstack != null && slot.Itemstack.Collectible.Code.Path == lastAdded)
                         {
-                            if (AddResource(isl, isl.StackSize))
+                            if (AddResource(slot, slot.StackSize))
                             {
                                 psound = true;
                             }
@@ -216,79 +209,87 @@ namespace StoneQuarry
 
         public bool Degrade()
         {
-            if (storageLock == StorageLocksEnum.Stone)
+            switch (storageLock)
             {
-                return false;
-            }
-            else if (storageLock == StorageLocksEnum.Gravel)
-            {
-                if (storedtypes["stone"] > 1)
-                {
-                    storedtypes["stone"] -= 2;
-                    storedtypes["gravel"] += 1;
-                    return true;
+                case EnumStorageLock.Stone:
+                    return Degrade("gravel", "sand");
 
-                }
-            }
-            else if (storageLock == StorageLocksEnum.Sand)
-            {
-                if (storedtypes["gravel"] > 0)
-                {
-                    storedtypes["gravel"] -= 1;
-                    storedtypes["sand"] += 1;
-                    return true;
+                case EnumStorageLock.Gravel:
+                    return Degrade("stone", "gravel");
 
-                }
-                else if (storedtypes["stone"] > 0)
-                {
-                    storedtypes["stone"] -= 1;
-                    storedtypes["gravel"] += 1;
-                    return true;
+                case EnumStorageLock.Sand:
+                    return Degrade("gravel", "sand") || Degrade("stone", "sand", false);
 
-                }
-            }
-            else
-            {
-                if (storedtypes["gravel"] > 0)
-                {
-                    storedtypes["gravel"] -= 1;
-                    storedtypes["sand"] += 1;
-                    return true;
+                default:
+                    return Degrade("stone", "sand", true) || Degrade("gravel", "sand");
 
-                }
-                else if (storedtypes["stone"] > 1)
-                {
-                    storedtypes["stone"] -= 2;
-                    storedtypes["gravel"] += 1;
-                    return true;
-                }
-                else
-                { return false; }
             }
-            return true;
         }
 
-        public bool Drench(IWorldAccessor world, BlockSelection blockSel)
+        private bool Degrade(string from, string to, bool split = true)
         {
-            Block dropblock = world.GetBlock(new AssetLocation("game", "muddygravel"));
-            if (storedtypes["gravel"] > 0)
+            if (from == "stone" && storage["stone"] > 1)
             {
-                ItemStack dropStack = new ItemStack(dropblock, Math.Min(dropblock.MaxStackSize / 4, storedtypes["gravel"]));//Deviding max stack drop by four because not doing so created a mess.
-                world.SpawnItemEntity(dropStack.Clone(), blockSel.Position.ToVec3d() + blockSel.HitPosition, (blockSel.Face.Normalf.ToVec3d() * .05) + new Vec3d(0, .08, 0));
-                storedtypes["gravel"] -= Math.Min(dropblock.MaxStackSize / 4, storedtypes["gravel"]);
+                if (to == "gravel")
+                {
+                    storage["gravel"] += 1;
+                }
+                else if (to == "sand")
+                {
+                    bool toSand = storage["gravel"] > storage["sand"] * 2 && split && !(to == "gravel");
+                    storage[toSand ? "sand" : "gravel"] += 1;
+                }
+                else return false;
+
+                storage["stone"] -= 2;
                 return true;
             }
+
+            if (from == "gravel" && to == "sand" && storage["gravel"] > 0)
+            {
+                storage["gravel"] -= 1;
+                storage["sand"] += 1;
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool TryDrench(IWorldAccessor world, BlockSelection blockSel, IPlayer byPlayer)
+        {
+            var portion = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.GetTreeAttribute("contents");
+            ItemStack portionStack = portion.GetItemstack("0");
+
+            if (portionStack.Collectible.Code.Domain == "game" && portionStack.Collectible.Code.Path == "waterportion")
+            {
+                Block dropblock = world.GetBlock(new AssetLocation("game", "muddygravel"));
+                if (storage["gravel"] > 0)
+                {
+                    ItemStack dropStack = new ItemStack(dropblock, Math.Min(dropblock.MaxStackSize / 4, storage["gravel"]));//Deviding max stack drop by four because not doing so created a mess.
+                    world.SpawnItemEntity(dropStack.Clone(), blockSel.Position.ToVec3d() + blockSel.HitPosition, (blockSel.Face.Normalf.ToVec3d() * .05) + new Vec3d(0, .08, 0));
+                    storage["gravel"] -= Math.Min(dropblock.MaxStackSize / 4, storage["gravel"]);
+
+                    portionStack.StackSize--;
+                    if (portionStack.StackSize <= 0)
+                    {
+                        portionStack = null;
+                    }
+
+                    portion.SetItemstack("0", portionStack);
+                    return true;
+                }
+            }
+
             return false;
         }
 
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
         {
             storedType = tree.GetString("storedType", "");
-            storedtypes["sand"] = tree.GetInt("sand", 0);
-            storedtypes["gravel"] = tree.GetInt("gravel", 0);
-            storedtypes["stone"] = tree.GetInt("stone", 0);
-            storageLock = (StorageLocksEnum)tree.GetInt("storageLock", 0);
-            maxStorable = tree.GetInt("maxStorable");
+            storage["sand"] = tree.GetInt("sand", 0);
+            storage["gravel"] = tree.GetInt("gravel", 0);
+            storage["stone"] = tree.GetInt("stone", 0);
+            storageLock = (EnumStorageLock)tree.GetInt("storageLock", 0);
 
             base.FromTreeAttributes(tree, worldAccessForResolve);
         }
@@ -296,12 +297,49 @@ namespace StoneQuarry
         public override void ToTreeAttributes(ITreeAttribute tree)
         {
             tree.SetString("storedType", storedType);
-            tree.SetInt("sand", storedtypes["sand"]);
-            tree.SetInt("gravel", storedtypes["gravel"]);
-            tree.SetInt("stone", storedtypes["stone"]);
+            tree.SetInt("sand", storage["sand"]);
+            tree.SetInt("gravel", storage["gravel"]);
+            tree.SetInt("stone", storage["stone"]);
             tree.SetInt("storageLock", (int)storageLock);
-            tree.SetInt("maxStorable", maxStorable);
             base.ToTreeAttributes(tree);
         }
+
+        public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
+        {
+            base.GetBlockInfo(forPlayer, dsc);
+
+            string stone = Lang.Get(Block.Code.Domain + ":rubblestorage-stone(count={0})", storage["stone"]);
+            string gravel = Lang.Get(Block.Code.Domain + ":rubblestorage-gravel(count={0})", storage["gravel"]);
+            string sand = Lang.Get(Block.Code.Domain + ":rubblestorage-sand(count={0})", storage["sand"]);
+
+            string locked = Lang.Get(Block.Code.Domain + ":rubblestorage-locked");
+            switch (storageLock)
+            {
+                case EnumStorageLock.Stone:
+                    stone += locked;
+                    break;
+                case EnumStorageLock.Gravel:
+                    gravel += locked;
+                    break;
+                case EnumStorageLock.Sand:
+                    sand += locked;
+                    break;
+            }
+
+            string rockType = storedType == "" ? Lang.Get(Block.Code.Domain + ":rubblestorage-none") : Lang.Get("rock-" + storedType);
+            dsc.AppendLine(Lang.Get(Block.Code.Domain + ":rubblestorage-type(type={0})", rockType));
+
+            dsc.AppendLine(stone);
+            dsc.AppendLine(gravel);
+            dsc.AppendLine(sand);
+        }
+    }
+
+    public enum EnumStorageLock : int
+    {
+        None = 0,
+        Sand = 1,
+        Gravel = 2,
+        Stone = 3
     }
 }
