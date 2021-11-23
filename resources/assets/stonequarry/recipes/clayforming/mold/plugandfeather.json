@@ -34,6 +34,6 @@
       "##############"
     ]
   ],
-  "name": "PlugnFeather Mold",
-  "output": { "type": "block", "code": "toolmold-raw-plugnfeather" }
+  "name": "PlugAndFeather Mold",
+  "output": { "type": "block", "code": "toolmold-raw-plugandfeather" }
 }

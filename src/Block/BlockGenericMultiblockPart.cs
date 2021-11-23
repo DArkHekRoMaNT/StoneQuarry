@@ -5,7 +5,7 @@ using Vintagestory.API.MathTools;
 
 namespace StoneQuarry
 {
-    public class GenericStoneStorageBlock : Block
+    public class BlockGenericMultiblockPart : Block
     {
         readonly SimpleParticleProperties breakParticle = new SimpleParticleProperties()
         {
@@ -65,14 +65,16 @@ namespace StoneQuarry
                             rdict.Add(obj.AsArray()[0].AsString(), obj.AsArray()[1].AsString());
                         }
 
-                        //Block capBlock = world.GetBlock(CodeWithVariant("dir", ablock.Attributes["caps"].AsArray()[0]["var"].AsString()));
                         Block capBlock = world.GetBlock(CodeWithVariants(rdict));
-                        BlockPos capPos = blockSel.Position.Copy() + new BlockPos(ablock.Attributes["caps"].AsArray()[i]["x"].AsInt(), ablock.Attributes["caps"].AsArray()[i]["y"].AsInt(), ablock.Attributes["caps"].AsArray()[i]["z"].AsInt());
+                        int x = ablock.Attributes["caps"].AsArray()[i]["x"].AsInt();
+                        int y = ablock.Attributes["caps"].AsArray()[i]["y"].AsInt();
+                        int z = ablock.Attributes["caps"].AsArray()[i]["z"].AsInt();
+                        BlockPos capPos = blockSel.Position.Copy() + new BlockPos(x, y, z);
                         world.BlockAccessor.ExchangeBlock(capBlock.Id, capPos);
 
-                        world.BlockAccessor.SpawnBlockEntity("StoneStorageCapBE", capPos);
-                        (world.BlockAccessor.GetBlockEntity(capPos) as GenericStorageCapBE).core = blockSel.Position;
-                        (world.BlockAccessor.GetBlockEntity(blockSel.Position) as GenericStorageCoreBE).caps.Add(capPos);
+                        world.BlockAccessor.SpawnBlockEntity("GenericMultiblockPart", capPos);
+                        (world.BlockAccessor.GetBlockEntity(capPos) as BEGenericMultiblockPart).CorePos = blockSel.Position;
+                        (world.BlockAccessor.GetBlockEntity(blockSel.Position) as BEGenericMultiblockPart).Caps.Add(capPos);
 
                         world.BlockAccessor.MarkBlockDirty(capPos);
                         world.BlockAccessor.MarkBlockEntityDirty(capPos);
@@ -83,33 +85,23 @@ namespace StoneQuarry
         }
         public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
         {
-            BlockEntity be = world.BlockAccessor.GetBlockEntity(pos);
-            BlockPos masterPos = pos;
-
-            if (be is GenericStorageCapBE)
-            {
-                masterPos = (be as GenericStorageCapBE).core;
-                be = world.BlockAccessor.GetBlockEntity(masterPos);
-            }
-
-            if (be == null)
+            var core = (world.BlockAccessor.GetBlockEntity(pos) as BEGenericMultiblockPart)?.Core;
+            if (core == null)
             {
                 world.BlockAccessor.SetBlock(0, pos);
                 return;
             }
 
 
-            GenericStorageCoreBE core = be as GenericStorageCoreBE;
-            foreach (BlockPos cap in core.caps)
+            foreach (BlockPos cap in core.Caps)
             {
                 breakParticle.MinPos = cap.ToVec3d();
-                breakParticle.ColorByBlock = world.BlockAccessor.GetBlock(masterPos);
+                breakParticle.ColorByBlock = world.BlockAccessor.GetBlock(core.Pos);
                 world.BlockAccessor.SetBlock(0, cap);
                 world.BlockAccessor.RemoveBlockEntity(cap);
                 world.SpawnParticles(breakParticle, byPlayer);
             }
-
-            world.BlockAccessor.SetBlock(0, masterPos);
+            world.BlockAccessor.SetBlock(0, core.Pos);
         }
 
         public bool SwitchVariant(IWorldAccessor world, BlockSelection blockSel, Dictionary<string, string> switchArray)
@@ -121,20 +113,22 @@ namespace StoneQuarry
             List<BlockPos> hlightspots = new List<BlockPos>();
             if (tempv != null)
             {
-                BlockEntity be = world.BlockAccessor.GetBlockEntity(blockSel.Position);
-                if (be is GenericStorageCapBE)
+                var be = world.BlockAccessor.GetBlockEntity(blockSel.Position) as BEGenericMultiblockPart;
+                if (be != null) return false;
+
+                if (!be.IsCore)
                 {
-                    blockSel.Position = (be as GenericStorageCapBE).core;
-                    (world.BlockAccessor.GetBlock((be as GenericStorageCapBE).core) as GenericStoneStorageBlock).SwitchVariant(world, blockSel, switchArray);
+                    blockSel.Position = be.CorePos;
+                    (be.Core.Block as BlockGenericMultiblockPart).SwitchVariant(world, blockSel, switchArray);
                     return true;
                 }
 
 
-                foreach (BlockPos slave in (be as GenericStorageCoreBE).caps)
+                foreach (BlockPos slave in be.Caps)
                 {
                     world.BlockAccessor.SetBlock(0, slave);
                 }
-                (be as GenericStorageCoreBE).caps = new List<BlockPos>();
+                be.Caps = new List<BlockPos>();
 
 
                 Block bactual = world.BlockAccessor.GetBlock(corpos);
@@ -153,9 +147,9 @@ namespace StoneQuarry
                         Block capblock = world.GetBlock(bfull.CodeWithVariants(rdict));
                         BlockPos capspot = new BlockPos(b["x"].AsInt(), b["y"].AsInt(), b["z"].AsInt()) + corpos;
                         world.BlockAccessor.ExchangeBlock(capblock.Id, capspot);
-                        world.BlockAccessor.SpawnBlockEntity("StoneStorageCapBE", capspot);
-                        (world.BlockAccessor.GetBlockEntity(capspot) as GenericStorageCapBE).core = corpos;
-                        (be as GenericStorageCoreBE).caps.Add(capspot);
+                        world.BlockAccessor.SpawnBlockEntity("GenericMultiblockPart", capspot);
+                        (world.BlockAccessor.GetBlockEntity(capspot) as BEGenericMultiblockPart).CorePos = corpos;
+                        be.Caps.Add(capspot);
                     }
                 }
             }

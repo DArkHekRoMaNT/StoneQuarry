@@ -1,6 +1,6 @@
 {
   "code": "slabstacksetter",
-  "class": "SlabSetter",
+  "class": "ItemSlabContentSetter",
   "attributes": { "slabstackdb": true },
   "shape": { "base": "item/tool/ballodirt" },
   "textures": { "all": { "base": "game:block/metal/plate/copper" } },

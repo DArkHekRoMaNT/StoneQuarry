@@ -4,7 +4,7 @@ using Vintagestory.API.Common;
 
 namespace StoneQuarry
 {
-    public class BlockStackSetterItem : Item
+    public class ItemSlabContentSetter : Item
     {
         int stonequant = 0;
 

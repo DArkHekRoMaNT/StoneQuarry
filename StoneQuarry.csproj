@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
-    <LangVersion>5</LangVersion>
+    <!--LangVersion>5</LangVersion-->
     <VSVersion>1.15.0</VSVersion>
   </PropertyGroup>
 

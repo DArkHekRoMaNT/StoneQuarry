@@ -9,10 +9,9 @@ using Vintagestory.API.Util;
 
 namespace StoneQuarry
 {
-    public class RubbleStorageBlock : GenericStoneStorageBlock
+    public class BlockRubbleStorage : BlockGenericMultiblockPart
     {
         readonly List<WorldInteraction[]> interactionsBySel = new List<WorldInteraction[]>();
-
         readonly SimpleParticleProperties interactParticles = new SimpleParticleProperties()
         {
             MinPos = new Vec3d(),
@@ -53,7 +52,7 @@ namespace StoneQuarry
                     { "stone", new List<ItemStack>() }
                 };
 
-                foreach (var type in RubbleStorageBE.allowedTypes)
+                foreach (var type in BERubbleStorage.allowedTypes)
                 {
                     dict["stone"].Add(new ItemStack(
                         api.World.GetItem(new AssetLocation("game:stone-" + type))
@@ -150,13 +149,8 @@ namespace StoneQuarry
                 stockMod = byPlayer.InventoryManager.ActiveHotbarSlot.MaxSlotStackSize;
             }
 
-            BlockEntity be = world.BlockAccessor.GetBlockEntity(blockSel.Position);
-            RubbleStorageBE rcbe = world.BlockAccessor.GetBlockEntity(blockSel.Position) as RubbleStorageBE;
-            if (be is GenericStorageCapBE)
-            {
-                rcbe = world.BlockAccessor.GetBlockEntity((be as GenericStorageCapBE).core) as RubbleStorageBE;
-            }
-            if (rcbe == null)
+            var be = (world.BlockAccessor.GetBlockEntity(blockSel.Position) as BEGenericMultiblockPart)?.Core;
+            if (!(be is BERubbleStorage rcbe))
             {
                 return true;
             }
@@ -250,16 +244,19 @@ namespace StoneQuarry
 
         public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
         {
-            BlockEntity be = world.BlockAccessor.GetBlockEntity(pos);
-            if (be is GenericStorageCapBE)
+            if (!(world.BlockAccessor.GetBlockEntity(pos) is BEGenericMultiblockPart be))
             {
-                world.BlockAccessor.BreakBlock((be as GenericStorageCapBE).core, byPlayer);
+                base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
+                return;
+            }
+            if (!be.IsCore)
+            {
+                world.BlockAccessor.BreakBlock(be.CorePos, byPlayer);
                 return;
             }
 
-            RubbleStorageBE rsbe = be as RubbleStorageBE;
 
-            if (rsbe != null)
+            if (be is BERubbleStorage rsbe)
             {
                 ItemStack dropstack = new ItemStack(world.BlockAccessor.GetBlock(pos));
                 dropstack.Attributes.SetString("type", rsbe.storedType);
@@ -274,11 +271,11 @@ namespace StoneQuarry
         public override bool DoPlaceBlock(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, ItemStack byItemStack)
         {
             base.DoPlaceBlock(world, byPlayer, blockSel, byItemStack);
-            if (byItemStack == null)
-            {
-                return false;
-            }
-            RubbleStorageBE rsbe = world.BlockAccessor.GetBlockEntity(blockSel.Position) as RubbleStorageBE;
+            if (byItemStack == null) return false;
+
+
+            var rsbe = world.BlockAccessor.GetBlockEntity(blockSel.Position) as BERubbleStorage;
+
             rsbe.storedType = byItemStack.Attributes.GetString("type", "");
             rsbe.storage["stone"] = byItemStack.Attributes.GetInt("stone", 0);
             rsbe.storage["gravel"] = byItemStack.Attributes.GetInt("gravel", 0);
@@ -296,7 +293,7 @@ namespace StoneQuarry
             int gravelCount = inSlot.Itemstack.Attributes.GetInt("gravel");
             int sandCount = inSlot.Itemstack.Attributes.GetInt("sand");
 
-            if (rockType == "") rockType = Lang.Get(Code.Domain + ":rubblestorage-none");
+            if (string.IsNullOrEmpty(rockType)) rockType = Lang.Get(Code.Domain + ":rubblestorage-none");
 
             dsc.AppendLine(Lang.Get(Code.Domain + ":rubblestorage-type(type={0})", rockType));
             dsc.AppendLine(Lang.Get(Code.Domain + ":rubblestorage-stone(count={0})", stoneCount));
@@ -307,6 +304,21 @@ namespace StoneQuarry
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection blockSel, IPlayer forPlayer)
         {
             return interactionsBySel[blockSel.SelectionBoxIndex].Append(base.GetPlacedBlockInteractionHelp(world, blockSel, forPlayer));
+        }
+
+        public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
+        {
+            var be = (world.BlockAccessor.GetBlockEntity(pos) as BEGenericMultiblockPart)?.Core;
+            if (be is BERubbleStorage rsbe)
+            {
+                ItemStack dropstack = new ItemStack(world.BlockAccessor.GetBlock(pos));
+                dropstack.Attributes.SetString("type", rsbe.storedType);
+                dropstack.Attributes.SetInt("stone", rsbe.storage["stone"]);
+                dropstack.Attributes.SetInt("gravel", rsbe.storage["gravel"]);
+                dropstack.Attributes.SetInt("sand", rsbe.storage["sand"]);
+                return base.GetDrops(world, pos, byPlayer, dropQuantityMultiplier).Append(dropstack);
+            }
+            return base.GetDrops(world, pos, byPlayer, dropQuantityMultiplier);
         }
     }
 }

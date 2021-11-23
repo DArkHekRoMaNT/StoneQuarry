@@ -9,7 +9,7 @@ using Vintagestory.API.MathTools;
 
 namespace StoneQuarry
 {
-    public class RubbleStorageBE : GenericStorageCoreBE
+    public class BERubbleStorage : BEGenericMultiblockPart
     {
         public static readonly string[] allowedTypes = {
             "andesite",
@@ -43,7 +43,7 @@ namespace StoneQuarry
         public void CheckDisplayVariant(IWorldAccessor world, BlockSelection blocksel)
         {
             //Set's the displayed block to the type that has the largest amount of stored material.
-            RubbleStorageBlock cblock = world.BlockAccessor.GetBlock(blocksel.Position) as RubbleStorageBlock;
+            BlockRubbleStorage cblock = world.BlockAccessor.GetBlock(blocksel.Position) as BlockRubbleStorage;
 
 
             string bshouldbe = "empty";

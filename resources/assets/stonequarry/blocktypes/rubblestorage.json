@@ -1,7 +1,7 @@
 {
   "code": "rubblestorage",
-  "class": "RubbleStorage",
-  "entityclass": "RubbleStorageBE",
+  "class": "BlockRubbleStorage",
+  "entityclass": "RubbleStorage",
   "variantgroups": [
     { "code": "stone", "loadFromProperties": "block/rock" },
     { "code": "type", "states": ["empty", "stone", "gravel", "sand"] },

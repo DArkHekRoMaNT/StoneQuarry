@@ -10,7 +10,7 @@ using Vintagestory.API.Util;
 namespace StoneQuarry
 {
     /// <summary> Used to store what is dropped from the quarry </summary>
-    public class RoughCutStorageBlock : GenericStoneStorageBlock
+    public class BlockRoughCutStorage : BlockGenericMultiblockPart
     {
         WorldInteraction[] interactions;
         readonly SimpleParticleProperties interactParticles = new SimpleParticleProperties()
@@ -44,9 +44,9 @@ namespace StoneQuarry
 
             foreach (var obj in api.World.Collectibles)
             {
-                if (obj is SlabToolItem)
+                if (obj is ItemSlabTool)
                 {
-                    string type = (obj as SlabToolItem).GetToolType();
+                    string type = (obj as ItemSlabTool).GetToolType();
                     if (type != "")
                     {
                         dict[type].Add(new ItemStack(obj));
@@ -84,7 +84,7 @@ namespace StoneQuarry
 
             if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack != null)
             {
-                RoughCutStorageBE be = world.BlockAccessor.GetBlockEntity(blockSel.Position) as RoughCutStorageBE;
+                BERoughCutStorage be = world.BlockAccessor.GetBlockEntity(blockSel.Position) as BERoughCutStorage;
                 be.blockStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Clone();
                 be.blockStack.StackSize = 1;
             }
@@ -94,14 +94,9 @@ namespace StoneQuarry
 
         public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
         {
-            BlockEntity be = world.BlockAccessor.GetBlockEntity(pos);
-            if (be is GenericStorageCapBE)
-            {
-                be = world.BlockAccessor.GetBlockEntity((be as GenericStorageCapBE).core);
-            }
+            var be = (world.BlockAccessor.GetBlockEntity(pos) as BEGenericMultiblockPart)?.Core;
 
-            var rcbe = be as RoughCutStorageBE;
-            if (rcbe != null && rcbe.blockStack.Attributes.GetInt("stonestored") > 0)
+            if (be is BERoughCutStorage rcbe && rcbe.blockStack.Attributes.GetInt("stonestored") > 0)
             {
                 world.SpawnItemEntity(rcbe.blockStack.Clone(), pos.ToVec3d());
             }
@@ -111,15 +106,9 @@ namespace StoneQuarry
 
         public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
         {
-            AssetLocation interactsound = new AssetLocation("game", "sounds/block/heavyice");
-            BlockEntity be = world.BlockAccessor.GetBlockEntity(blockSel.Position);
-            if (be is GenericStorageCapBE)
-            {
-                be = world.BlockAccessor.GetBlockEntity((be as GenericStorageCapBE).core);
-            }
+            var be = (world.BlockAccessor.GetBlockEntity(blockSel.Position) as BEGenericMultiblockPart)?.Core;
+            if (!(be is BERoughCutStorage rcbe) || rcbe.blockStack == null) return false;
 
-            var rcbe = be as RoughCutStorageBE;
-            if (rcbe == null || rcbe.blockStack == null) return false;
 
             if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack == null)
             {
@@ -151,10 +140,9 @@ namespace StoneQuarry
             interactParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
             world.SpawnParticles(interactParticles, byPlayer);
 
-            world.PlaySoundAt(interactsound, byPlayer, byPlayer, true, 32, .5f);
+            world.PlaySoundAt(new AssetLocation("game", "sounds/block/heavyice"), byPlayer, byPlayer, true, 32, .5f);
 
-            var tool = activeStack.Collectible as SlabToolItem;
-            if (tool != null)
+            if (activeStack.Collectible is ItemSlabTool tool)
             {
                 var toolType = tool.GetToolType();
                 if (toolType != "")

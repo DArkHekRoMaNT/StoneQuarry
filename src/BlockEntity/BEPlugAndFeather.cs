@@ -5,7 +5,7 @@ using Vintagestory.API.MathTools;
 
 namespace StoneQuarry
 {
-    public class PlugnFeatherBE : BlockEntity
+    public class BEPlugAndFeather : BlockEntity
     {
         /// <summary>Position of master block.</summary>
         public Vec3i master;

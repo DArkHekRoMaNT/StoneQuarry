@@ -17,15 +17,15 @@
   },
   "variantgroups": [
     { "code": "materialtype", "states": ["raw", "burned"] },
-    { "code": "tooltype", "states": ["plugnfeather"] }
+    { "code": "tooltype", "states": ["plugandfeather"] }
   ],
   "attributesByType": {
-    "toolmold-burned-plugnfeather": {
+    "toolmold-burned-plugandfeather": {
       "requiredUnits": 100,
       "fillHeight": 1,
       "moldrackable": true,
       "onMoldRackTransform": { "rotation": { "z": 90 } },
-      "drop": { "type": "item", "code": "plugnfeather-{metal}-one-down-north" }
+      "drop": { "type": "item", "code": "plugandfeather-{metal}-one-down-north" }
     },
     "toolmold-burned-*": {
       "requiredUnits": 100,

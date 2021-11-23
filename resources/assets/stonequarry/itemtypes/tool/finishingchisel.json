@@ -1,6 +1,6 @@
 {
   "code": "finishingchisel",
-  "class": "SlabTool",
+  "class": "ItemSlabTool",
   "variantgroups": [
     {
       "code": "material",

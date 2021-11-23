@@ -5,7 +5,7 @@ using Vintagestory.API.Datastructures;
 
 namespace StoneQuarry
 {
-    public class RoughCutStorageBE : GenericStorageCoreBE
+    public class BERoughCutStorage : BEGenericMultiblockPart
     {
         //used to store the Item used to create this block.
         public ItemStack blockStack = null;

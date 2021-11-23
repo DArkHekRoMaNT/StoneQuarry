@@ -1,22 +1,22 @@
 {
   "game:tabname-quarry": "The Works",
   "game:sw-quarry-title": "Quarry Guide",
-  "game:sw-quarry-text": "\"<strong>So you want to start a quarry?! GOOD!</strong> \n\nJust get yo'self a trusty hammer, a few <a href=\"handbook://block-stonequarry:plugnfeather-copper-one-down-north\">plugs</a> and set them up so they are on the top, or bottom of a set of stone blocks, and across the side where you wish to sheer the slab from. Give them plugs a few good smacks and you'll have you're self a lovely stone slab. Be warned though once you land that first strike you're dedicated to that network and will have to replace all the plugs if you want to move any of them. \n\nDepnding on the grade of plug ye use, ya'can get yo'self more stone in one go. starting at a 3x3 cube and go'in all the way up to a 6x6 cube. \n\nThe size o'the slab ye get is based on how much stone ye done hewn in one go, while any type of slab can be masoned be aware that larger slabs take up more space when placed.  \n\nNow go'on an get yar self some o'that rock, n'once ya have read the <a href=\"handbook://sw-mason\">Masonry Guide.</a>.",
+  "game:sw-quarry-text": "\"<strong>So you want to start a quarry?! GOOD!</strong> \n\nJust get yo'self a trusty hammer, a few <a href=\"handbook://block-stonequarry:plugandfeather-copper-one-down-north\">plugs</a> and set them up so they are on the top, or bottom of a set of stone blocks, and across the side where you wish to sheer the slab from. Give them plugs a few good smacks and you'll have you're self a lovely stone slab. Be warned though once you land that first strike you're dedicated to that network and will have to replace all the plugs if you want to move any of them. \n\nDepnding on the grade of plug ye use, ya'can get yo'self more stone in one go. starting at a 3x3 cube and go'in all the way up to a 6x6 cube. \n\nThe size o'the slab ye get is based on how much stone ye done hewn in one go, while any type of slab can be masoned be aware that larger slabs take up more space when placed.  \n\nNow go'on an get yar self some o'that rock, n'once ya have read the <a href=\"handbook://sw-mason\">Masonry Guide.</a>.",
 
   "game:sw-mason-title": "Mason Guide",
   "game:sw-mason-text": "<strong>So you want to be a mason?</strong> \n\nCan never have too much stone. To start get your self a <a href=\"handbook://sw-quarry\">Quarry</a> going. With each section of stone removed you'll get a slab of stone that you can shape as you please.\n\nFor this purpose there are four tools to acquire different materials.\n\n <a href=\"handbook://item-stonequarry:finishingchisel-copper\">Finishing Chisels</a>: when used on a slab will give polished stone. \n <a href=\"handbook://item-stonequarry:wedgechisel-copper\">Wedge Chisels</a>: when used on a slab will give bricks. \n <a href=\"handbook://item-stonequarry:roughcutchisel-copper\">Roughcut Chisels</a>: when used on a slab will give rock. \n <a href=\"handbook://item-stonequarry:rubblehammer-copper\">Rubble Hammer</a>: when used on a slab will give stone. \n\n For your storage needs look in'ta makin yourself a <a href=\"handbook://block-stonequarry:rubblestorage-sandstone-empty-north\">Rubble Storage Crate</a>",
 
   "game:tabname-stonequarry": "Stone Quarry",
 
-  "block-plugnfeather-copper-*": "Copper plug",
-  "block-plugnfeather-tinbronze-*": "Tinbronze plug",
-  "block-plugnfeather-bismuthbronze-*": "Bismuthbronze plug",
-  "block-plugnfeather-blackbronze-*": "Blackbronze plug",
-  "block-plugnfeather-iron-*": "Iron plug",
-  "block-plugnfeather-meteoriciron-*": "Meteoric iron plug",
-  "block-plugnfeather-steel-*": "Steel plug",
-  "block-handbooktitle-*-plugnfeather-*": "Uses",
-  "block-handbooktext-*-plugnfeather-*": "Used to split stone into stone slabs. Higher tier plugs can split more at once.\n\n-Copper: 3x3\n-Tin bronze: 4x4\n-Bismuth bronze: 4x4\n-Black bronze: 5x5\n-Iron: 6x6 \n-Meteoric iron: 6x6 \n-Steel: 7x7 \n\n<strong>Created By</strong> \n<a href=\"handbook://craftinginfo-smelting\">Metal Molding</a>",
+  "block-plugandfeather-copper-*": "Copper plug",
+  "block-plugandfeather-tinbronze-*": "Tinbronze plug",
+  "block-plugandfeather-bismuthbronze-*": "Bismuthbronze plug",
+  "block-plugandfeather-blackbronze-*": "Blackbronze plug",
+  "block-plugandfeather-iron-*": "Iron plug",
+  "block-plugandfeather-meteoriciron-*": "Meteoric iron plug",
+  "block-plugandfeather-steel-*": "Steel plug",
+  "block-handbooktitle-*-plugandfeather-*": "Uses",
+  "block-handbooktext-*-plugandfeather-*": "Used to split stone into stone slabs. Higher tier plugs can split more at once.\n\n-Copper: 3x3\n-Tin bronze: 4x4\n-Bismuth bronze: 4x4\n-Black bronze: 5x5\n-Iron: 6x6 \n-Meteoric iron: 6x6 \n-Steel: 7x7 \n\n<strong>Created By</strong> \n<a href=\"handbook://craftinginfo-smelting\">Metal Molding</a>",
 
   "block-stonestoragesmall-andesite-*": "Small andesite slab",
   "block-stonestoragesmall-chalk-*": "Small chalk slab",
@@ -146,8 +146,8 @@
   "block-handbooktitle-*-rubblestorage-*": "Uses",
   "block-handbooktext-*-rubblestorage-*": "Once Placed in the world these handcrafted crates can be used to store all kinds of rubble including stone, gravel, and sand! Furthermore if one was to hit the stored material with a rubblehammer the contents would be broken down. Two Stone to One Gravel,  One Gravel to One Sand. \n\n <strong>World Interactions:</strong> \n -To Insert items into the crate, rightclick on the crate with the item in hand. You can insert all of the items in your invintory that match the last item inserted by right clicking with an empty hand. \n -To extract from the crate right click on the buttons on the frount/back. \n -By pressing your run button (default ctrl) you can insert/extract a stack of materials at a time. \n -Lastly you can lock in the point your want to break the internal materials down to by pressing your sneek button (default Shift) and right clicking on the corosponding button. \n\n PS. Try adding water with a bucket while there's gravel contained.",
 
-  "block-toolmold-raw-plugnfeather": "Raw splitting plug mold",
-  "block-toolmold-burned-plugnfeather": "Splitting plug mold",
+  "block-toolmold-raw-plugandfeather": "Raw splitting plug mold",
+  "block-toolmold-burned-plugandfeather": "Splitting plug mold",
 
   "item-finishingchisel-copper": "Copper finishing chisel",
   "item-finishingchisel-tinbronze": "Tin bronze finishing chisel",
@@ -236,7 +236,7 @@
   "slaberror-unknown-drop": "This type does not exist for this stone",
 
   "stonestorage-heldinfo(count={0},stone={1})": "Contains: x{0} {1}",
-  "plugnfeather-heldinfo(range={0})": "Range: {0}x{0}x{0}",
+  "plugandfeather-heldinfo(range={0})": "Range: {0}x{0}x{0}",
   "slabtool-heldinfo(result={0})": "Result: {0}",
   "slabtool-type-polished": "polished rock",
   "slabtool-type-rock": "rock",
@@ -268,6 +268,6 @@
   "stonestorage-worldinteraction-stone": "Cut stones",
   "stonestorage-worldinteraction-brick": "Cut bricks",
 
-  "plugnfeather-worldinteraction-quarrystarter": "Create quarry",
-  "plugnfeather-worldinteraction-quarryimpact": "Hammer"
+  "plugandfeather-worldinteraction-quarrystarter": "Create quarry",
+  "plugandfeather-worldinteraction-quarryimpact": "Hammer"
 }

@@ -8,20 +8,25 @@ namespace StoneQuarry
         {
             base.Start(api);
 
-            api.RegisterItemClass("SlabTool", typeof(SlabToolItem));
-            api.RegisterItemClass("SlabSetter", typeof(BlockStackSetterItem));
+            api.RegisterItemClass("ItemSlabTool", typeof(ItemSlabTool));
+            api.RegisterItemClass("ItemSlabContentSetter", typeof(ItemSlabContentSetter));
+
+            api.RegisterBlockClass("BlockGenericMultiblockPart", typeof(BlockGenericMultiblockPart));
+            api.RegisterBlockClass("BlockRubbleStorage", typeof(BlockRubbleStorage));
+            api.RegisterBlockClass("BlockRoughCutStorage", typeof(BlockRoughCutStorage));
+            api.RegisterBlockClass("BlockPlugAndFeather", typeof(BlockPlugAndFeather));
+
+            api.RegisterBlockEntityClass("GenericMultiblockPart", typeof(BEGenericMultiblockPart));
+            api.RegisterBlockEntityClass("RubbleStorage", typeof(BERubbleStorage));
+            api.RegisterBlockEntityClass("RoughCutStorage", typeof(BERoughCutStorage));
+            api.RegisterBlockEntityClass("PlugAndFeather", typeof(BEPlugAndFeather));
 
 
-            api.RegisterBlockClass("RubbleStorage", typeof(RubbleStorageBlock));
-            api.RegisterBlockEntityClass("RubbleStorageBE", typeof(RubbleStorageBE));
-
-            api.RegisterBlockClass("RoughStoneStorage", typeof(RoughCutStorageBlock));
-            api.RegisterBlockEntityClass("StoneStorageCoreBE", typeof(RoughCutStorageBE));
-            api.RegisterBlockEntityClass("StoneStorageCapBE", typeof(GenericStorageCapBE));
-
-
-            api.RegisterBlockClass("PlugFeatherBlock", typeof(PlugnFeatherBlock));
-            api.RegisterBlockEntityClass("PlugFeatherBE", typeof(PlugnFeatherBE));
+            //legacy
+            api.RegisterBlockEntityClass("RubbleStorageBE", typeof(BERubbleStorage));
+            api.RegisterBlockEntityClass("StoneStorageCoreBE", typeof(BERoughCutStorage));
+            api.RegisterBlockEntityClass("StoneStorageCapBE", typeof(BEGenericMultiblockPart));
+            api.RegisterBlockEntityClass("PlugFeatherBE", typeof(BEPlugAndFeather));
         }
     }
 }

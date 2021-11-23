@@ -1,7 +1,7 @@
 {
   "code": "stonestoragesmall",
-  "class": "RoughStoneStorage",
-  "entityclass": "StoneStorageCoreBE",
+  "class": "BlockRoughCutStorage",
+  "entityclass": "RoughCutStorage",
   "variantgroups": [
     { "code": "stone", "loadFromProperties": "block/rockwithdeposit" },
     { "code": "dir", "states": ["north", "south", "east", "west"] }

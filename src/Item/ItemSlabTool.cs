@@ -4,7 +4,7 @@ using Vintagestory.API.Config;
 
 namespace StoneQuarry
 {
-    public class SlabToolItem : Item
+    public class ItemSlabTool : Item
     {
         public string GetToolType()
         {
