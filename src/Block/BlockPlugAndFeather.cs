@@ -44,12 +44,12 @@ namespace StoneQuarry
 
             interactions = new WorldInteraction[] {
                 new WorldInteraction(){
-                    ActionLangCode = Code.Domain + ":plugandfeather-worldinteraction-quarrystarter",
+                    ActionLangCode = Code.Domain + ":wi-plugandfeather-quarrystarter",
                     MouseButton = EnumMouseButton.Right,
                     Itemstacks = quarryStarter.ToArray()
                 },
                 new WorldInteraction(){
-                    ActionLangCode = Code.Domain + ":plugandfeather-worldinteraction-quarryimpact",
+                    ActionLangCode = Code.Domain + ":wi-plugandfeather-quarryimpact",
                     MouseButton = EnumMouseButton.Right,
                     Itemstacks = quarryImpact.ToArray()
                 }

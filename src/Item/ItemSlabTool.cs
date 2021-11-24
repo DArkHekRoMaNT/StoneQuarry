@@ -22,8 +22,8 @@ namespace StoneQuarry
             string type = GetToolType();
             if (type != "")
             {
-                var result = Lang.Get(Code.Domain + ":slabtool-type-" + type);
-                dsc.AppendLine(Lang.Get(Code.Domain + ":slabtool-heldinfo(result={0})", result));
+                var result = Lang.Get(Code.Domain + ":info-slabtool-type-" + type);
+                dsc.AppendLine(Lang.Get(Code.Domain + ":info-slabtool-heldinfo(result={0})", result));
             }
         }
     }

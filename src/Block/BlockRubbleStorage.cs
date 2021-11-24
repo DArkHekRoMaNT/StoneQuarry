@@ -71,18 +71,18 @@ namespace StoneQuarry
 
                 interactionsBySel.Add(new WorldInteraction[] {
                     new WorldInteraction() {
-                        ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-hammer",
+                        ActionLangCode = Code.Domain + ":wi-rubblestorage-hammer",
                         MouseButton = EnumMouseButton.Right,
                         Itemstacks = hammers.ToArray()
                     },
                     new WorldInteraction() {
-                        ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-add-one",
+                        ActionLangCode = Code.Domain + ":wi-rubblestorage-add-one",
                         MouseButton = EnumMouseButton.Right,
                         Itemstacks = dict["stone"].ToArray(),
                         GetMatchingStacks = GetMatchingStacks_StoneType
                     },
                     new WorldInteraction() {
-                        ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-add-stack",
+                        ActionLangCode = Code.Domain + ":wi-rubblestorage-add-stack",
                         MouseButton = EnumMouseButton.Right,
                         HotKeyCode = "sprint",
                         Itemstacks = dict["stone"].Select((i)=>{
@@ -91,13 +91,13 @@ namespace StoneQuarry
                         GetMatchingStacks = GetMatchingStacks_StoneType
                     },
                     new WorldInteraction() {
-                        ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-add-all",
+                        ActionLangCode = Code.Domain + ":wi-rubblestorage-add-all",
                         MouseButton = EnumMouseButton.Right,
                         RequireFreeHand = true
                     },
                     new WorldInteraction()
                     {
-                        ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-water",
+                        ActionLangCode = Code.Domain + ":wi-rubblestorage-water",
                         MouseButton = EnumMouseButton.Right,
                         Itemstacks = waterPortion.ToArray()
                     }
@@ -109,20 +109,20 @@ namespace StoneQuarry
                     interactionsBySel.Add(new WorldInteraction[] {
                         new WorldInteraction()
                         {
-                            ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-lock",
+                            ActionLangCode = Code.Domain + ":wi-rubblestorage-lock",
                             MouseButton = EnumMouseButton.Right,
                             HotKeyCode = "sneak"
                         },
                         new WorldInteraction()
                         {
-                            ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-take-one-" + type,
+                            ActionLangCode = Code.Domain + ":wi-rubblestorage-take-one-" + type,
                             MouseButton = EnumMouseButton.Right,
                             Itemstacks = dict[type].ToArray(),
                             GetMatchingStacks = GetMatchingStacks_StoneType
                         },
                         new WorldInteraction()
                         {
-                            ActionLangCode = Code.Domain + ":rubblestorage-worldinteraction-take-stack-" + type,
+                            ActionLangCode = Code.Domain + ":wi-rubblestorage-take-stack-" + type,
                             MouseButton = EnumMouseButton.Right,
                             HotKeyCode = "sprint",
                             Itemstacks = dict[type].Select((i)=>{
@@ -293,12 +293,12 @@ namespace StoneQuarry
             int gravelCount = inSlot.Itemstack.Attributes.GetInt("gravel");
             int sandCount = inSlot.Itemstack.Attributes.GetInt("sand");
 
-            if (string.IsNullOrEmpty(rockType)) rockType = Lang.Get(Code.Domain + ":rubblestorage-none");
+            if (string.IsNullOrEmpty(rockType)) rockType = Lang.Get(Code.Domain + ":info-rubblestorage-none");
 
-            dsc.AppendLine(Lang.Get(Code.Domain + ":rubblestorage-type(type={0})", rockType));
-            dsc.AppendLine(Lang.Get(Code.Domain + ":rubblestorage-stone(count={0})", stoneCount));
-            dsc.AppendLine(Lang.Get(Code.Domain + ":rubblestorage-gravel(count={0})", gravelCount));
-            dsc.AppendLine(Lang.Get(Code.Domain + ":rubblestorage-sand(count={0})", sandCount));
+            dsc.AppendLine(Lang.Get(Code.Domain + ":info-rubblestorage-type(type={0})", rockType));
+            dsc.AppendLine(Lang.Get(Code.Domain + ":info-rubblestorage-stone(count={0})", stoneCount));
+            dsc.AppendLine(Lang.Get(Code.Domain + ":info-rubblestorage-gravel(count={0})", gravelCount));
+            dsc.AppendLine(Lang.Get(Code.Domain + ":info-rubblestorage-sand(count={0})", sandCount));
         }
 
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection blockSel, IPlayer forPlayer)

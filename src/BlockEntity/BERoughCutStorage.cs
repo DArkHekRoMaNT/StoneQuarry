@@ -35,7 +35,7 @@ namespace StoneQuarry
             var count = blockStack != null ? blockStack.Attributes.GetInt("stonestored") : 0;
             var stone = Lang.Get("rock-" + Block.FirstCodePart(1));
 
-            dsc.AppendLine(Lang.Get(Block.Code.Domain + ":stonestorage-heldinfo(count={0},stone={1})", count, stone));
+            dsc.AppendLine(Lang.Get(Block.Code.Domain + ":info-stonestorage-heldinfo(count={0},stone={1})", count, stone));
         }
     }
 }

@@ -1,9 +1,8 @@
 {
   "code": "slabstacksetter",
   "class": "ItemSlabContentSetter",
-  "attributes": { "slabstackdb": true },
   "shape": { "base": "item/tool/ballodirt" },
-  "textures": { "all": { "base": "game:block/metal/plate/copper" } },
+  "textures": { "all": { "base": "game:block/soil/cob/normal2" } },
   "creativeinventory": { "general": ["*"], "stonequarry": ["*"] },
   "heldTpUseAnimation": "axechop",
   "heldTpHitAnimation": "axechop",

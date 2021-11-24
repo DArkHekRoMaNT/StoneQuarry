@@ -56,22 +56,22 @@ namespace StoneQuarry
 
             interactions = new WorldInteraction[] {
                 new WorldInteraction(){
-                    ActionLangCode = Code.Domain + ":stonestorage-worldinteraction-polished",
+                    ActionLangCode = Code.Domain + ":wi-stonestorage-polished",
                     MouseButton = EnumMouseButton.Right,
                     Itemstacks = dict["polished"].ToArray()
                 },
                 new WorldInteraction(){
-                    ActionLangCode = Code.Domain + ":stonestorage-worldinteraction-rock",
+                    ActionLangCode = Code.Domain + ":wi-stonestorage-rock",
                     MouseButton = EnumMouseButton.Right,
                     Itemstacks = dict["rock"].ToArray()
                 },
                 new WorldInteraction(){
-                    ActionLangCode = Code.Domain + ":stonestorage-worldinteraction-stone",
+                    ActionLangCode = Code.Domain + ":wi-stonestorage-stone",
                     MouseButton = EnumMouseButton.Right,
                     Itemstacks = dict["stone"].ToArray()
                 },
                 new WorldInteraction(){
-                    ActionLangCode = Code.Domain + ":stonestorage-worldinteraction-brick",
+                    ActionLangCode = Code.Domain + ":wi-stonestorage-brick",
                     MouseButton = EnumMouseButton.Right,
                     Itemstacks = dict["brick"].ToArray()
                 }
@@ -208,7 +208,7 @@ namespace StoneQuarry
 
             var count = inSlot.Itemstack.Attributes.GetInt("stonestored");
             var stone = Lang.Get("rock-" + FirstCodePart(1));
-            dsc.AppendLine(Lang.Get(Code.Domain + ":stonestorage-heldinfo(count={0},stone={1})", count, stone));
+            dsc.AppendLine(Lang.Get(Code.Domain + ":info-stonestorage-heldinfo(count={0},stone={1})", count, stone));
         }
 
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
