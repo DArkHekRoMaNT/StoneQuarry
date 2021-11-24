@@ -231,8 +231,7 @@
 
   "item-slabstacksetter": "Suspiciously Dense Ball of Dirt",
 
-  "slaberror-unknown-tool": "Wrong tool",
-  "slaberror-unknown-drop": "This type does not exist for this stone",
+  "ingameerror-stonestorage-unknown-drop": "This type does not exist for this stone",
 
   "info-stonestorage-heldinfo(count={0},stone={1})": "Contains: x{0} {1}",
   "info-plugandfeather-heldinfo(range={0})": "Range: {0}x{0}x{0}",

@@ -5,6 +5,7 @@ using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
+using Vintagestory.API.Server;
 using Vintagestory.API.Util;
 
 namespace StoneQuarry
@@ -126,21 +127,9 @@ namespace StoneQuarry
             if (rcbe.blockStack.Attributes.GetInt("stonestored") <= 0) return false;
 
 
-
-            if (world.Side == EnumAppSide.Client)
-            {
-                (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
-            }
-
             ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
             AssetLocation dropCode = null;
             int dropRate = 0;
-
-            interactParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
-            interactParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
-            world.SpawnParticles(interactParticles, byPlayer);
-
-            world.PlaySoundAt(new AssetLocation("game", "sounds/block/heavyice"), byPlayer, byPlayer, true, 32, .5f);
 
             if (activeStack.Collectible is ItemSlabTool tool)
             {
@@ -152,24 +141,13 @@ namespace StoneQuarry
                 }
             }
 
-
-            if (dropCode == null)
-            {
-                if (api.Side == EnumAppSide.Client)
-                {
-                    (byPlayer as IClientPlayer).ShowChatNotification(Lang.Get(Code.Domain + ":slaberror-unknown-tool"));
-                }
-                return false;
-            }
+            if (dropCode == null) return false;
 
             var colObj = (CollectibleObject)world.GetItem(dropCode) ?? world.GetBlock(dropCode);
             if (colObj == null)
             {
-                if (api.Side == EnumAppSide.Client)
-                {
-                    (byPlayer as IClientPlayer).ShowChatNotification(Lang.Get(Code.Domain + ":slaberror-unknown-drop"));
-                }
-                return false;
+                (byPlayer as IServerPlayer)?.SendIngameError("", Lang.Get(Code.Domain + ":ingameerror-stonestorage-unknown-drop"));
+                return true;
             }
 
             var stackSize = DropCount(activeStack.ItemAttributes["rchances"].AsInt(), dropRate, world.Rand);
@@ -185,6 +163,16 @@ namespace StoneQuarry
                 world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
             }
             byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Item.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
+
+
+            if (world.Side == EnumAppSide.Client)
+            {
+                (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
+            }
+            interactParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
+            interactParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
+            world.SpawnParticles(interactParticles, byPlayer);
+            world.PlaySoundAt(new AssetLocation("game", "sounds/block/heavyice"), byPlayer, byPlayer, true, 32, .5f);
 
             return true;
         }
