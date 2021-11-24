@@ -190,7 +190,7 @@ namespace StoneQuarry
             else if (rockType == "" && byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack != null)
             {
                 // attempts to add the players resource to the block.
-                if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.ItemAttributes["rubbleable"].AsBool())
+                if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.ItemAttributes?["rubbleable"]?.AsBool() == true)
                 {
                     if (rcbe.Degrade())
                     {
