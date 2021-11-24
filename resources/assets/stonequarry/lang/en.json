@@ -236,10 +236,10 @@
   "info-stonestorage-heldinfo(count={0},stone={1})": "Contains: x{0} {1}",
   "info-plugandfeather-heldinfo(range={0})": "Range: {0}x{0}x{0}",
   "info-slabtool-heldinfo(result={0})": "Result: {0}",
-  "info-slabtool-type-polished": "polished rock",
+  "info-slabtool-type-rockpolished": "polished rock",
   "info-slabtool-type-rock": "rock",
   "info-slabtool-type-stone": "stones",
-  "info-slabtool-type-brick": "bricks",
+  "info-slabtool-type-stonebrick": "bricks",
 
   "info-rubblestorage-type(type={0})": "Rock: {0}",
   "info-rubblestorage-stone(count={0})": "Stone: {0}",
@@ -261,10 +261,10 @@
   "wi-rubblestorage-take-one-gravel": "Take gravel",
   "wi-rubblestorage-take-stack-gravel": "Take gravel",
 
-  "wi-stonestorage-polished": "Cut polished rock",
+  "wi-stonestorage-rockpolished": "Cut polished rock",
   "wi-stonestorage-rock": "Cut rock",
   "wi-stonestorage-stone": "Cut stones",
-  "wi-stonestorage-brick": "Cut bricks",
+  "wi-stonestorage-stonebrick": "Cut bricks",
 
   "wi-plugandfeather-quarrystarter": "Create quarry",
   "wi-plugandfeather-quarryimpact": "Hammer",

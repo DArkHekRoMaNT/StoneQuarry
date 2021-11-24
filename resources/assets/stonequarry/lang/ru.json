@@ -237,10 +237,10 @@
   "info-stonestorage-heldinfo(count={0},stone={1})": "Содержит: x{0} {1}",
   "info-plugandfeather-heldinfo(range={0})": "Дальность: {0}x{0}x{0}",
   "info-slabtool-heldinfo(result={0})": "Результат: {0}",
-  "info-slabtool-type-polished": "полированный камень",
+  "info-slabtool-type-rockpolished": "полированный камень",
   "info-slabtool-type-rock": "камень",
   "info-slabtool-type-stone": "камешки",
-  "info-slabtool-type-brick": "кирпичи",
+  "info-slabtool-type-stonebrick": "кирпичи",
 
   "info-rubblestorage-type(type={0})": "Тип камня: {0}",
   "info-rubblestorage-stone(count={0})": "Камни: {0}",
@@ -262,10 +262,10 @@
   "wi-rubblestorage-take-one-gravel": "Забрать гравий",
   "wi-rubblestorage-take-stack-gravel": "Забрать гравий",
 
-  "wi-stonestorage-polished": "Отрезать полированный камень",
+  "wi-stonestorage-rockpolished": "Отрезать полированный камень",
   "wi-stonestorage-rock": "Отрезать камень",
   "wi-stonestorage-stone": "Отрезать камешки",
-  "wi-stonestorage-brick": "Отрезать кирпичи",
+  "wi-stonestorage-stonebrick": "Отрезать кирпичи",
 
   "wi-plugandfeather-quarrystarter": "Создать карьер",
   "wi-plugandfeather-quarryimpact": "Ударить",

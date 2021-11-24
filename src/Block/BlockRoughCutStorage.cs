@@ -37,10 +37,10 @@ namespace StoneQuarry
 
             var dict = new Dictionary<string, List<ItemStack>>()
             {
-                {"polished", new List<ItemStack>()},
+                {"rockpolished", new List<ItemStack>()},
                 {"rock", new List<ItemStack>()},
                 {"stone", new List<ItemStack>()},
-                {"brick", new List<ItemStack>()}
+                {"stonebrick", new List<ItemStack>()}
             };
 
             foreach (var obj in api.World.Collectibles)
@@ -57,9 +57,9 @@ namespace StoneQuarry
 
             interactions = new WorldInteraction[] {
                 new WorldInteraction(){
-                    ActionLangCode = Code.Domain + ":wi-stonestorage-polished",
+                    ActionLangCode = Code.Domain + ":wi-stonestorage-rockpolished",
                     MouseButton = EnumMouseButton.Right,
-                    Itemstacks = dict["polished"].ToArray()
+                    Itemstacks = dict["rockpolished"].ToArray()
                 },
                 new WorldInteraction(){
                     ActionLangCode = Code.Domain + ":wi-stonestorage-rock",
@@ -72,9 +72,9 @@ namespace StoneQuarry
                     Itemstacks = dict["stone"].ToArray()
                 },
                 new WorldInteraction(){
-                    ActionLangCode = Code.Domain + ":wi-stonestorage-brick",
+                    ActionLangCode = Code.Domain + ":wi-stonestorage-stonebrick",
                     MouseButton = EnumMouseButton.Right,
-                    Itemstacks = dict["brick"].ToArray()
+                    Itemstacks = dict["stonebrick"].ToArray()
                 }
             };
         }
@@ -136,7 +136,7 @@ namespace StoneQuarry
                 var toolType = tool.GetToolType();
                 if (toolType != "")
                 {
-                    dropCode = new AssetLocation("game", "rock-" + rcbe.blockStack.Block.FirstCodePart(1));
+                    dropCode = new AssetLocation("game", toolType + "-" + rcbe.blockStack.Block.FirstCodePart(1));
                     dropRate = activeStack.ItemAttributes[toolType + "rate"].AsInt();
                 }
             }

@@ -18,7 +18,7 @@
     }
   ],
   "attributes": {
-    "polishedrate": 100,
+    "rockpolishedrate": 100,
     "rchances": 1,
     "rackable": true,
     "toolrackTransform": { "translation": { "x": 0.2, "y": 0.5, "z": 0.5 }, "origin": { "x": 0, "y": 0, "z": 0 } }

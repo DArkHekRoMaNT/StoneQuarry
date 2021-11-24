@@ -8,10 +8,10 @@ namespace StoneQuarry
     {
         public string GetToolType()
         {
-            if (Attributes.KeyExists("polishedrate")) return "polished";
+            if (Attributes.KeyExists("rockpolishedrate")) return "rockpolished";
             if (Attributes.KeyExists("rockrate")) return "rock";
             if (Attributes.KeyExists("stonerate")) return "stone";
-            if (Attributes.KeyExists("brickrate")) return "brick";
+            if (Attributes.KeyExists("stonebrickrate")) return "stonebrick";
             return "";
         }
 
