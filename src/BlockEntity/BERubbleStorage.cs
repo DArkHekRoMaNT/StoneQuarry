@@ -43,43 +43,42 @@ namespace StoneQuarry
         public void CheckDisplayVariant(IWorldAccessor world, BlockSelection blocksel)
         {
             //Set's the displayed block to the type that has the largest amount of stored material.
-            BlockRubbleStorage cblock = world.BlockAccessor.GetBlock(blocksel.Position) as BlockRubbleStorage;
+            BlockRubbleStorage block = world.BlockAccessor.GetBlock(blocksel.Position) as BlockRubbleStorage;
 
+            string shouldBe = "empty";
+            string maxStoredType = "";
+            int maxStoredCount = 0;
 
-            string bshouldbe = "empty";
-            string maxstored = "";
-            int maxAmountStored = 0;
+            Dictionary<string, string> newVariants;
 
-            Dictionary<string, string> changeDict;
-
-            foreach (KeyValuePair<string, int> i in storage)
+            foreach (var el in storage)
             {
-                if (i.Value > maxAmountStored)
+                if (el.Value > maxStoredCount)
                 {
-                    maxAmountStored = i.Value;
-                    maxstored = i.Key;
+                    maxStoredCount = el.Value;
+                    maxStoredType = el.Key;
                 }
             }
 
-            if (maxAmountStored > 0)
+            if (maxStoredCount > 0)
             {
-                bshouldbe = maxstored;
+                shouldBe = maxStoredType;
 
-                changeDict = new Dictionary<string, string>()
-                { { "type", bshouldbe }, { "stone", storedType} };
+                newVariants = new Dictionary<string, string>()
+                { { "type", shouldBe }, { "stone", storedType} };
             }
             else
             {
-                changeDict = new Dictionary<string, string>()
-                { { "type", bshouldbe }, { "stone", storedType} };
+                newVariants = new Dictionary<string, string>()
+                { { "type", shouldBe }, { "stone", storedType} };
 
                 storedType = "";
             }
 
 
-            if (bshouldbe != cblock.FirstCodePart(2))
+            if (shouldBe != block.FirstCodePart(2))
             {
-                cblock.SwitchVariant(world, blocksel, changeDict);
+                block.SwitchVariant(world, blocksel, newVariants);
             }
         }
 

@@ -83,6 +83,7 @@ namespace StoneQuarry
             }
             return true;
         }
+
         public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
         {
             var core = (world.BlockAccessor.GetBlockEntity(pos) as BEGenericMultiblockPart)?.Core;
@@ -104,26 +105,22 @@ namespace StoneQuarry
             world.BlockAccessor.SetBlock(0, core.Pos);
         }
 
-        public bool SwitchVariant(IWorldAccessor world, BlockSelection blockSel, Dictionary<string, string> switchArray)
+        /// <summary> Switches multiblock to a separate variants </summary>
+        public bool SwitchVariant(IWorldAccessor world, BlockSelection blockSel, Dictionary<string, string> newVariants)
         {
-            //Switches multiblock to a separate variants.
-            Block tempv = world.GetBlock(CodeWithVariants(switchArray));
-            BlockPos corpos = blockSel.Position;
+            var corePos = blockSel.Position;
 
-            List<BlockPos> hlightspots = new List<BlockPos>();
-            if (tempv != null)
+            if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BEGenericMultiblockPart be)
             {
-                var be = world.BlockAccessor.GetBlockEntity(blockSel.Position) as BEGenericMultiblockPart;
-                if (be != null) return false;
-
+                // If it is cap, call the core
                 if (!be.IsCore)
                 {
                     blockSel.Position = be.CorePos;
-                    (be.Core.Block as BlockGenericMultiblockPart).SwitchVariant(world, blockSel, switchArray);
+                    (be.Core.Block as BlockGenericMultiblockPart).SwitchVariant(world, blockSel, newVariants);
                     return true;
                 }
 
-
+                // Otherwise, remove all caps
                 foreach (BlockPos slave in be.Caps)
                 {
                     world.BlockAccessor.SetBlock(0, slave);
@@ -131,25 +128,23 @@ namespace StoneQuarry
                 be.Caps = new List<BlockPos>();
 
 
-                Block bactual = world.BlockAccessor.GetBlock(corpos);
-                Block bfull = world.GetBlock(bactual.CodeWithVariants(switchArray));
-
-                if (tempv.Attributes != null && tempv.Attributes.KeyExists("caps") && bfull != null)
+                Block newBlock = world.GetBlock(CodeWithVariants(newVariants));
+                if (newBlock?.Attributes?.KeyExists("caps") ?? false)
                 {
-                    world.BlockAccessor.ExchangeBlock(bfull.Id, corpos);
-                    foreach (JsonObject b in tempv.Attributes["caps"].AsArray())
+                    world.BlockAccessor.ExchangeBlock(newBlock.Id, corePos);
+                    foreach (JsonObject block in newBlock.Attributes["caps"].AsArray())
                     {
-                        Dictionary<string, string> rdict = new Dictionary<string, string>();
-                        foreach (JsonObject bv in b["varType"].AsArray())
+                        Dictionary<string, string> rightVariants = new Dictionary<string, string>();
+                        foreach (JsonObject variant in block["varType"].AsArray())
                         {
-                            rdict.Add(bv.AsArray()[0].AsString(), bv.AsArray()[1].AsString());
+                            rightVariants.Add(variant.AsArray()[0].AsString(), variant.AsArray()[1].AsString());
                         }
-                        Block capblock = world.GetBlock(bfull.CodeWithVariants(rdict));
-                        BlockPos capspot = new BlockPos(b["x"].AsInt(), b["y"].AsInt(), b["z"].AsInt()) + corpos;
-                        world.BlockAccessor.ExchangeBlock(capblock.Id, capspot);
-                        world.BlockAccessor.SpawnBlockEntity("GenericMultiblockPart", capspot);
-                        (world.BlockAccessor.GetBlockEntity(capspot) as BEGenericMultiblockPart).CorePos = corpos;
-                        be.Caps.Add(capspot);
+                        Block capBlock = world.GetBlock(newBlock.CodeWithVariants(rightVariants));
+                        BlockPos capPos = new BlockPos(block["x"].AsInt(), block["y"].AsInt(), block["z"].AsInt()) + corePos;
+                        world.BlockAccessor.ExchangeBlock(capBlock.Id, capPos);
+                        world.BlockAccessor.SpawnBlockEntity("GenericMultiblockPart", capPos);
+                        (world.BlockAccessor.GetBlockEntity(capPos) as BEGenericMultiblockPart).CorePos = corePos;
+                        be.Caps.Add(capPos);
                     }
                 }
             }
