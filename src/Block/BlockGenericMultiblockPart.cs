@@ -27,19 +27,26 @@ namespace StoneQuarry
         public override bool CanPlaceBlock(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, ref string failureCode)
         {
             BlockFacing[] sughv = SuggestedHVOrientation(byPlayer, blockSel);
-            Block ablock = world.GetBlock(CodeWithVariant("dir", sughv[0].Code));
+            Block block = world.GetBlock(CodeWithVariant("dir", sughv[0].Code));
 
-            if (ablock != null && ablock.Attributes != null && ablock.Attributes.KeyExists("caps"))
+            if (block?.Attributes?.KeyExists("caps") ?? false)
             {
-                for (int i = 0; i < ablock.Attributes["caps"].AsArray().Length; i++)
+                for (int i = 0; i < block.Attributes["caps"].AsArray().Length; i++)
                 {
-                    BlockPos checkspot = blockSel.Position.Copy() + new BlockPos(ablock.Attributes["caps"].AsArray()[i]["x"].AsInt(), ablock.Attributes["caps"].AsArray()[i]["y"].AsInt(), ablock.Attributes["caps"].AsArray()[i]["z"].AsInt());
-                    if (world.BlockAccessor.GetBlock(checkspot).Id != 0)
+                    var capBlockSel = blockSel.Clone();
+                    capBlockSel.Position += new BlockPos(
+                        block.Attributes["caps"].AsArray()[i]["x"].AsInt(),
+                        block.Attributes["caps"].AsArray()[i]["y"].AsInt(),
+                        block.Attributes["caps"].AsArray()[i]["z"].AsInt()
+                    );
+
+                    if (!base.CanPlaceBlock(world, byPlayer, capBlockSel, ref failureCode))
                     {
                         return false;
                     }
                 }
             }
+
             return base.CanPlaceBlock(world, byPlayer, blockSel, ref failureCode);
         }
 
