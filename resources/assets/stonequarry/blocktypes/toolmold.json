@@ -21,7 +21,7 @@
       "requiredUnits": 100,
       "fillHeight": 1,
       "moldrackable": true,
-      "onMoldRackTransform": { "rotation": { "z": 90 } },
+      "onmoldrackTransform": { "rotation": { "z": 90 } },
       "drop": { "type": "block", "code": "{tooltype}-{metal}-one-down-north" }
     }
   },
