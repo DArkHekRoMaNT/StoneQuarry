@@ -2,6 +2,15 @@
   {
     "file": "game:config/remaps.json",
     "op": "add",
+    "path": "/stonequarry:plugandfeather-toolmold",
+    "value": [
+      "/bir remapq stonequarry:toolmold-raw-plugandfeather stonequarry:toolmold-raw-plugnfeather force",
+      "/bir remapq stonequarry:toolmold-burned-plugandfeather stonequarry:toolmold-burned-plugnfeather force"
+    ]
+  },
+  {
+    "file": "game:config/remaps.json",
+    "op": "add",
     "path": "/stonequarry:plugandfeather",
     "value": [
       "/bir remapq stonequarry:plugandfeather-copper-one-horizontal-north stonequarry:plugnfeather-copper-one-horizontal-north force",
