@@ -24,29 +24,29 @@
     "rackable": true,
     "toolrackTransform": { "translation": { "x": 0.4, "y": 0.7, "z": 0.65 }, "scale": 1.35 }
   },
-  "damagedby": ["attacking"],
+  "damagedBy": ["attacking"],
   "attackRange": 2,
-  "durabilitybytype": {
-    "*-gold": 125,
-    "*-silver": 125,
-    "*-copper": 250,
-    "*-blackbronze": 600,
+  "durabilityByType": {
+    "*-copper": 300,
+    "*-tinbronze": 450,
     "*-bismuthbronze": 500,
-    "*-tinbronze": 400,
-    "*-iron": 900,
-    "*-meteoriciron": 1200,
-    "*-steel": 1600
+    "*-blackbronze": 550,
+    "*-gold": 150,
+    "*-silver": 175,
+    "*-iron": 1000,
+    "*-meteoriciron": 1300,
+    "*-steel": 2500
   },
-  "attackpowerbytype": {
-    "*-copper": 2,
-    "*-bismuthbronze": 2.5,
-    "*-gold": 2.5,
-    "*-silver": 2.5,
-    "*-tinbronze": 2.75,
-    "*-blackbronze": 3,
-    "*-iron": 3,
-    "*-meteoriciron": 3.5,
-    "*-steel": 4
+  "attackpowerByType": {
+    "*-copper": 1.5,
+    "*-tinbronze": 1.8,
+    "*-bismuthbronze": 1.5,
+    "*-blackbronze": 2,
+    "*-gold": 1.5,
+    "*-silver": 1.5,
+    "*-iron": 2.3,
+    "*-meteoriciron": 2.3,
+    "*-steel": 2.5
   },
   "shape": { "base": "item/tool/rubblehammer" },
   "textures": {

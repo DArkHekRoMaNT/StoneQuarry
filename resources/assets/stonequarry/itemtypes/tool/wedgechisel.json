@@ -23,16 +23,16 @@
     "rackable": true,
     "toolrackTransform": { "translation": { "x": 0.2, "y": 0.5, "z": 0.5 }, "origin": { "x": 0, "y": 0, "z": 0 } }
   },
-  "durabilitybytype": {
-    "*-gold": 125,
-    "*-silver": 125,
-    "*-copper": 250,
-    "*-blackbronze": 600,
+  "durabilityByType": {
+    "*-copper": 300,
+    "*-tinbronze": 450,
     "*-bismuthbronze": 500,
-    "*-tinbronze": 400,
-    "*-iron": 900,
-    "*-meteoriciron": 1200,
-    "*-steel": 1600
+    "*-blackbronze": 550,
+    "*-gold": 150,
+    "*-silver": 175,
+    "*-iron": 1000,
+    "*-meteoriciron": 1300,
+    "*-steel": 2500
   },
   "shape": { "base": "item/tool/wedgechisel" },
   "textures": {

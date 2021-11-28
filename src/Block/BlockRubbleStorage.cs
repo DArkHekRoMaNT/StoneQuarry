@@ -156,17 +156,19 @@ namespace StoneQuarry
             }
 
 
-            string rockType = "";
+            string selectedType = "";
             switch ((EnumStorageLock)blockSel.SelectionBoxIndex)
             {
-                case EnumStorageLock.Stone: rockType = "stone"; break;
-                case EnumStorageLock.Gravel: rockType = "gravel"; break;
-                case EnumStorageLock.Sand: rockType = "sand"; break;
+                case EnumStorageLock.Stone: selectedType = "stone"; break;
+                case EnumStorageLock.Gravel: selectedType = "gravel"; break;
+                case EnumStorageLock.Sand: selectedType = "sand"; break;
             }
 
 
-            // if the player is looking at one of the buttons on the crate.
-            if (byPlayer.Entity.Controls.Sneak && rockType != "")
+            var activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
+
+            // If the player is looking at one of the buttons on the crate.
+            if (byPlayer.Entity.Controls.Sneak && selectedType != "")
             {
                 if (rcbe.storageLock != (EnumStorageLock)blockSel.SelectionBoxIndex)
                 {
@@ -175,7 +177,8 @@ namespace StoneQuarry
                 else rcbe.storageLock = EnumStorageLock.None;
             }
 
-            else if (rockType != "" && rcbe.RemoveResource(world, byPlayer, blockSel, rockType, stockMod))
+            // If the player try get a resource
+            else if (selectedType != "" && rcbe.RemoveResource(world, byPlayer, blockSel, selectedType, stockMod))
             {
                 if (world.Side == EnumAppSide.Client)
                 {
@@ -187,10 +190,11 @@ namespace StoneQuarry
                 world.SpawnParticles(interactParticles, byPlayer);
             }
 
-            else if (rockType == "" && byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack != null)
+            // If the player try use a tool or add a resource
+            else if (selectedType == "" && activeStack != null)
             {
-                // attempts to add the players resource to the block.
-                if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.ItemAttributes?["rubbleable"]?.AsBool() == true)
+                // Is a rubble hammer?
+                if (activeStack.ItemAttributes?["rubbleable"]?.AsBool() ?? false)
                 {
                     if (rcbe.Degrade())
                     {
@@ -199,10 +203,11 @@ namespace StoneQuarry
                             (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                         }
                         world.PlaySoundAt(new AssetLocation("game", "sounds/block/heavyice"), byPlayer, byPlayer);
+                        activeStack.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
                     }
                 }
-                else if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.GetTreeAttribute("contents") != null
-                    && byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.GetTreeAttribute("contents").GetItemstack("0") != null)
+                else if (activeStack.Attributes.GetTreeAttribute("contents") != null
+                    && activeStack.Attributes.GetTreeAttribute("contents").GetItemstack("0") != null)
                 {
                     if (rcbe.TryDrench(world, blockSel, byPlayer))
                     {
@@ -225,9 +230,11 @@ namespace StoneQuarry
                     }
                 }
             }
-            else if (blockSel.SelectionBoxIndex == 0 && byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack == null)
+
+            // If the players hand is empty we want to take all the matching blocks outs of their inventory
+            else if (blockSel.SelectionBoxIndex == 0 && activeStack == null)
             {
-                // if the players hand is empty we want to take all the matching blocks outs of their inventory.
+
                 if (rcbe.AddAll(byPlayer))
                 {
                     if (world.Side == EnumAppSide.Client)
