@@ -105,7 +105,7 @@ namespace StoneQuarry
                     {
                         world.BlockAccessor.SetBlock(0, slavePos.AsBlockPos);
                         world.BlockAccessor.MarkBlockDirty(slavePos.AsBlockPos);
-                        world.SpawnItemEntity(dropStack, new Vec3d()
+                        world.SpawnItemEntity(dropStack.Clone(), new Vec3d()
                         {
                             X = slavePos.X + .5f,
                             Y = slavePos.Y + .5f,
@@ -115,7 +115,7 @@ namespace StoneQuarry
 
                     world.BlockAccessor.SetBlock(0, be.master.AsBlockPos);
                     world.BlockAccessor.MarkBlockDirty(be.master.AsBlockPos);
-                    world.SpawnItemEntity(dropStack, new Vec3d()
+                    world.SpawnItemEntity(dropStack.Clone(), new Vec3d()
                     {
                         X = masterBE.Pos.X + .5f,
                         Y = masterBE.Pos.Y + .5f,
