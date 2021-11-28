@@ -1,6 +1,6 @@
 # StoneQuarry
 
-### Links: [ModDB](https://mods.vintagestory.at/stonequarry)
+### Links: [ModDB](https://mods.vintagestory.at/stonequarry), [Forum](https://www.vintagestory.at/forums/topic/6042-stone-quarry/)
 
 <hr>
 
