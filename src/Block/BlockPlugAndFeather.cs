@@ -677,7 +677,7 @@ namespace StoneQuarry
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
-            dsc.AppendLine(Lang.Get(Code.Domain + ":plugandfeather-heldinfo(range={0})", Attributes["searchrange"]));
+            dsc.AppendLine(Lang.Get(Code.Domain + ":info-plugandfeather-heldinfo(range={0})", Attributes["searchrange"]));
         }
 
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
