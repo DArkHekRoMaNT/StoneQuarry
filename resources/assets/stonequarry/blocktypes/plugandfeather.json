@@ -74,9 +74,6 @@
   },
   "drops": [{ "type": "block", "code": "plugandfeather-{metal}-one-down-north", "quantity": { "avg": 1, "var": 0 } }],
   "groundTransform": {
-    "translation": { "x": 0, "y": 0, "z": 0 },
-    "rotation": { "x": 0, "y": -45, "z": 0 },
-    "origin": { "x": 0.5, "y": 0, "z": 0.5 },
-    "scale": 3.5
+    "scale": 3
   }
 }

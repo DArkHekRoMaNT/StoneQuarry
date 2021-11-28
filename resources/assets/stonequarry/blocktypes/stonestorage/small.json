@@ -28,5 +28,8 @@
     "translation": { "x": -0.8, "y": -1.1, "z": -0.7 },
     "rotation": { "x": 13, "y": 18, "z": -67 },
     "scale": 0.4
+  },
+  "groundTransform": {
+    "scale": 2.5
   }
 }

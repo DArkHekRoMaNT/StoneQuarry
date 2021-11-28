@@ -342,5 +342,8 @@
     "translation": { "x": -0.8, "y": -1.2, "z": -1.2 },
     "rotation": { "x": 9, "y": 15, "z": -62 },
     "scale": 0.4
+  },
+  "groundTransform": {
+    "scale": 2.5
   }
 }

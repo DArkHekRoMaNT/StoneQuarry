@@ -497,6 +497,15 @@
   "lightabsorption": 0,
   "heldTpIdleAnimation": "holdbothhandslarge",
   "heldTpUseAnimation": "twohandplaceblock",
-  "guiTransform": { "translation": { "x": -9, "y": 10, "z": 0 }, "scale": 0.46 },
-  "tpHandTransform": { "translation": { "x": -0.7, "y": -1.8, "z": -1.5 }, "rotation": { "x": 0, "y": 13, "z": -69 } }
+  "guiTransform": {
+    "translation": { "x": -9, "y": 10, "z": 0 },
+    "scale": 0.46
+  },
+  "tpHandTransform": {
+    "translation": { "x": -0.7, "y": -1.8, "z": -1.5 },
+    "rotation": { "x": 0, "y": 13, "z": -69 }
+  },
+  "groundTransform": {
+    "scale": 2.5
+  }
 }
