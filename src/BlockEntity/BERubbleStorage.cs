@@ -235,7 +235,8 @@ namespace StoneQuarry
                 }
                 else if (to == "sand")
                 {
-                    bool toSand = storage["gravel"] > storage["sand"] * 2 && split && !(to == "gravel");
+                    float mpl = (float)storage["stone"] / storage["gravel"];
+                    bool toSand = storage["sand"] * mpl < storage["gravel"] || !split;
                     storage[toSand ? "sand" : "gravel"] += 1;
                 }
                 else return false;
