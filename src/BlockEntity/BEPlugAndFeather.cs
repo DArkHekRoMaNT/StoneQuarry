@@ -21,15 +21,15 @@ namespace StoneQuarry
         public string facing;
 
         public int state = 0;
-        public int maxstate = 2;
+        public int maxState = 2;
         public int work = 0;
-        public int maxwork = 100;
+        public int maxWork = 100;
 
 
         public bool SetWork(int n)
         {
             //sets work between 0 and max work.
-            if (n >= 0 && n <= maxwork)
+            if (n >= 0 && n <= maxWork)
             {
                 work = n;
                 return true;
@@ -44,9 +44,9 @@ namespace StoneQuarry
                 return false;
             }
 
-            if (work + n > maxwork)
+            if (work + n > maxWork)
             {
-                work += (n - maxwork);
+                work += (n - maxWork);
                 return true;
             }
 
@@ -57,7 +57,7 @@ namespace StoneQuarry
         {
             if (n >= 0)
             {
-                maxwork = n;
+                maxWork = n;
                 return true;
             }
             return false;
@@ -69,9 +69,9 @@ namespace StoneQuarry
             {
                 return false;
             }
-            if (state + n > maxstate)
+            if (state + n > maxState)
             {
-                state = maxstate;
+                state = maxState;
                 return true;
             }
             state += 1;
@@ -81,7 +81,7 @@ namespace StoneQuarry
         public bool SetState(int n)
         {
             // returns false if n is out of range.
-            if (n <= maxstate && n >= 0)
+            if (n <= maxState && n >= 0)
             {
                 state = n;
                 return true;
@@ -110,7 +110,7 @@ namespace StoneQuarry
 
             tree.SetInt("state", state);
             tree.SetInt("work", work);
-            tree.SetInt("maxwork", maxwork);
+            tree.SetInt("maxwork", maxWork);
 
             if (slaves.Count != 0)
             {
@@ -143,7 +143,7 @@ namespace StoneQuarry
 
             state = tree.GetInt("state", state);
             work = tree.GetInt("work", work);
-            maxwork = tree.GetInt("maxwork", maxwork);
+            maxWork = tree.GetInt("maxwork", maxWork);
 
             if (slaveCount != 0)
             {

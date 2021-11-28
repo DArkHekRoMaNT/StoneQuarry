@@ -18,8 +18,8 @@ namespace StoneQuarry
         public AssetLocation hammerSound = new AssetLocation("game", "sounds/block/meteoriciron-hit-pickaxe");
 
         public int MaxSearchRange => Attributes["searchrange"].AsInt(6);
-        public const int WORK_MOD = 2; // the amount to multaply the amount of work needed to break the chunk.
-        public const int BASE_WORK = 5; // the base amount of work needed.
+        public const int WORK_PER_BLOCK = 2; // the amount of work needed per block
+        public const int BASE_WORK = 5; // the base amount of work needed
 
         public override void OnLoaded(ICoreAPI api)
         {
@@ -96,24 +96,31 @@ namespace StoneQuarry
             }
             else
             {
-                ItemStack[] drops = GetDrops(world, pos, byPlayer);
-
-                if (world.BlockAccessor.GetBlockEntity(be.master.AsBlockPos) is BEPlugAndFeather masterEntity)
+                if (world.BlockAccessor.GetBlockEntity(be.master.AsBlockPos) is BEPlugAndFeather masterBE)
                 {
-                    if (drops != null)
+                    var dropStack = GetDrops(world, pos, byPlayer, dropQuantityMultiplier)[0];
+                    dropStack.StackSize = 1;
+
+                    foreach (Vec3i slavePos in masterBE.slaves)
                     {
-                        ItemStack drop = drops[0];
-                        drop.StackSize = masterEntity.slaveCount + 1;
-                        world.SpawnItemEntity(drop, byPlayer.Entity.Pos.XYZ);
+                        world.BlockAccessor.SetBlock(0, slavePos.AsBlockPos);
+                        world.BlockAccessor.MarkBlockDirty(slavePos.AsBlockPos);
+                        world.SpawnItemEntity(dropStack, new Vec3d()
+                        {
+                            X = slavePos.X + .5f,
+                            Y = slavePos.Y + .5f,
+                            Z = slavePos.Z + .5f
+                        });
                     }
 
-                    foreach (Vec3i slave in masterEntity.slaves)
-                    {
-                        world.BlockAccessor.SetBlock(0, slave.AsBlockPos);
-                        world.BlockAccessor.MarkBlockDirty(slave.AsBlockPos);
-                    }
                     world.BlockAccessor.SetBlock(0, be.master.AsBlockPos);
                     world.BlockAccessor.MarkBlockDirty(be.master.AsBlockPos);
+                    world.SpawnItemEntity(dropStack, new Vec3d()
+                    {
+                        X = masterBE.Pos.X + .5f,
+                        Y = masterBE.Pos.Y + .5f,
+                        Z = masterBE.Pos.Z + .5f
+                    });
                 }
                 else
                 {
@@ -172,7 +179,7 @@ namespace StoneQuarry
             {
                 if (be.IncreaseWork(10) == true)
                 {
-                    if (be.state != be.maxstate)
+                    if (be.state != be.maxState)
                     {
                         world.PlaySoundAt(crackSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer, volume: .5f);
                         be.IncreaseState(1);
@@ -198,9 +205,9 @@ namespace StoneQuarry
         /// <summary> Makes the network if a network is available to make </summary>
         public void MakeNetwork(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
         {
-            BEPlugAndFeather be = world.BlockAccessor.GetBlockEntity(blockSel.Position) as BEPlugAndFeather;
+            var be = (BEPlugAndFeather)world.BlockAccessor.GetBlockEntity(blockSel.Position);
 
-            if (be.master == null)
+            if (be != null && be.master == null)
             {
                 List<Vec3i> slaves = FindSlaves(world, byPlayer, blockSel);
                 if (slaves != null)
@@ -214,74 +221,57 @@ namespace StoneQuarry
                         be.AddSlave(slave);
                         BEPlugAndFeather tempBE = world.BlockAccessor.GetBlockEntity(slave.AsBlockPos) as BEPlugAndFeather;
                         tempBE.master = blockSel.Position.ToVec3i();
-                        tempBE.maxwork = work;
+                        tempBE.maxWork = work;
                     }
                 }
             }
         }
-        public int WorkNeeded(int nBlocks)
+
+        /// <summary> Finds the amount of work needed for each point on the network </summary>
+        public int WorkNeeded(int blocks)
         {
-            // finds the amount of work needed for each point on the network.
-            return BASE_WORK + (nBlocks * WORK_MOD);
+            return BASE_WORK + (blocks * WORK_PER_BLOCK);
         }
 
-        public void SwitchState(int pickstate, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
+        public void SwitchState(int pickState, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
         {
-            string[] switchterm = { "one", "two", "three" };
-            if (pickstate < switchterm.Count())
+            string[] switchTerm = { "one", "two", "three" };
+
+            if (pickState < switchTerm.Count())
             {
-                Block tblock = world.BlockAccessor.GetBlock(blockSel.Position);
+                Block block = world.BlockAccessor.GetBlock(blockSel.Position);
+                AssetLocation newState = block.CodeWithPart(switchTerm[pickState], 2);
 
-                AssetLocation nstate = tblock.CodeWithPart(switchterm[pickstate], 2);
-
-                (world.BlockAccessor.GetBlockEntity(blockSel.Position) as BEPlugAndFeather).state = pickstate;
-                world.BlockAccessor.ExchangeBlock(world.GetBlock(nstate).Id, blockSel.Position);
-
-                //Debug.WriteLine(nstate);
-                return;
+                (world.BlockAccessor.GetBlockEntity(blockSel.Position) as BEPlugAndFeather).state = pickState;
+                world.BlockAccessor.ExchangeBlock(world.GetBlock(newState).Id, blockSel.Position);
             }
-            Debug.WriteLine("pickstate larger than available states");
-            return;
         }
 
+        /// <returns> false if not done, true if done</returns>
         public bool CheckDone(BEPlugAndFeather be, IWorldAccessor world)
         {
-            // return false if not done, true if done.
-
             if (be == null || be.master == null)
             {
-                Debug.WriteLine("master or be is null");
                 return false;
             }
 
-            BEPlugAndFeather master = world.BlockAccessor.GetBlockEntity(be.master.AsBlockPos) as BEPlugAndFeather;
-            if (master == null || master.state != master.maxstate)
+            var master = world.BlockAccessor.GetBlockEntity(be.master.AsBlockPos) as BEPlugAndFeather;
+            if (master == null || master.state != master.maxState)
             {
-                Debug.WriteLine("master is null or not maxed");
-                //Debug.WriteLine(master.state);
-                //Debug.WriteLine(master.maxstate);
-
                 return false;
-
             }
+
 
             List<Vec3i> slaves = master.slaves;
             foreach (Vec3i slave in slaves)
             {
-                BEPlugAndFeather tempBE = world.BlockAccessor.GetBlockEntity(slave.AsBlockPos) as BEPlugAndFeather;
-                if (tempBE == null)
+                var slaveBE = (BEPlugAndFeather)world.BlockAccessor.GetBlockEntity(slave.AsBlockPos);
+                if (slaveBE == null || slaveBE.state != slaveBE.maxState)
                 {
-                    Debug.WriteLine(slave);
-                    Debug.WriteLine(master.slaveCount);
-                    Debug.WriteLine("tempBE == null");
-                    return false;
-                }
-                if (tempBE.state != tempBE.maxstate)
-                {
-                    Debug.WriteLine("tempBE is not maxed");
                     return false;
                 }
             }
+
             return true;
         }
         public void BreakAll(BEPlugAndFeather be, IWorldAccessor world, IPlayer byPlayer)
@@ -310,7 +300,6 @@ namespace StoneQuarry
                     rockamount = k.Value;
                 }
             }
-            //Debug.WriteLine(rockpath);
 
             foreach (BlockPos point in blocks)
             {
@@ -342,17 +331,24 @@ namespace StoneQuarry
             {
                 ItemStack dropItemStack = new ItemStack(dropItem, 1);
                 dropItemStack.Attributes.SetInt("stonestored", rockamount);
-                world.SpawnItemEntity(dropItemStack, new Vec3d(((cube[1].X - cube[0].X) / 2) + cube[0].X, ((cube[1].Y - cube[0].Y) / 2) + cube[0].Y, ((cube[1].Z - cube[0].Z) / 2) + cube[0].Z));
+                world.SpawnItemEntity(dropItemStack, new Vec3d()
+                {
+                    X = ((cube[1].X - cube[0].X) / 2f) + cube[0].X,
+                    Y = ((cube[1].Y - cube[0].Y) / 2f) + cube[0].Y,
+                    Z = ((cube[1].Z - cube[0].Z) / 2f) + cube[0].Z
+                });
             }
             world.BlockAccessor.BreakBlock(be.master.AsBlockPos, byPlayer);
         }
 
+        /// <summary>
+        /// looks at the blocks above and below this one it the direction it's facing and matches the first that has the orientation of up/down and the same facing direction.
+        /// if you're looking at this to figure out what I did.... good luck? If you can optimize this let me know. I'm moving on to something else now.
+        /// </summary>
         public Vec3i GetCounterpart(IWorldAccessor world, IPlayer byPlayer, BlockPos blockSel)
         {
-            //looks at the blocks above and below this one it the direction it's facing and matches the first that has the orientation of up/down and the same facing direction.
-            // if you're looking at this to figure out what I did.... good luck? If you can optimize this let me know. I'm moving on to something else now.
-            BEPlugAndFeather BE = world.BlockAccessor.GetBlockEntity(blockSel) as BEPlugAndFeather;
-            if (BE.facing == null || BE.orientation == null)
+            var be = (BEPlugAndFeather)world.BlockAccessor.GetBlockEntity(blockSel);
+            if (be == null || be.facing == null || be.orientation == null)
             {
                 return null;
             }
@@ -364,53 +360,53 @@ namespace StoneQuarry
             Vec3i checkPos = new Vec3i();
             Vec3i startPos = blockSel.ToVec3i();
 
-            if (BE.orientation == "up")
+            if (be.orientation == "up")
             {
                 dir = new Vec3i(0, 1, 0);
-                if (BE.facing == "north" || BE.facing == "south")
+                if (be.facing == "north" || be.facing == "south")
                 {
                     orientation = new Vec3i(0, 0, 1);
                     checkDir = new string[] { "north", "south" };
                 }
-                else if (BE.facing == "east" || BE.facing == "west")
+                else if (be.facing == "east" || be.facing == "west")
                 {
                     orientation = new Vec3i(1, 0, 0);
                     checkDir = new string[] { "east", "west" };
                 }
             }
-            else if (BE.orientation == "down")
+            else if (be.orientation == "down")
             {
                 dir = new Vec3i(0, -1, 0);
-                if (BE.facing == "north" || BE.facing == "south")
+                if (be.facing == "north" || be.facing == "south")
                 {
                     orientation = new Vec3i(0, 0, 1);
                     checkDir = new string[] { "north", "south" };
                 }
-                else if (BE.facing == "east" || BE.facing == "west")
+                else if (be.facing == "east" || be.facing == "west")
                 {
                     orientation = new Vec3i(1, 0, 0);
                     checkDir = new string[] { "east", "west" };
                 }
             }
-            else if (BE.orientation == "horizontal")
+            else if (be.orientation == "horizontal")
             {
                 orientation = new Vec3i(0, 1, 0);
-                if (BE.facing == "north")
+                if (be.facing == "north")
                 {
                     dir = new Vec3i(0, 0, -1);
                     checkDir = new string[] { "north", "south" };
                 }
-                else if (BE.facing == "east")
+                else if (be.facing == "east")
                 {
                     dir = new Vec3i(1, 0, 0);
                     checkDir = new string[] { "east", "west" };
                 }
-                else if (BE.facing == "south")
+                else if (be.facing == "south")
                 {
                     dir = new Vec3i(0, 0, 1);
                     checkDir = new string[] { "north", "south" };
                 }
-                else if (BE.facing == "west")
+                else if (be.facing == "west")
                 {
                     dir = new Vec3i(-1, 0, 0);
                     checkDir = new string[] { "east", "west" };
@@ -429,29 +425,25 @@ namespace StoneQuarry
 
                     Block block1 = world.BlockAccessor.GetBlock(rpos1.AsBlockPos);
                     Block block2 = world.BlockAccessor.GetBlock(rpos2.AsBlockPos);
-                    if (BE.orientation == "horizontal")
+                    if (be.orientation == "horizontal")
                     {
-                        if (block1.Code.Path.Contains("plugandfeather") && block1.FirstCodePart(1) == this.FirstCodePart(1) && block1.Code.Path.Contains("-down-") && (block1.Code.Path.Contains(checkDir[0]) || block1.Code.Path.Contains(checkDir[1])))
+                        if (block1.Code.Path.Contains("plugandfeather") && block1.FirstCodePart(1) == FirstCodePart(1) && block1.Code.Path.Contains("-down-") && (block1.Code.Path.Contains(checkDir[0]) || block1.Code.Path.Contains(checkDir[1])))
                         {
-                            //Debug.WriteLine(block1);
                             return rpos1;
                         }
-                        if (block2.Code.Path.Contains("plugandfeather") && block2.FirstCodePart(1) == this.FirstCodePart(1) && block2.Code.Path.Contains("-up-") && (block2.Code.Path.Contains(checkDir[0]) || block2.Code.Path.Contains(checkDir[1])))
+                        if (block2.Code.Path.Contains("plugandfeather") && block2.FirstCodePart(1) == FirstCodePart(1) && block2.Code.Path.Contains("-up-") && (block2.Code.Path.Contains(checkDir[0]) || block2.Code.Path.Contains(checkDir[1])))
                         {
-                            //Debug.WriteLine(block2);
                             return rpos2;
                         }
                     }
-                    else if (BE.orientation == "up" || BE.orientation == "down")
+                    else if (be.orientation == "up" || be.orientation == "down")
                     {
                         if (block1.Code.Path.Contains("plugandfeather-") && block1.Code.Path.Contains("-horizontal-") && block1.FirstCodePart(1) == this.FirstCodePart(1) && (block1.Code.Path.Contains(checkDir[0]) || block1.Code.Path.Contains(checkDir[1])))
                         {
-                            //Debug.WriteLine(block1);
                             return rpos1;
                         }
                         if (block2.Code.Path.Contains("plugandfeather-") && block2.Code.Path.Contains("-horizontal-") && block2.FirstCodePart(1) == this.FirstCodePart(1) && (block2.Code.Path.Contains(checkDir[0]) || block2.Code.Path.Contains(checkDir[1])))
                         {
-                            //Debug.WriteLine(block2);
                             return rpos2;
                         }
                     }
@@ -461,9 +453,10 @@ namespace StoneQuarry
             return null;
         }
 
+        /// <summary> Finds blocks in a line around this block. Stops if theres a break in the line </summary>
         public List<Vec3i> GetNeighbours(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
         {
-            //Finds blocks in a line around this block. Stops if theres a break in the line.
+
             BEPlugAndFeather BE = world.BlockAccessor.GetBlockEntity(blockSel.Position) as BEPlugAndFeather;
             Vec3i checkDir = new Vec3i();
             Vec3i startPos = blockSel.Position.ToVec3i();
@@ -498,13 +491,10 @@ namespace StoneQuarry
                 BEPlugAndFeather blocke1 = world.BlockAccessor.GetBlockEntity(checkPos1.ToBlockPos()) as BEPlugAndFeather;
                 BEPlugAndFeather blocke2 = world.BlockAccessor.GetBlockEntity(checkPos2.ToBlockPos()) as BEPlugAndFeather;
 
-                //Debug.WriteLine(FirstCodePart(1));
                 if (p1 == true)
                 {
                     if (block1.Code.Path.Contains(FirstCodePart()) && block1.FirstCodePart(1) == this.FirstCodePart(1) && block1.Code.Path.Contains(FirstCodePart(3)) && block1.Code.Path.Contains(FirstCodePart(4)) && blocke1.master == null)
                     {
-                        //Debug.WriteLine("block1");
-                        //Debug.WriteLine(checkPos1);
                         returnBlocks.Add(checkPos1);
                     }
                     else
@@ -517,8 +507,6 @@ namespace StoneQuarry
                 {
                     if (block2.Code.Path.Contains(FirstCodePart()) && block2.FirstCodePart(1) == this.FirstCodePart(1) && block2.Code.Path.Contains(FirstCodePart(3)) && block2.Code.Path.Contains(FirstCodePart(4)) && blocke2.master == null)
                     {
-                        //Debug.WriteLine("block2");
-                        //Debug.WriteLine(checkPos2);
                         returnBlocks.Add(checkPos2);
                     }
                     else
@@ -537,10 +525,9 @@ namespace StoneQuarry
             return returnBlocks;
         }
 
+        /// <summary> Builds a series of points based on the surrounding blocks </summary>
         public List<Vec3i> FindSlaves(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
         {
-            //builds a series of points based on the surrounding blocks.
-            //PlugnFeatherBlockEntity BE = world.BlockAccessor.GetBlockEntity(blockSel.Position) as PlugnFeatherBlockEntity;
             Vec3i counterpart = GetCounterpart(world, byPlayer, blockSel.Position);
             List<Vec3i> neighbours = GetNeighbours(world, byPlayer, blockSel);
 
@@ -548,42 +535,31 @@ namespace StoneQuarry
 
             if (counterpart == null)
             {
-                Debug.WriteLine("No Counterpart at this pos.");
                 return null;
             }
 
             slaves.Add(counterpart);
 
-            if (neighbours.Count == 0)
-            {
-                Debug.WriteLine("No Neighbours around this pos.");
-                //return null;
-            }
             for (int i = 0; i < neighbours.Count; i++)
             {
-                BlockPlugAndFeather nblock = world.BlockAccessor.GetBlock(neighbours[i].AsBlockPos) as BlockPlugAndFeather;
-                BEPlugAndFeather nblockentity = world.BlockAccessor.GetBlockEntity(neighbours[i].AsBlockPos) as BEPlugAndFeather;
-                Vec3i ncounterblockpos = nblock.GetCounterpart(world, byPlayer, neighbours[i].AsBlockPos);
-                BEPlugAndFeather ncounterbe = null;
-                if (ncounterblockpos != null)
+                var nBlock = world.BlockAccessor.GetBlock(neighbours[i].AsBlockPos) as BlockPlugAndFeather;
+                var nBE = world.BlockAccessor.GetBlockEntity(neighbours[i].AsBlockPos) as BEPlugAndFeather;
+
+                Vec3i nCounterPos = nBlock.GetCounterpart(world, byPlayer, neighbours[i].AsBlockPos);
+                BEPlugAndFeather nCounterBE = null;
+                if (nCounterPos != null)
                 {
-                    ncounterbe = world.BlockAccessor.GetBlockEntity(ncounterblockpos.AsBlockPos) as BEPlugAndFeather;
+                    nCounterBE = world.BlockAccessor.GetBlockEntity(nCounterPos.AsBlockPos) as BEPlugAndFeather;
                 }
 
-
-                if (ncounterblockpos != null && ncounterbe.master == null)
+                if (nCounterPos != null && nCounterBE.master == null)
                 {
-                    slaves.Add(ncounterblockpos);
+                    slaves.Add(nCounterPos);
                     slaves.Add(neighbours[i]);
                 }
             }
 
-            for (int i = 0; i < slaves.Count; i++)
-            {
-                Debug.WriteLine(slaves[i]);
-            }
             return slaves;
-
         }
 
         public Vec3i[] FindCube(List<Vec3i> dataPoints)
@@ -592,142 +568,110 @@ namespace StoneQuarry
             {
                 return null;
             }
-            Vec3i minPos = dataPoints[0];
-            Vec3i maxPos = dataPoints[0];
+
+            Vec3i minPos = dataPoints[0].Clone();
+            Vec3i maxPos = dataPoints[0].Clone();
 
             foreach (Vec3i pos in dataPoints)
             {
-                if (pos.X < minPos.X)
-                {
-                    minPos = new Vec3i(pos.X, minPos.Y, minPos.Z);
-                }
-                if (pos.Y < minPos.Y)
-                {
-                    minPos = new Vec3i(minPos.X, pos.Y, minPos.Z);
-                }
-                if (pos.Z < minPos.Z)
-                {
-                    minPos = new Vec3i(minPos.X, minPos.Y, pos.Z);
-                }
+                if (pos.X < minPos.X) minPos.X = pos.X;
+                if (pos.Y < minPos.Y) minPos.Y = pos.Y;
+                if (pos.Z < minPos.Z) minPos.Z = pos.Z;
 
-                if (pos.X > maxPos.X)
-                {
-                    maxPos = new Vec3i(pos.X, maxPos.Y, maxPos.Z);
-                }
-                if (pos.Y > maxPos.Y)
-                {
-                    maxPos = new Vec3i(maxPos.X, pos.Y, maxPos.Z);
-                }
-                if (pos.Z > maxPos.Z)
-                {
-                    maxPos = new Vec3i(maxPos.X, maxPos.Y, pos.Z);
-                }
+                if (pos.X > maxPos.X) maxPos.X = pos.X;
+                if (pos.Y > maxPos.Y) maxPos.Y = pos.Y;
+                if (pos.Z > maxPos.Z) maxPos.Z = pos.Z;
             }
-            Vec3i[] rvecs = { minPos, maxPos };
-            return rvecs;
+
+            return new Vec3i[] { minPos, maxPos };
         }
 
-        public List<BlockPos> FindBlocksPos(Vec3i pmin, Vec3i pmax)
+        /// <summary> Get a list of all blocks found in a cube defined by two points </summary>
+        public List<BlockPos> FindBlocksPos(Vec3i minPos, Vec3i maxPos)
         {
-            // returns a list of all blocks found in a cube defined by two points.
+            List<BlockPos> blocksPos = new List<BlockPos>();
 
-            List<BlockPos> bps = new List<BlockPos>();
-
-            for (int x = pmin.X; x <= pmax.X; x++)
+            for (int x = minPos.X; x <= maxPos.X; x++)
             {
-                for (int y = pmin.Y; y <= pmax.Y; y++)
+                for (int y = minPos.Y; y <= maxPos.Y; y++)
                 {
-                    for (int z = pmin.Z; z <= pmax.Z; z++)
+                    for (int z = minPos.Z; z <= maxPos.Z; z++)
                     {
-                        bps.Add(new BlockPos(x, y, z));
+                        blocksPos.Add(new BlockPos(x, y, z));
                     }
                 }
             }
 
-            return bps;
+            return blocksPos;
         }
 
-
-        public int FindAmountOfStone(IWorldAccessor world, List<BlockPos> points)
-        {
-            int rint = 0;
-            foreach (BlockPos bp in points)
-            {
-                if (world.BlockAccessor.GetBlock(bp).FirstCodePart() == "rock")
-                {
-                    rint += 1;
-                }
-            }
-            return rint;
-        }
-
+        /// <summary> Checks all points givin and returns the types and quantaties of stone found. </summary>
         public IDictionary<string, int> FindStoneTypes(IWorldAccessor world, List<BlockPos> points)
         {
-            // Checks all points givin and returns the types and quantaties of stone found.
-            IDictionary<string, int> rdict = new Dictionary<string, int>();
-            foreach (BlockPos bp in points)
+            IDictionary<string, int> types = new Dictionary<string, int>();
+            foreach (var pos in points)
             {
-                Block tblock = world.BlockAccessor.GetBlock(bp);
-                if (tblock.FirstCodePart() == "rock")
+                Block block = world.BlockAccessor.GetBlock(pos);
+                if (block.FirstCodePart() == "rock")
                 {
-                    if (rdict.ContainsKey(tblock.FirstCodePart(1)))
+                    if (types.ContainsKey(block.FirstCodePart(1)))
                     {
-                        rdict[tblock.FirstCodePart(1)] += 1;
+                        types[block.FirstCodePart(1)] += 1;
                     }
                     else
                     {
-                        rdict.Add(tblock.FirstCodePart(1), 1);
+                        types.Add(block.FirstCodePart(1), 1);
                     }
                 }
             }
-            return rdict;
+            return types;
         }
 
 
         public string GetSizeFillerString(string rocksize)
         {
-            string rstring = "-";
+            string filler = "-";
 
             if (rocksize == "Large")
             {
-                rstring = "-zero-";
+                filler = "-zero-";
             }
             else if (rocksize == "Huge")
             {
-                rstring = "-zero-zero-";
+                filler = "-zero-zero-";
             }
             else if (rocksize == "Gient")
             {
-                rstring = "-zero-zero-";
+                filler = "-zero-zero-";
             }
 
-            return rstring;
+            return filler;
         }
 
         public string GetDropType(int quantity)
         {
-            string rstring = null;
+            string dropType = null;
             if (quantity > 0 && quantity < 42)
             {
-                rstring = "Small";
+                dropType = "Small";
             }
             else if (quantity >= 42 && quantity < 84)
             {
-                rstring = "Med";
+                dropType = "Med";
             }
             else if (quantity >= 84 && quantity < 126)
             {
-                rstring = "Large";
+                dropType = "Large";
             }
             else if (quantity >= 126 && quantity < 168)
             {
-                rstring = "Huge";
+                dropType = "Huge";
             }
             else if (quantity >= 168)
             {
-                rstring = "Gient";
+                dropType = "Gient";
             }
-            return rstring;
+            return dropType;
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
