@@ -6,6 +6,8 @@
     { "code": "stone", "loadFromProperties": "block/rockwithdeposit" },
     { "code": "dir", "states": ["north", "south", "east", "west"] }
   ],
+  "storageFlags": 5,
+  "maxStackSize": 1,
   "creativeinventory": { "general": ["*-north"], "stonequarry": ["*-north"] },
   "textures": { "stone": { "base": "game:block/stone/rock/{stone}1" } },
   "shapeByType": {

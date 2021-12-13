@@ -8,6 +8,8 @@
     { "code": "height", "states": ["zero", "one"] },
     { "code": "dir", "states": ["north", "south", "east", "west"] }
   ],
+  "storageFlags": 5,
+  "maxStackSize": 1,
   "creativeinventory": { "general": ["*-zero-zero-north"], "stonequarry": ["*-zero-zero-north"] },
   "attributesByType": {
     "*-east": {

@@ -11,6 +11,7 @@
     { "code": "orientation", "states": ["horizontal", "up", "down"] },
     { "code": "direction", "states": ["north", "south", "east", "west"] }
   ],
+  "storageFlags": 5,
   "attributes": {
     "searchrangeByType": {
       "*-copper-*": 3,
