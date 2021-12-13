@@ -7,7 +7,7 @@
     { "code": "dir", "states": ["north", "south", "east", "west"] }
   ],
   "storageFlags": 5,
-  "maxStackSize": 1,
+  "maxStackSize": 6,
   "creativeinventory": { "general": ["*-north"], "stonequarry": ["*-north"] },
   "attributesByType": {
     "*-east": { "caps": [{ "x": 0, "y": 0, "z": 1, "varType": [["dir", "west"]] }] },
