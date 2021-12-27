@@ -23,13 +23,14 @@ namespace StoneQuarry
             GravityEffect = .9f,
             WithTerrainCollision = true,
             ParticleModel = EnumParticleModel.Quad,
-            LifeLength = 2.5f,
+            LifeLength = 0.5f,
             MinVelocity = new Vec3f(-0.4f, -0.4f, -0.4f),
             AddVelocity = new Vec3f(0.8f, 1.2f, 0.8f),
             MinSize = 0.1f,
             MaxSize = 0.4f,
             DieOnRainHeightmap = false
         };
+        float hitTime = .2f;
 
         public override void OnLoaded(ICoreAPI api)
         {
@@ -110,8 +111,8 @@ namespace StoneQuarry
             var be = (world.BlockAccessor.GetBlockEntity(blockSel.Position) as BEGenericMultiblockPart)?.Core;
             if (!(be is BERoughCutStorage rcbe) || rcbe.blockStack == null) return false;
 
-
-            if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack == null)
+            ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
+            if (activeStack == null)
             {
                 if (rcbe.blockStack.Attributes.HasAttribute("stonestored"))
                 {
@@ -124,30 +125,93 @@ namespace StoneQuarry
                 return false;
             }
 
-            if (rcbe.blockStack.Attributes.GetInt("stonestored") <= 0) return false;
+            if (rcbe.blockStack.Attributes.GetInt("stonestored") > 0 && activeStack.Collectible is ItemSlabTool tool)
+            {
+                return true;
+            }
 
+            return base.OnBlockInteractStart(world, byPlayer, blockSel);
+        }
+
+        public override bool OnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
+        {
+            ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
+            if (activeStack.Collectible is ItemSlabTool tool)
+            {
+                if (api.Side == EnumAppSide.Client)
+                {
+
+                    if (activeStack != null && activeStack.Collectible.FirstCodePart() == "rubblehammer")
+                    {
+                        ModelTransform tf = ModelTransform.NoTransform;
+
+                        float offset = secondsUsed / Core.Config.SlabInteractionTime;
+                        tf.Translation.Set(offset * .25f, 0, offset * .5f);
+
+                        byPlayer.Entity.Controls.UsingHeldItemTransformBefore = tf;
+                    }
+                    else
+                    {
+                        ModelTransform tf = ModelTransform.NoTransform;
+                        tf.Translation.Set(secondsUsed % hitTime, 0, 0);
+                        byPlayer.Entity.Controls.UsingHeldItemTransformBefore = tf;
+
+                        int times = byPlayer.Entity.WatchedAttributes.GetInt("sq_slab_times", 1);
+
+                        if (secondsUsed > times * hitTime)
+                        {
+                            interactParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
+                            interactParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
+                            world.SpawnParticles(interactParticles, byPlayer);
+                            world.PlaySoundAt(new AssetLocation("game", "sounds/block/rock-hit-pickaxe"), byPlayer, byPlayer, true, 32, .5f);
+                            byPlayer.Entity.WatchedAttributes.SetInt("sq_slab_times", times + 1);
+                        }
+                    }
+                }
+
+                return secondsUsed < Core.Config.SlabInteractionTime;
+            }
+
+            return base.OnBlockInteractStep(secondsUsed, world, byPlayer, blockSel);
+        }
+
+        public override void OnBlockInteractStop(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
+        {
+            if (api.Side == EnumAppSide.Client)
+            {
+                byPlayer.Entity.WatchedAttributes.SetInt("sq_slab_times", 1);
+            }
 
             ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
+            var tool = activeStack.Collectible as ItemSlabTool;
+
+            if (secondsUsed < Core.Config.SlabInteractionTime || tool == null)
+            {
+                base.OnBlockInteractStop(secondsUsed, world, byPlayer, blockSel);
+                return;
+            }
+
+
+            var be = (world.BlockAccessor.GetBlockEntity(blockSel.Position) as BEGenericMultiblockPart)?.Core;
+            if (!(be is BERoughCutStorage rcbe) || rcbe.blockStack == null) return;
+
             AssetLocation dropCode = null;
             int dropRate = 0;
 
-            if (activeStack.Collectible is ItemSlabTool tool)
+            var toolType = tool.GetToolType();
+            if (toolType != "")
             {
-                var toolType = tool.GetToolType();
-                if (toolType != "")
-                {
-                    dropCode = new AssetLocation("game", toolType + "-" + rcbe.blockStack.Block.FirstCodePart(1));
-                    dropRate = activeStack.ItemAttributes[toolType + "rate"].AsInt();
-                }
+                dropCode = new AssetLocation("game", toolType + "-" + rcbe.blockStack.Block.FirstCodePart(1));
+                dropRate = activeStack.ItemAttributes[toolType + "rate"].AsInt();
             }
 
-            if (dropCode == null) return false;
+            if (dropCode == null) return;
 
             var colObj = (CollectibleObject)world.GetItem(dropCode) ?? world.GetBlock(dropCode);
             if (colObj == null)
             {
                 (byPlayer as IServerPlayer)?.SendIngameError("", Lang.Get(Code.Domain + ":ingameerror-stonestorage-unknown-drop"));
-                return true;
+                return;
             }
 
             var stackSize = DropCount(activeStack.ItemAttributes["rchances"].AsInt(), dropRate, world.Rand);
@@ -155,6 +219,15 @@ namespace StoneQuarry
 
             var dropPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
             var dropVel = new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z);
+
+            if (activeStack != null && activeStack.Collectible.FirstCodePart() == "rubblehammer")
+            {
+                interactParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
+                interactParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
+                world.SpawnParticles(interactParticles, byPlayer);
+                world.PlaySoundAt(new AssetLocation("game", "sounds/block/rock-hit-pickaxe"), byPlayer, byPlayer, true, 32, .5f);
+            }
+            world.PlaySoundAt(new AssetLocation("game", "sounds/block/heavyice"), byPlayer, byPlayer, true, 32, .05f);
             world.SpawnItemEntity(dropStack, dropPos, dropVel);
 
             rcbe.blockStack.Attributes.SetInt("stonestored", rcbe.blockStack.Attributes.GetInt("stonestored") - 1);
@@ -163,18 +236,6 @@ namespace StoneQuarry
                 world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
             }
             byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Item.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
-
-
-            if (world.Side == EnumAppSide.Client)
-            {
-                (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
-            }
-            interactParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
-            interactParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
-            world.SpawnParticles(interactParticles, byPlayer);
-            world.PlaySoundAt(new AssetLocation("game", "sounds/block/heavyice"), byPlayer, byPlayer, true, 32, .5f);
-
-            return true;
         }
 
         public int DropCount(int chances, int rate, Random rand) //TODO: Simplify and embeds it???

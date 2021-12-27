@@ -1,5 +1,5 @@
 {
-  "code": "stonestoragehuge",
+  "code": "stonestoragegiant",
   "class": "BlockRoughCutStorage",
   "entityclass": "RoughCutStorage",
   "variantgroups": [
@@ -21,7 +21,7 @@
     }
   ],
   "storageFlags": 5,
-  "maxStackSize": 2,
+  "maxStackSize": 1,
   "creativeinventory": {
     "general": [ "*-zero-zero-north" ],
     "stonequarry": [ "*-zero-zero-north" ]
@@ -92,6 +92,46 @@
         {
           "x": 0,
           "y": 1,
+          "z": 0,
+          "varType": [
+            [ "dir", "east" ],
+            [ "depth", "zero" ],
+            [ "height", "one" ]
+          ]
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "z": 1,
+          "varType": [
+            [ "dir", "east" ],
+            [ "depth", "one" ],
+            [ "height", "one" ]
+          ]
+        },
+        {
+          "x": 1,
+          "y": 2,
+          "z": 1,
+          "varType": [
+            [ "dir", "west" ],
+            [ "depth", "zero" ],
+            [ "height", "one" ]
+          ]
+        },
+        {
+          "x": 1,
+          "y": 2,
+          "z": 0,
+          "varType": [
+            [ "dir", "west" ],
+            [ "depth", "one" ],
+            [ "height", "one" ]
+          ]
+        },
+        {
+          "x": 0,
+          "y": 2,
           "z": 0,
           "varType": [
             [ "dir", "east" ],
@@ -172,6 +212,46 @@
             [ "depth", "zero" ],
             [ "height", "one" ]
           ]
+        },
+        {
+          "x": -1,
+          "y": 2,
+          "z": 0,
+          "varType": [
+            [ "dir", "south" ],
+            [ "depth", "one" ],
+            [ "height", "one" ]
+          ]
+        },
+        {
+          "x": -1,
+          "y": 2,
+          "z": 1,
+          "varType": [
+            [ "dir", "north" ],
+            [ "depth", "zero" ],
+            [ "height", "one" ]
+          ]
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "z": 1,
+          "varType": [
+            [ "dir", "north" ],
+            [ "depth", "one" ],
+            [ "height", "one" ]
+          ]
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "z": 0,
+          "varType": [
+            [ "dir", "south" ],
+            [ "depth", "zero" ],
+            [ "height", "one" ]
+          ]
         }
       ]
     },
@@ -240,6 +320,46 @@
         {
           "x": 0,
           "y": 1,
+          "z": 0,
+          "varType": [
+            [ "dir", "north" ],
+            [ "depth", "zero" ],
+            [ "height", "one" ]
+          ]
+        },
+        {
+          "x": 1,
+          "y": 2,
+          "z": 0,
+          "varType": [
+            [ "dir", "north" ],
+            [ "depth", "one" ],
+            [ "height", "one" ]
+          ]
+        },
+        {
+          "x": 1,
+          "y": 2,
+          "z": -1,
+          "varType": [
+            [ "dir", "south" ],
+            [ "depth", "zero" ],
+            [ "height", "one" ]
+          ]
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "z": -1,
+          "varType": [
+            [ "dir", "south" ],
+            [ "depth", "one" ],
+            [ "height", "one" ]
+          ]
+        },
+        {
+          "x": 0,
+          "y": 2,
           "z": 0,
           "varType": [
             [ "dir", "north" ],
@@ -320,6 +440,46 @@
             [ "depth", "zero" ],
             [ "height", "one" ]
           ]
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "z": -1,
+          "varType": [
+            [ "dir", "west" ],
+            [ "depth", "one" ],
+            [ "height", "one" ]
+          ]
+        },
+        {
+          "x": -1,
+          "y": 2,
+          "z": -1,
+          "varType": [
+            [ "dir", "east" ],
+            [ "depth", "zero" ],
+            [ "height", "one" ]
+          ]
+        },
+        {
+          "x": -1,
+          "y": 2,
+          "z": 0,
+          "varType": [
+            [ "dir", "east" ],
+            [ "depth", "one" ],
+            [ "height", "one" ]
+          ]
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "z": 0,
+          "varType": [
+            [ "dir", "west" ],
+            [ "depth", "zero" ],
+            [ "height", "one" ]
+          ]
         }
       ]
     }
@@ -379,7 +539,7 @@
       "rotatey": 90
     }
   },
-  "shapeinventory": { "base": "block/stonestorage/huge/stonestoragehugeinv" },
+  "shapeinventory": { "base": "block/stonestorage/giant/stonestoragegiantinv" },
   "drawtype": "json",
   "facecullmode": "nevercull",
   "sidesolid": { "all": false },
@@ -392,24 +552,23 @@
   "heldTpUseAnimation": "twohandplaceblock",
   "guiTransform": {
     "translation": {
-      "x": -10,
-      "y": 5,
+      "x": -9,
+      "y": 10,
       "z": 0
     },
-    "scale": 0.56
+    "scale": 0.46
   },
   "tpHandTransform": {
     "translation": {
-      "x": -0.8,
-      "y": -1.2,
-      "z": -1.2
+      "x": -0.7,
+      "y": -1.8,
+      "z": -1.5
     },
     "rotation": {
-      "x": 9,
-      "y": 15,
-      "z": -62
-    },
-    "scale": 0.4
+      "x": 0,
+      "y": 13,
+      "z": -69
+    }
   },
   "groundTransform": {
     "scale": 2.5

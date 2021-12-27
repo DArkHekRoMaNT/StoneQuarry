@@ -22,9 +22,16 @@
     "rchances": 6,
     "rubbleable": true,
     "rackable": true,
-    "toolrackTransform": { "translation": { "x": 0.4, "y": 0.7, "z": 0.65 }, "scale": 1.35 }
+    "toolrackTransform": {
+      "translation": {
+        "x": 0.4,
+        "y": 0.7,
+        "z": 0.65
+      },
+      "scale": 1.35
+    }
   },
-  "damagedBy": ["attacking"],
+  "damagedBy": [ "attacking" ],
   "attackRange": 2,
   "durabilityByType": {
     "*-copper": 300,
@@ -53,25 +60,77 @@
     "metal": { "base": "game:block/metal/plate/{material}" },
     "wood": { "base": "game:block/wood/debarked/birch" }
   },
-  "creativeinventory": { "general": ["*"], "stonequarry": ["*"] },
+  "creativeinventory": {
+    "general": [ "*" ],
+    "stonequarry": [ "*" ]
+  },
   "heldTpUseAnimation": "axechop",
   "heldTpHitAnimation": "axechop",
   "fpHandTransform": {
-    "translation": { "x": 0, "y": 0.6, "z": 1.2 },
-    "rotation": { "x": 180, "y": 160, "z": -95 },
-    "origin": { "x": 0, "y": 0, "z": 0 },
-    "scale": 2.14
+    "translation": {
+      "x": 0,
+      "y": 0.6,
+      "z": 1.2
+    },
+    "rotation": {
+      "x": 180,
+      "y": 160,
+      "z": -95
+    },
+    "origin": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "scale": 1.5
   },
   "tpHandTransform": {
-    "translation": { "x": -0.167, "y": -0.09, "z": 0.037 },
-    "rotation": { "x": 90, "y": 25, "z": 9 },
-    "origin": { "x": 0, "y": 0, "z": 0 },
+    "translation": {
+      "x": -0.167,
+      "y": -0.09,
+      "z": 0.037
+    },
+    "rotation": {
+      "x": 90,
+      "y": 25,
+      "z": 9
+    },
+    "origin": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
     "scale": 0.85
   },
   "guiTransform": {
-    "translation": { "x": 0, "y": 0, "z": 0 },
-    "rotation": { "x": 123, "y": -45, "z": 9 },
-    "origin": { "x": 0, "y": 0, "z": 0 },
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": 123,
+      "y": -45,
+      "z": 9
+    },
+    "origin": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
     "scale": 1.29
+  },
+  "groundTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0.5,
+      "z": 0
+    },
+    "rotation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "scale": 4
   }
 }

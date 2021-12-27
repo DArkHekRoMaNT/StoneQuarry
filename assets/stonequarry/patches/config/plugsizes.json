@@ -1,0 +1,65 @@
+[
+  {
+    "file": "blocktypes/plugandfeather.json",
+    "op": "replace",
+    "path": "/attributes/searchrangeByType/*-copper-*",
+    "condition": {
+      "when": "SQ_PlugSizes_copper",
+      "useValue": "true"
+    }
+  },
+  {
+    "file": "blocktypes/plugandfeather.json",
+    "op": "replace",
+    "path": "/attributes/searchrangeByType/*-tinbronze-*",
+    "condition": {
+      "when": "SQ_PlugSizes_tinbronze",
+      "useValue": "true"
+    }
+  },
+  {
+    "file": "blocktypes/plugandfeather.json",
+    "op": "replace",
+    "path": "/attributes/searchrangeByType/*-bismuthbronze-*",
+    "condition": {
+      "when": "SQ_PlugSizes_bismuthbronze",
+      "useValue": "true"
+    }
+  },
+  {
+    "file": "blocktypes/plugandfeather.json",
+    "op": "replace",
+    "path": "/attributes/searchrangeByType/*-blackbronze-*",
+    "condition": {
+      "when": "SQ_PlugSizes_blackbronze",
+      "useValue": "true"
+    }
+  },
+  {
+    "file": "blocktypes/plugandfeather.json",
+    "op": "replace",
+    "path": "/attributes/searchrangeByType/*-iron-*",
+    "condition": {
+      "when": "SQ_PlugSizes_iron",
+      "useValue": "true"
+    }
+  },
+  {
+    "file": "blocktypes/plugandfeather.json",
+    "op": "replace",
+    "path": "/attributes/searchrangeByType/*-meteoriciron-*",
+    "condition": {
+      "when": "SQ_PlugSizes_meteoriciron",
+      "useValue": "true"
+    }
+  },
+  {
+    "file": "blocktypes/plugandfeather.json",
+    "op": "replace",
+    "path": "/attributes/searchrangeByType/*-steel-*",
+    "condition": {
+      "when": "SQ_PlugSizes_steel",
+      "useValue": "true"
+    }
+  }
+]

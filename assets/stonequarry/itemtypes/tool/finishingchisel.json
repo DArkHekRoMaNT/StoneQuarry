@@ -21,7 +21,18 @@
     "rockpolishedrate": 100,
     "rchances": 1,
     "rackable": true,
-    "toolrackTransform": { "translation": { "x": 0.2, "y": 0.5, "z": 0.5 }, "origin": { "x": 0, "y": 0, "z": 0 } }
+    "toolrackTransform": {
+      "translation": {
+        "x": 0.2,
+        "y": 0.5,
+        "z": 0.5
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    }
   },
   "durabilityByType": {
     "*-copper": 300,
@@ -39,24 +50,76 @@
     "metal": { "base": "game:block/metal/plate/{material}" },
     "wood": { "base": "game:block/wood/debarked/birch" }
   },
-  "creativeinventory": { "general": ["*"], "stonequarry": ["*"] },
+  "creativeinventory": {
+    "general": [ "*" ],
+    "stonequarry": [ "*" ]
+  },
   "heldTpUseAnimation": "knap",
   "fpHandTransform": {
-    "translation": { "x": -0.4, "y": 0.6, "z": 1 },
-    "rotation": { "x": 40, "y": 37, "z": 80 },
-    "origin": { "x": 0, "y": 0, "z": 0 },
+    "translation": {
+      "x": -0.4,
+      "y": 0.6,
+      "z": 1
+    },
+    "rotation": {
+      "x": 40,
+      "y": 37,
+      "z": 80
+    },
+    "origin": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
     "scale": 2.14
   },
   "tpHandTransform": {
-    "translation": { "x": 0.11, "y": 0, "z": 0.05 },
-    "rotation": { "x": 70, "y": -8, "z": -5 },
-    "origin": { "x": 0, "y": 0, "z": 0 },
+    "translation": {
+      "x": 0.11,
+      "y": 0,
+      "z": 0.05
+    },
+    "rotation": {
+      "x": 70,
+      "y": -8,
+      "z": -5
+    },
+    "origin": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
     "scale": 0.7
   },
   "guiTransform": {
-    "translation": { "x": 0, "y": 0, "z": 0 },
-    "rotation": { "x": -10, "y": 45, "z": -33 },
-    "origin": { "x": 0, "y": 0, "z": 0 },
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": -10,
+      "y": 45,
+      "z": -33
+    },
+    "origin": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
     "scale": 2.35
+  },
+  "groundTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0.46,
+      "z": 0
+    },
+    "rotation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "scale": 4
   }
 }

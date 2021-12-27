@@ -1,6 +1,7 @@
 using System.Text;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.MathTools;
 
 namespace StoneQuarry
 {

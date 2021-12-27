@@ -144,6 +144,7 @@ namespace StoneQuarry
         public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
         {
             int stockMod = 1;
+
             if (byPlayer.Entity.Controls.Sprint)
             {
                 stockMod = byPlayer.InventoryManager.ActiveHotbarSlot.MaxSlotStackSize;

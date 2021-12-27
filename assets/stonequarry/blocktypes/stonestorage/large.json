@@ -3,13 +3,25 @@
   "class": "BlockRoughCutStorage",
   "entityclass": "RoughCutStorage",
   "variantgroups": [
-    { "code": "stone", "loadFromProperties": "block/rockwithdeposit" },
-    { "code": "depth", "states": ["zero", "one"] },
-    { "code": "dir", "states": ["north", "south", "east", "west"] }
+    {
+      "code": "stone",
+      "loadFromProperties": "block/rockwithdeposit"
+    },
+    {
+      "code": "depth",
+      "states": [ "zero", "one" ]
+    },
+    {
+      "code": "dir",
+      "states": [ "north", "south", "east", "west" ]
+    }
   ],
   "storageFlags": 5,
   "maxStackSize": 3,
-  "creativeinventory": { "general": ["*-zero-north"], "stonequarry": ["*-zero-north"] },
+  "creativeinventory": {
+    "general": [ "*-zero-north" ],
+    "stonequarry": [ "*-zero-north" ]
+  },
   "attributesByType": {
     "*-east": {
       "caps": [
@@ -18,8 +30,8 @@
           "y": 0,
           "z": 1,
           "varType": [
-            ["dir", "east"],
-            ["depth", "one"]
+            [ "dir", "east" ],
+            [ "depth", "one" ]
           ]
         },
         {
@@ -27,8 +39,8 @@
           "y": 0,
           "z": 1,
           "varType": [
-            ["dir", "west"],
-            ["depth", "zero"]
+            [ "dir", "west" ],
+            [ "depth", "zero" ]
           ]
         },
         {
@@ -36,8 +48,8 @@
           "y": 0,
           "z": 0,
           "varType": [
-            ["dir", "west"],
-            ["depth", "one"]
+            [ "dir", "west" ],
+            [ "depth", "one" ]
           ]
         }
       ]
@@ -49,8 +61,8 @@
           "y": 0,
           "z": 0,
           "varType": [
-            ["dir", "south"],
-            ["depth", "one"]
+            [ "dir", "south" ],
+            [ "depth", "one" ]
           ]
         },
         {
@@ -58,8 +70,8 @@
           "y": 0,
           "z": 1,
           "varType": [
-            ["dir", "north"],
-            ["depth", "zero"]
+            [ "dir", "north" ],
+            [ "depth", "zero" ]
           ]
         },
         {
@@ -67,8 +79,8 @@
           "y": 0,
           "z": 1,
           "varType": [
-            ["dir", "north"],
-            ["depth", "one"]
+            [ "dir", "north" ],
+            [ "depth", "one" ]
           ]
         }
       ]
@@ -80,8 +92,8 @@
           "y": 0,
           "z": 0,
           "varType": [
-            ["dir", "north"],
-            ["depth", "one"]
+            [ "dir", "north" ],
+            [ "depth", "one" ]
           ]
         },
         {
@@ -89,8 +101,8 @@
           "y": 0,
           "z": -1,
           "varType": [
-            ["dir", "south"],
-            ["depth", "zero"]
+            [ "dir", "south" ],
+            [ "depth", "zero" ]
           ]
         },
         {
@@ -98,8 +110,8 @@
           "y": 0,
           "z": -1,
           "varType": [
-            ["dir", "south"],
-            ["depth", "one"]
+            [ "dir", "south" ],
+            [ "depth", "one" ]
           ]
         }
       ]
@@ -111,8 +123,8 @@
           "y": 0,
           "z": -1,
           "varType": [
-            ["dir", "west"],
-            ["depth", "one"]
+            [ "dir", "west" ],
+            [ "depth", "one" ]
           ]
         },
         {
@@ -120,8 +132,8 @@
           "y": 0,
           "z": -1,
           "varType": [
-            ["dir", "east"],
-            ["depth", "zero"]
+            [ "dir", "east" ],
+            [ "depth", "zero" ]
           ]
         },
         {
@@ -129,8 +141,8 @@
           "y": 0,
           "z": 0,
           "varType": [
-            ["dir", "east"],
-            ["depth", "one"]
+            [ "dir", "east" ],
+            [ "depth", "one" ]
           ]
         }
       ]
@@ -139,13 +151,31 @@
   "textures": { "stone": { "base": "game:block/stone/rock/{stone}1" } },
   "shapeByType": {
     "*zero-north": { "base": "block/stonestorage/large/stonestoragelargel0" },
-    "*zero-east": { "base": "block/stonestorage/large/stonestoragelargel0", "rotatey": -90 },
-    "*zero-south": { "base": "block/stonestorage/large/stonestoragelargel0", "rotatey": 180 },
-    "*zero-west": { "base": "block/stonestorage/large/stonestoragelargel0", "rotatey": 90 },
+    "*zero-east": {
+      "base": "block/stonestorage/large/stonestoragelargel0",
+      "rotatey": -90
+    },
+    "*zero-south": {
+      "base": "block/stonestorage/large/stonestoragelargel0",
+      "rotatey": 180
+    },
+    "*zero-west": {
+      "base": "block/stonestorage/large/stonestoragelargel0",
+      "rotatey": 90
+    },
     "*one-north": { "base": "block/stonestorage/large/stonestoragelargel1" },
-    "*one-east": { "base": "block/stonestorage/large/stonestoragelargel1", "rotatey": -90 },
-    "*one-south": { "base": "block/stonestorage/large/stonestoragelargel1", "rotatey": 180 },
-    "*one-west": { "base": "block/stonestorage/large/stonestoragelargel1", "rotatey": 90 }
+    "*one-east": {
+      "base": "block/stonestorage/large/stonestoragelargel1",
+      "rotatey": -90
+    },
+    "*one-south": {
+      "base": "block/stonestorage/large/stonestoragelargel1",
+      "rotatey": 180
+    },
+    "*one-west": {
+      "base": "block/stonestorage/large/stonestoragelargel1",
+      "rotatey": 90
+    }
   },
   "shapeinventory": { "base": "block/stonestorage/large/stonestoragelargelinv" },
   "drawtype": "json",
@@ -158,10 +188,25 @@
   "lightabsorption": 0,
   "heldTpIdleAnimation": "holdbothhandslarge",
   "heldTpUseAnimation": "twohandplaceblock",
-  "guiTransform": { "translation": { "x": -11, "y": 1, "z": 0 }, "scale": 0.57 },
+  "guiTransform": {
+    "translation": {
+      "x": -11,
+      "y": 1,
+      "z": 0
+    },
+    "scale": 0.57
+  },
   "tpHandTransform": {
-    "translation": { "x": -1.2, "y": -0.8, "z": -1 },
-    "rotation": { "x": 11, "y": 14, "z": -71 },
+    "translation": {
+      "x": -1.2,
+      "y": -0.8,
+      "z": -1
+    },
+    "rotation": {
+      "x": 11,
+      "y": 14,
+      "z": -71
+    },
     "scale": 0.4
   },
   "groundTransform": {

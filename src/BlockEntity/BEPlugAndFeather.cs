@@ -57,7 +57,7 @@ namespace StoneQuarry
         {
             if (n >= 0)
             {
-                maxWork = n;
+                maxWork = (int)(n * Core.Config.PlugWorkModifier);
                 return true;
             }
             return false;

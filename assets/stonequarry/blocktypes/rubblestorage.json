@@ -3,12 +3,24 @@
   "class": "BlockRubbleStorage",
   "entityclass": "RubbleStorage",
   "variantgroups": [
-    { "code": "stone", "loadFromProperties": "block/rock" },
-    { "code": "type", "states": ["empty", "stone", "gravel", "sand"] },
-    { "code": "dir", "states": ["north", "south", "east", "west"] }
+    {
+      "code": "stone",
+      "loadFromProperties": "block/rock"
+    },
+    {
+      "code": "type",
+      "states": [ "empty", "stone", "gravel", "sand" ]
+    },
+    {
+      "code": "dir",
+      "states": [ "north", "south", "east", "west" ]
+    }
   ],
   "maxStackSize": 1,
-  "creativeinventory": { "general": ["*-sandstone-empty-north"], "stonequarry": ["*-sandstone-empty-north"] },
+  "creativeinventory": {
+    "general": [ "*-sandstone-empty-north" ],
+    "stonequarry": [ "*-sandstone-empty-north" ]
+  },
   "attributes": {
     "type": "null",
     "sand": 0,
@@ -16,10 +28,38 @@
     "stone": 0,
     "maxStorable": 512,
     "capsByType": {
-      "*-east": [{ "x": 0, "y": 0, "z": 1, "varType": [["dir", "west"]] }],
-      "*-south": [{ "x": -1, "y": 0, "z": 0, "varType": [["dir", "north"]] }],
-      "*-north": [{ "x": 1, "y": 0, "z": 0, "varType": [["dir", "south"]] }],
-      "*-west": [{ "x": 0, "y": 0, "z": -1, "varType": [["dir", "east"]] }]
+      "*-east": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": 1,
+          "varType": [ [ "dir", "west" ] ]
+        }
+      ],
+      "*-south": [
+        {
+          "x": -1,
+          "y": 0,
+          "z": 0,
+          "varType": [ [ "dir", "north" ] ]
+        }
+      ],
+      "*-north": [
+        {
+          "x": 1,
+          "y": 0,
+          "z": 0,
+          "varType": [ [ "dir", "south" ] ]
+        }
+      ],
+      "*-west": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": -1,
+          "varType": [ [ "dir", "east" ] ]
+        }
+      ]
     }
   },
   "textures": {
@@ -29,35 +69,165 @@
   },
   "shapeByType": {
     "*-north": { "base": "block/rubblestorage/rubblebin{type}" },
-    "*-east": { "base": "block/rubblestorage/rubblebin{type}", "rotatey": -90 },
-    "*-south": { "base": "block/rubblestorage/rubblebin{type}", "rotatey": 180 },
-    "*-west": { "base": "block/rubblestorage/rubblebin{type}", "rotatey": 90 }
+    "*-east": {
+      "base": "block/rubblestorage/rubblebin{type}",
+      "rotatey": -90
+    },
+    "*-south": {
+      "base": "block/rubblestorage/rubblebin{type}",
+      "rotatey": 180
+    },
+    "*-west": {
+      "base": "block/rubblestorage/rubblebin{type}",
+      "rotatey": 90
+    }
   },
   "selectionBoxesByType": {
-    "*-empty-*": [{ "x1": 0, "y1": 0, "z1": 0, "x2": 1, "y2": 1, "z2": 1 }],
+    "*-empty-*": [
+      {
+        "x1": 0,
+        "y1": 0,
+        "z1": 0,
+        "x2": 1,
+        "y2": 1,
+        "z2": 1
+      }
+    ],
     "*-east": [
-      { "x1": 0, "y1": 0, "z1": 0, "x2": 1, "y2": 1, "z2": 1 },
-      { "x1": -0.0621, "y1": 0.6875, "z1": 0.0625, "x2": 0.0625, "y2": 0.8125, "z2": 0.1875 },
-      { "x1": 0.0629, "y1": 0.6875, "z1": 0.25, "x2": -0.0621, "y2": 0.8125, "z2": 0.375 },
-      { "x1": -0.0621, "y1": 0.6875, "z1": 0.4375, "x2": 0.0625, "y2": 0.8125, "z2": 0.5625 }
+      {
+        "x1": 0,
+        "y1": 0,
+        "z1": 0,
+        "x2": 1,
+        "y2": 1,
+        "z2": 1
+      },
+      {
+        "x1": -0.0621,
+        "y1": 0.6875,
+        "z1": 0.0625,
+        "x2": 0.0625,
+        "y2": 0.8125,
+        "z2": 0.1875
+      },
+      {
+        "x1": 0.0629,
+        "y1": 0.6875,
+        "z1": 0.25,
+        "x2": -0.0621,
+        "y2": 0.8125,
+        "z2": 0.375
+      },
+      {
+        "x1": -0.0621,
+        "y1": 0.6875,
+        "z1": 0.4375,
+        "x2": 0.0625,
+        "y2": 0.8125,
+        "z2": 0.5625
+      }
     ],
     "*-west": [
-      { "x1": 0, "y1": 0, "z1": 0, "x2": 1, "y2": 1, "z2": 1 },
-      { "x1": 1.0625, "y1": 0.8125, "z1": 0.9375, "x2": 0.9375, "y2": 0.6875, "z2": 0.8125 },
-      { "x1": 1.0625, "y1": 0.8125, "z1": 0.75, "x2": 0.9375, "y2": 0.6875, "z2": 0.625 },
-      { "x1": 1.0625, "y1": 0.8125, "z1": 0.5625, "x2": 0.9375, "y2": 0.6875, "z2": 0.4375 }
+      {
+        "x1": 0,
+        "y1": 0,
+        "z1": 0,
+        "x2": 1,
+        "y2": 1,
+        "z2": 1
+      },
+      {
+        "x1": 1.0625,
+        "y1": 0.8125,
+        "z1": 0.9375,
+        "x2": 0.9375,
+        "y2": 0.6875,
+        "z2": 0.8125
+      },
+      {
+        "x1": 1.0625,
+        "y1": 0.8125,
+        "z1": 0.75,
+        "x2": 0.9375,
+        "y2": 0.6875,
+        "z2": 0.625
+      },
+      {
+        "x1": 1.0625,
+        "y1": 0.8125,
+        "z1": 0.5625,
+        "x2": 0.9375,
+        "y2": 0.6875,
+        "z2": 0.4375
+      }
     ],
     "*-north": [
-      { "x1": 0, "y1": 0, "z1": 0, "x2": 1, "y2": 1, "z2": 1 },
-      { "x1": 0.0625, "y1": 0.6875, "z1": 0.9375, "x2": 0.1875, "y2": 0.8125, "z2": 1.0625 },
-      { "x1": 0.25, "y1": 0.6875, "z1": 0.9375, "x2": 0.375, "y2": 0.8125, "z2": 1.0625 },
-      { "x1": 0.4375, "y1": 0.6875, "z1": 0.9375, "x2": 0.5625, "y2": 0.8125, "z2": 1.0625 }
+      {
+        "x1": 0,
+        "y1": 0,
+        "z1": 0,
+        "x2": 1,
+        "y2": 1,
+        "z2": 1
+      },
+      {
+        "x1": 0.0625,
+        "y1": 0.6875,
+        "z1": 0.9375,
+        "x2": 0.1875,
+        "y2": 0.8125,
+        "z2": 1.0625
+      },
+      {
+        "x1": 0.25,
+        "y1": 0.6875,
+        "z1": 0.9375,
+        "x2": 0.375,
+        "y2": 0.8125,
+        "z2": 1.0625
+      },
+      {
+        "x1": 0.4375,
+        "y1": 0.6875,
+        "z1": 0.9375,
+        "x2": 0.5625,
+        "y2": 0.8125,
+        "z2": 1.0625
+      }
     ],
     "*-south": [
-      { "x1": 0, "y1": 0, "z1": 0, "x2": 1, "y2": 1, "z2": 1 },
-      { "x1": 0.9375, "y1": 0.8125, "z1": 0.0625, "x2": 0.8125, "y2": 0.6875, "z2": -0.0625 },
-      { "x1": 0.75, "y1": 0.8125, "z1": 0.0625, "x2": 0.625, "y2": 0.6875, "z2": -0.0625 },
-      { "x1": 0.5625, "y1": 0.8125, "z1": 0.0625, "x2": 0.4375, "y2": 0.6875, "z2": -0.0625 }
+      {
+        "x1": 0,
+        "y1": 0,
+        "z1": 0,
+        "x2": 1,
+        "y2": 1,
+        "z2": 1
+      },
+      {
+        "x1": 0.9375,
+        "y1": 0.8125,
+        "z1": 0.0625,
+        "x2": 0.8125,
+        "y2": 0.6875,
+        "z2": -0.0625
+      },
+      {
+        "x1": 0.75,
+        "y1": 0.8125,
+        "z1": 0.0625,
+        "x2": 0.625,
+        "y2": 0.6875,
+        "z2": -0.0625
+      },
+      {
+        "x1": 0.5625,
+        "y1": 0.8125,
+        "z1": 0.0625,
+        "x2": 0.4375,
+        "y2": 0.6875,
+        "z2": -0.0625
+      }
     ]
   },
   "shapeinventory": { "base": "block/rubblestorage/rubblebinclosed" },
@@ -72,14 +242,55 @@
   "heldTpIdleAnimation": "holdbothhandslarge",
   "heldTpUseAnimation": "twohandplaceblock",
   "fpHandTransform": {
-    "translation": { "x": -2.4, "y": -0.35, "z": 0.5 },
-    "rotation": { "x": 4, "y": -43, "z": 0 },
+    "translation": {
+      "x": -2.4,
+      "y": -0.35,
+      "z": 0.5
+    },
+    "rotation": {
+      "x": 4,
+      "y": -43,
+      "z": 0
+    },
     "scale": 1.83
   },
-  "guiTransform": { "translation": { "x": -8, "y": 2, "z": 0 }, "scale": 0.87 },
+  "guiTransform": {
+    "translation": {
+      "x": -8,
+      "y": 2,
+      "z": 0
+    },
+    "scale": 0.87
+  },
   "tpHandTransform": {
-    "translation": { "x": -1.6, "y": -0.8, "z": -0.8 },
-    "rotation": { "x": -82, "y": 16, "z": -100 },
+    "translation": {
+      "x": -1.6,
+      "y": -0.8,
+      "z": -0.8
+    },
+    "rotation": {
+      "x": -82,
+      "y": 16,
+      "z": -100
+    },
     "scale": 0.4
+  },
+  "groundTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": 0,
+      "y": -45,
+      "z": 0
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 2
   }
 }

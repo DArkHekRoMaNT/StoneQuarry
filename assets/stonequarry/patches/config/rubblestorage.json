@@ -1,0 +1,8 @@
+[
+  {
+    "file": "blocktypes/rubblestorage.json",
+    "op": "replace",
+    "path": "/attributes/maxStorable",
+    "condition": { "when": "SQ_RubbleStorageMaxSize", "useValue": "true" }
+  }
+]
