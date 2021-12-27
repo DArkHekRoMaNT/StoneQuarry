@@ -3,4 +3,6 @@
 /obj
 /mods
 /releases
-/.history
+/.vs
+/*.csproj.user
+/*.sln

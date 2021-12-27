@@ -1,39 +1,63 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
-    <!--LangVersion>5</LangVersion-->
-    <VSVersion>1.15.0</VSVersion>
+    <Configurations>Debug;Release;Publish</Configurations>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <MinGameVersion>1.15.0</MinGameVersion>
+    <RunGameVersion>1.16.0-rc.2</RunGameVersion>
   </PropertyGroup>
 
-  <ItemGroup>
+  <PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
+    <DefaultItemExcludes>$(DefaultItemExcludes);modtools/**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup Label="Game Refs">
     <Reference Include="VintagestoryAPI">
-      <HintPath>$(VINTAGE_STORY)/$(VSVersion)/VintagestoryAPI.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)/$(MinGameVersion)/VintagestoryAPI.dll</HintPath>
     </Reference>
     <Reference Include="VSEssentials">
-      <HintPath>$(VINTAGE_STORY)/$(VSVersion)/Mods/VSEssentials.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)/$(MinGameVersion)/Mods/VSEssentials.dll</HintPath>
     </Reference>
     <Reference Include="VSCreativeMod">
-      <HintPath>$(VINTAGE_STORY)/$(VSVersion)/Mods/VSCreativeMod.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)/$(MinGameVersion)/Mods/VSCreativeMod.dll</HintPath>
     </Reference>
     <Reference Include="VSSurvivalMod">
-      <HintPath>$(VINTAGE_STORY)/$(VSVersion)/Mods/VSSurvivalMod.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)/$(MinGameVersion)/Mods/VSSurvivalMod.dll</HintPath>
     </Reference>
     <Reference Include="0Harmony">
-      <HintPath>$(VINTAGE_STORY)/$(VSVersion)/Lib/0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="protobuf-net">
-      <HintPath>$(VINTAGE_STORY)/$(VSVersion)/Lib/protobuf-net.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)/$(MinGameVersion)/Lib/0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>$(VINTAGE_STORY)/$(VSVersion)/Lib/Newtonsoft.Json.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)/$(MinGameVersion)/Lib/Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>$(VINTAGE_STORY)/$(MinGameVersion)/Lib/protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="cairo-sharp">
-      <HintPath>$(VINTAGE_STORY)/$(VSVersion)/Lib/cairo-sharp.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)/$(MinGameVersion)/Lib/cairo-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
 
-  <Target Name="Copy" AfterTargets="PostBuildEvent">
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ProjectDir)mods/$(ProjectName)" />
-    <Copy SourceFiles="$(TargetDir)/$(TargetName).pdb" DestinationFolder="$(ProjectDir)mods/$(ProjectName)" />
+
+  <Target Name="CollectMod" AfterTargets="PostBuildEvent">
+    <RemoveDir Directories="mods/$(TargetName)" />
+
+    <Copy SourceFiles="modinfo.json" DestinationFolder="mods/$(TargetName)" />
+    <Copy SourceFiles="modicon.png" DestinationFolder="mods/$(TargetName)" ContinueOnError="true" />
+    <Copy SourceFiles="README.md" DestinationFolder="mods/$(TargetName)" />
+    <Copy SourceFiles="LICENSE" DestinationFolder="mods/$(TargetName)" ContinueOnError="true" />
+
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="mods/$(TargetName)" />
+    <Copy SourceFiles="$(TargetDir)/$(TargetName).pdb" DestinationFolder="mods/$(TargetName)" />
+  </Target>
+
+  <Target Name="ZipMod" AfterTargets="CollectMod" Condition=" '$(Configuration)' == 'Publish' ">
+    <ItemGroup>
+      <Res Include="assets/**" />
+    </ItemGroup>
+    <Copy SourceFiles="@(Res)" DestinationFolder="mods/$(TargetName)/assets/%(RecursiveDir)" />
+
+    <MakeDir Directories="releases" />
+    <ZipDirectory DestinationFile="releases/$(TargetName)_v$(RunGameVersion)_v.zip" SourceDirectory="mods/$(TargetName)" Overwrite="true" />
   </Target>
 </Project>
