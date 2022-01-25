@@ -235,6 +235,7 @@
   "facecullmode": "nevercull",
   "sidesolid": { "all": false },
   "sideopaque": { "all": false },
+  "blockmaterial": "Wood",
   "materialDensity": 600,
   "lightAbsorption": 99,
   "emitSideAo": { "all": true },
