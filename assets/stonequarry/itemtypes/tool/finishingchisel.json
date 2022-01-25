@@ -18,6 +18,7 @@
     }
   ],
   "attributes": {
+    "handbook": { "groupBy": [ "finishingchisel-*" ] },
     "slabtool": {
       "type": "rockpolished",
       "quantity": { "avg": 1 }

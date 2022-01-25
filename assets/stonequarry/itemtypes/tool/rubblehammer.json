@@ -18,6 +18,7 @@
     }
   ],
   "attributes": {
+    "handbook": { "groupBy": [ "rubblehammer-*" ] },
     "slabtool": {
       "type": "stone",
       "quantity": {

@@ -18,6 +18,7 @@
     }
   ],
   "attributes": {
+    "handbook": { "groupBy": [ "roughcutchisel-*" ] },
     "slabtool": {
       "type": "rock",
       "quantity": { "avg": 1 }
