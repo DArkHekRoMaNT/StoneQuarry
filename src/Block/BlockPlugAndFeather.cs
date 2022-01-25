@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -99,10 +97,10 @@ namespace StoneQuarry
                 if (world.BlockAccessor.GetBlockEntity(be.master.AsBlockPos) is BEPlugAndFeather masterBE)
                 {
                     var dropStack = GetDrops(world, pos, byPlayer, dropQuantityMultiplier)[0];
-                    dropStack.StackSize = 1;
 
                     foreach (Vec3i slavePos in masterBE.slaves)
                     {
+                        dropStack.StackSize = api.World.Rand.NextDouble() <= Core.Config.BreakPlugChance ? 0 : 1;
                         world.BlockAccessor.SetBlock(0, slavePos.AsBlockPos);
                         world.BlockAccessor.MarkBlockDirty(slavePos.AsBlockPos);
                         world.SpawnItemEntity(dropStack.Clone(), new Vec3d()
@@ -113,6 +111,7 @@ namespace StoneQuarry
                         });
                     }
 
+                    dropStack.StackSize = api.World.Rand.NextDouble() <= Core.Config.BreakPlugChance ? 0 : 1;
                     world.BlockAccessor.SetBlock(0, be.master.AsBlockPos);
                     world.BlockAccessor.MarkBlockDirty(be.master.AsBlockPos);
                     world.SpawnItemEntity(dropStack.Clone(), new Vec3d()
@@ -239,7 +238,7 @@ namespace StoneQuarry
         {
             string[] switchTerm = { "one", "two", "three" };
 
-            if (pickState < switchTerm.Count())
+            if (pickState < switchTerm.Length)
             {
                 Block block = world.BlockAccessor.GetBlock(blockSel.Position);
                 AssetLocation newState = block.CodeWithPart(switchTerm[pickState], 2);

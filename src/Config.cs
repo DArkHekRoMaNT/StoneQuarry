@@ -6,6 +6,7 @@
         public int RubbleStorageMaxSize = 512;
         public float SlabInteractionTime = 0.2f;
         public float PlugWorkModifier = 1;
+        public float BreakPlugChance = 0;
     }
 
     public class PlugSizes
