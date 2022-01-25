@@ -138,7 +138,7 @@ namespace StoneQuarry
                 lastType = slot.Itemstack.Item.Code.Path;
             }
 
-            if (storedType == "" && allowedTypes.Any(rockType.Contains))
+            if (storedType == "" && rockType != null && allowedTypes.Any(rockType.Contains))
             {
                 storedType = rockType;
             }
