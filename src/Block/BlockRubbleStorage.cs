@@ -103,7 +103,7 @@ namespace StoneQuarry
                     }
                 });
 
-                foreach (var type in new string[] { "stone", "gravel", "sand" })
+                foreach (var type in new string[] { "sand", "gravel", "stone" })
                 {
 
                     interactionsBySel.Add(new WorldInteraction[] {
