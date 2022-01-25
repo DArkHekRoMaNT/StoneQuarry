@@ -265,11 +265,11 @@ namespace StoneQuarry
                 Block dropblock = world.GetBlock(new AssetLocation("game", "muddygravel"));
                 if (storage["gravel"] > 0)
                 {
-                    ItemStack dropStack = new ItemStack(dropblock, Math.Min(dropblock.MaxStackSize / 4, storage["gravel"]));//Deviding max stack drop by four because not doing so created a mess.
+                    ItemStack dropStack = new ItemStack(dropblock, Math.Min(dropblock.MaxStackSize / 4, storage["gravel"])); //Deviding max stack drop by four because not doing so created a mess.
                     world.SpawnItemEntity(dropStack.Clone(), blockSel.Position.ToVec3d() + blockSel.HitPosition, (blockSel.Face.Normalf.ToVec3d() * .05) + new Vec3d(0, .08, 0));
                     storage["gravel"] -= Math.Min(dropblock.MaxStackSize / 4, storage["gravel"]);
 
-                    portionStack.StackSize--;
+                    portionStack.StackSize -= 100;
                     if (portionStack.StackSize <= 0)
                     {
                         portionStack = null;

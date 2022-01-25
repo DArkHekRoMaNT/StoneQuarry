@@ -66,7 +66,7 @@ namespace StoneQuarry
                 }
 
                 var waterPortion = api.World.GetItem(new AssetLocation("game:waterportion")).GetHandBookStacks(api as ICoreClientAPI);
-
+                waterPortion[0].StackSize = 100;
 
 
                 interactionsBySel.Add(new WorldInteraction[] {
