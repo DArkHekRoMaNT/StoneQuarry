@@ -162,7 +162,10 @@ namespace StoneQuarry
                             interactParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
                             interactParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
                             world.SpawnParticles(interactParticles, byPlayer);
-                            world.PlaySoundAt(new AssetLocation("game", "sounds/block/rock-hit-pickaxe"), byPlayer, byPlayer, true, 32, .5f);
+
+                            world.PlaySoundAt(new AssetLocation("game", "sounds/block/rock-hit-pickaxe"),
+                                byPlayer, byPlayer, true, 32, .5f);
+
                             byPlayer.Entity.WatchedAttributes.SetInt("sq_slab_times", times + 1);
                         }
                     }
@@ -226,9 +229,12 @@ namespace StoneQuarry
                 interactParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
                 interactParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
                 world.SpawnParticles(interactParticles, byPlayer);
-                world.PlaySoundAt(new AssetLocation("game", "sounds/block/rock-hit-pickaxe"), byPlayer, byPlayer, true, 32, .5f);
+                world.PlaySoundAt(new AssetLocation("game", "sounds/block/rock-hit-pickaxe"),
+                    byPlayer, byPlayer, true, 32, .5f);
             }
-            world.PlaySoundAt(new AssetLocation("game", "sounds/block/heavyice"), byPlayer, byPlayer, true, 32, .05f);
+            world.PlaySoundAt(new AssetLocation("game", "sounds/block/heavyice"),
+                byPlayer, byPlayer, true, 32, .05f);
+
             world.SpawnItemEntity(dropStack, dropPos, dropVel);
 
             rcbe.blockStack.Attributes.SetInt("stonestored", rcbe.blockStack.Attributes.GetInt("stonestored") - 1);

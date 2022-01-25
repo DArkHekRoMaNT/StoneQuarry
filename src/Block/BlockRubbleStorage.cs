@@ -185,7 +185,8 @@ namespace StoneQuarry
                 {
                     (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                 }
-                world.PlaySoundAt(new AssetLocation("game", "sounds/effect/stonecrush"), byPlayer, byPlayer);
+                world.PlaySoundAt(new AssetLocation("game", "sounds/effect/stonecrush"), byPlayer, byPlayer, true);
+
                 interactParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
                 interactParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
                 world.SpawnParticles(interactParticles, byPlayer);
@@ -203,7 +204,8 @@ namespace StoneQuarry
                         {
                             (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                         }
-                        world.PlaySoundAt(new AssetLocation("game", "sounds/block/heavyice"), byPlayer, byPlayer);
+                        world.PlaySoundAt(new AssetLocation("game", "sounds/block/heavyice"), byPlayer, byPlayer, true, volume: 0.25f);
+
                         activeStack.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
                     }
                 }
@@ -216,7 +218,8 @@ namespace StoneQuarry
                         {
                             (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                         }
-                        world.PlaySoundAt(new AssetLocation("game", "sounds/environment/largesplash1"), byPlayer, byPlayer);
+                        world.PlaySoundAt(new AssetLocation("game", "sounds/environment/largesplash1"),
+                            byPlayer, byPlayer, true);
                     }
                 }
                 else
@@ -227,7 +230,8 @@ namespace StoneQuarry
                         {
                             (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                         }
-                        world.PlaySoundAt(new AssetLocation("game", "sounds/effect/stonecrush"), byPlayer, byPlayer);
+                        world.PlaySoundAt(new AssetLocation("game", "sounds/effect/stonecrush"),
+                            byPlayer, byPlayer, true);
                     }
                 }
             }
@@ -242,7 +246,8 @@ namespace StoneQuarry
                     {
                         (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                     }
-                    world.PlaySoundAt(new AssetLocation("game", "sounds/effect/stonecrush"), byPlayer, byPlayer);
+                    world.PlaySoundAt(new AssetLocation("game", "sounds/effect/stonecrush"),
+                        byPlayer, byPlayer, true);
                 }
             }
             rcbe.CheckDisplayVariant(world, blockSel);

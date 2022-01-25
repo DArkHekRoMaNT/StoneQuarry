@@ -181,7 +181,8 @@ namespace StoneQuarry
                 {
                     if (be.state != be.maxState)
                     {
-                        world.PlaySoundAt(crackSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer, volume: .5f);
+                        world.PlaySoundAt(crackSound, byPlayer, byPlayer, true, 32, .5f);
+
                         be.IncreaseState(1);
                         SwitchState(be.state, world, byPlayer, blockSel);
                         activeStack.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
@@ -192,7 +193,8 @@ namespace StoneQuarry
                     }
                 }
 
-                world.PlaySoundAt(hammerSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer, volume: 0.5f);
+                world.PlaySoundAt(hammerSound, byPlayer, byPlayer, true, 32, .5f);
+
                 if (world.Side == EnumAppSide.Client)
                 {
                     (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
