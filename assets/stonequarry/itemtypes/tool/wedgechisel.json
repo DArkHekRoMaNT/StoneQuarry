@@ -18,8 +18,12 @@
     }
   ],
   "attributes": {
-    "stonebrickrate": 80,
-    "rchances": 8,
+    "slabtool": {
+      "type": "stonebrick",
+      "quantity": {
+        "avg": 8
+      }
+    },
     "rackable": true,
     "toolrackTransform": {
       "translation": {

@@ -7,23 +7,17 @@ namespace StoneQuarry
 {
     public class ItemSlabTool : Item
     {
-        public string GetToolType()
-        {
-            if (Attributes.KeyExists("rockpolishedrate")) return "rockpolished";
-            if (Attributes.KeyExists("rockrate")) return "rock";
-            if (Attributes.KeyExists("stonerate")) return "stone";
-            if (Attributes.KeyExists("stonebrickrate")) return "stonebrick";
-            return "";
-        }
+        public string ToolType => Attributes["slabtool"]?["type"]?.AsString() ?? "";
+        public NatFloat Quantity => Attributes["slabtool"]?["quantity"]?.AsObject(NatFloat.One);
+
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
 
-            string type = GetToolType();
-            if (type != "")
+            if (ToolType != "")
             {
-                var result = Lang.Get(Code.Domain + ":info-slabtool-type-" + type);
+                var result = Lang.Get(Code.Domain + ":info-slabtool-type-" + ToolType);
                 dsc.AppendLine(Lang.Get(Code.Domain + ":info-slabtool-heldinfo(result={0})", result));
             }
         }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 using Vintagestory.API.Client;
@@ -44,14 +43,14 @@ namespace StoneQuarry
                 {"stonebrick", new List<ItemStack>()}
             };
 
-            foreach (var obj in api.World.Collectibles)
+            foreach (var collObj in api.World.Collectibles)
             {
-                if (obj is ItemSlabTool)
+                if (collObj is ItemSlabTool)
                 {
-                    string type = (obj as ItemSlabTool).GetToolType();
+                    string type = (collObj as ItemSlabTool).ToolType;
                     if (type != "")
                     {
-                        dict[type].Add(new ItemStack(obj));
+                        dict[type].Add(new ItemStack(collObj));
                     }
                 }
             }
@@ -196,13 +195,16 @@ namespace StoneQuarry
             if (!(be is BERoughCutStorage rcbe) || rcbe.blockStack == null) return;
 
             AssetLocation dropCode = null;
-            int dropRate = 0;
+            int dropQuantity = 0;
 
-            var toolType = tool.GetToolType();
+            var toolType = tool.ToolType;
             if (toolType != "")
             {
                 dropCode = new AssetLocation("game", toolType + "-" + rcbe.blockStack.Block.FirstCodePart(1));
-                dropRate = activeStack.ItemAttributes[toolType + "rate"].AsInt();
+
+                // Like in Vintagestory.API.Common.BlockDropItemStack.GetNextItemStack
+                float num = (activeStack.Item as ItemSlabTool).Quantity.nextFloat(1, world.Rand);
+                dropQuantity = (int)num + (((double)(num - (float)(int)num) > world.Rand.NextDouble()) ? 1 : 0);
             }
 
             if (dropCode == null) return;
@@ -214,8 +216,7 @@ namespace StoneQuarry
                 return;
             }
 
-            var stackSize = DropCount(activeStack.ItemAttributes["rchances"].AsInt(), dropRate, world.Rand);
-            var dropStack = new ItemStack(colObj, stackSize);
+            var dropStack = new ItemStack(colObj, dropQuantity);
 
             var dropPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
             var dropVel = new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z);
@@ -236,19 +237,6 @@ namespace StoneQuarry
                 world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
             }
             byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Item.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
-        }
-
-        public int DropCount(int chances, int rate, Random rand) //TODO: Simplify and embeds it???
-        {
-            int rcount = 0;
-            for (int i = 1; i <= chances; i++)
-            {
-                if (rand.Next(0, 100) <= rate)
-                {
-                    rcount += 1;
-                }
-            }
-            return rcount;
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)

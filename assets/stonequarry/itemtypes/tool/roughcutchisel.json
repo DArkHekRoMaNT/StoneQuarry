@@ -18,8 +18,10 @@
     }
   ],
   "attributes": {
-    "rockrate": 100,
-    "rchances": 1,
+    "slabtool": {
+      "type": "rock",
+      "quantity": { "avg": 1 }
+    },
     "rackable": true,
     "toolrackTransform": {
       "translation": {

@@ -18,8 +18,13 @@
     }
   ],
   "attributes": {
-    "stonerate": 80,
-    "rchances": 6,
+    "slabtool": {
+      "type": "stone",
+      "quantity": {
+        "avg": 2.5,
+        "var": 0.5
+      }
+    },
     "rubbleable": true,
     "rackable": true,
     "toolrackTransform": {

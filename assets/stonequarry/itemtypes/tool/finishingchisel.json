@@ -18,8 +18,10 @@
     }
   ],
   "attributes": {
-    "rockpolishedrate": 100,
-    "rchances": 1,
+    "slabtool": {
+      "type": "rockpolished",
+      "quantity": { "avg": 1 }
+    },
     "rackable": true,
     "toolrackTransform": {
       "translation": {
