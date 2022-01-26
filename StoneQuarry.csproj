@@ -3,8 +3,8 @@
     <TargetFramework>net461</TargetFramework>
     <Configurations>Debug;Release;Publish</Configurations>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <MinGameVersion>1.15.0</MinGameVersion>
-    <RunGameVersion>1.16.0-rc.2</RunGameVersion>
+    <MinGameVersion>1.16.0</MinGameVersion>
+    <RunGameVersion>1.16.1</RunGameVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
