@@ -35,5 +35,5 @@
     ]
   ],
   "name": "PlugAndFeather Mold",
-  "output": { "type": "block", "code": "toolmold-raw-plugandfeather" }
+  "output": { "type": "block", "code": "game:toolmold-raw-sq_plugandfeather" }
 }

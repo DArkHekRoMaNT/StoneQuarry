@@ -1,0 +1,41 @@
+[
+  {
+    "file": "game:blocktypes/clay/mold/toolmold.json",
+    "op": "add",
+    "path": "/variantgroups/1/states/-",
+    "value": "sq_plugandfeather"
+  },
+  {
+    "file": "game:blocktypes/clay/mold/toolmold.json",
+    "op": "move",
+    "frompath": "/attributesByType/toolmold-burned-*",
+    "path": "/temp"
+  },
+  {
+    "file": "game:blocktypes/clay/mold/toolmold.json",
+    "op": "add",
+    "path": "/attributesByType/toolmold-burned-sq_plugandfeather",
+    "value": {
+      "requiredUnits": 100,
+      "fillHeight": 1,
+      "moldrackable": true,
+      "onmoldrackTransform": { "rotation": { "z": 90 } },
+      "drop": {
+        "type": "block",
+        "code": "stonequarry:plugandfeather-{metal}-one-down-north"
+      }
+    }
+  },
+  {
+    "file": "game:blocktypes/clay/mold/toolmold.json",
+    "op": "move",
+    "frompath": "/temp",
+    "path": "/attributesByType/toolmold-burned-*"
+  },
+  {
+    "file": "game:blocktypes/clay/mold/toolmold.json",
+    "op": "add",
+    "path": "/creativeinventory/stonequarry",
+    "value": [ "*-sq_plugandfeather" ]
+  }
+]
