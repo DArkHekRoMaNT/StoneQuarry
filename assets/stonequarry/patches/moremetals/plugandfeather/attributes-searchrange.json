@@ -1,0 +1,142 @@
+[
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-nickel-*",
+    "value": 3,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-monel-*",
+    "value": 4,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-constantan-*",
+    "value": 4,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-cupronickel-*",
+    "value": 5,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-phosphorbronze-*",
+    "value": 5,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-nichrome-*",
+    "value": 5,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-chromium-*",
+    "value": 5,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-zamak-*",
+    "value": 6,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-ferromagnesium-*",
+    "value": 6,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-alnico-*",
+    "value": 6,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-titanium-*",
+    "value": 6,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-titaniumgold-*",
+    "value": 6,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-bluesteel-*",
+    "value": 6,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-kovar-*",
+    "value": 5,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-invar-*",
+    "value": 6,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-talonite-*",
+    "value": 6,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-stainlesssteel-*",
+    "value": 7,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-chromoly-*",
+    "value": 7,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-wootzsteel-*",
+    "value": 7,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/searchrangeByType/*-toolsteel-*",
+    "value": 7,
+    "file": "blocktypes/plugandfeather.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  }
+]

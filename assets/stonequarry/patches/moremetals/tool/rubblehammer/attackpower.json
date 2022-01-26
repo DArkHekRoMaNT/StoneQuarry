@@ -1,0 +1,205 @@
+[
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-alnico",
+    "value": 2.85,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-bluesteel",
+    "value": 2.5,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-chromium",
+    "value": 2.25,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-chromoly",
+    "value": 3,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-constantan",
+    "value": 1.75,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-cupronickel",
+    "value": 2.25,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-electrum",
+    "value": 1.6,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-ferromagnesium",
+    "value": 2.55,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-invar",
+    "value": 2.65,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-kovar",
+    "value": 2.35,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-molybdenum",
+    "value": 1.7,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-monel",
+    "value": 1.75,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-nichrome",
+    "value": 2.35,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-nickel",
+    "value": 1.35,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-phosphorbronze",
+    "value": 2.25,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-platinum",
+    "value": 1.6,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-rhodium",
+    "value": 1.7,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-rosegold",
+    "value": 1.6,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-stainlesssteel",
+    "value": 2.85,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-sterlingsilver",
+    "value": 1.6,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-talonite",
+    "value": 2.85,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-titanium",
+    "value": 2.5,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-titaniumgold",
+    "value": 2.6,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-toolsteel",
+    "value": 3.2,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-wootzsteel",
+    "value": 2.85,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "add",
+    "path": "/attackpowerByType/*-zamak",
+    "value": 2.55,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "replace",
+    "path": "/attackpowerByType/*-gold",
+    "value": 1.5,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "replace",
+    "path": "/attackpowerByType/*-meteoriciron",
+    "value": 2.35,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  },
+  {
+    "op": "replace",
+    "path": "/attackpowerByType/*-silver",
+    "value": 1.5,
+    "file": "itemtypes/tool/rubblehammer.json",
+    "dependsOn": [ { "modid": "moremetals" } ]
+  }
+]

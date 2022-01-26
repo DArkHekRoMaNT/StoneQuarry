@@ -1,0 +1,37 @@
+[
+  {
+    "op": "replace",
+    "path": "/variantgroups/0/states",
+    "file": "blocktypes/plugandfeather.json",
+    "value": [
+      "copper",
+      "nickel",
+      "monel",
+      "constantan",
+      "tinbronze",
+      "bismuthbronze",
+      "blackbronze",
+      "cupronickel",
+      "phosphorbronze",
+      "nichrome",
+      "iron",
+      "chromium",
+      "meteoriciron",
+      "steel",
+      "zamak",
+      "ferromagnesium",
+      "alnico",
+      "titanium",
+      "titaniumgold",
+      "bluesteel",
+      "kovar",
+      "invar",
+      "talonite",
+      "stainlesssteel",
+      "chromoly",
+      "wootzsteel",
+      "toolsteel"
+    ],
+    "dependsOn": [ { "modid": "moremetals" } ]
+  }
+]
