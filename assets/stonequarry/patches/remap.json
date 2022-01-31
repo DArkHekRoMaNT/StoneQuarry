@@ -2,6 +2,15 @@
   {
     "file": "game:config/remaps.json",
     "op": "add",
+    "path": "/stonequarry:plugandfeather-toolmold-to-game",
+    "value": [
+      "/bir remapq game:toolmold-raw-sq_plugandfeather stonequarry:toolmold-raw-plugandfeather force",
+      "/bir remapq game:toolmold-burned-sq_plugandfeather stonequarry:toolmold-burned-plugandfeather force"
+    ]
+  },
+  {
+    "file": "game:config/remaps.json",
+    "op": "add",
     "path": "/stonequarry:stonestoragegiant",
     "value": [
       "/bir remapq stonequarry:stonestoragegiant-andesite-zero-zero-north stonequarry:stonestoragegient-andesite-zero-zero-north force",
