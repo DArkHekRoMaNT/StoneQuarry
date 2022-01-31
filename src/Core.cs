@@ -26,6 +26,12 @@ namespace StoneQuarry
                 api.World.Config.SetInt($"SQ_PlugSizes_{field.Name}", value);
             }
 
+            foreach (var field in typeof(PlugSizesMoreMetals).GetFields())
+            {
+                int value = (int)field.GetValue(Config.PlugSizesMoreMetals);
+                api.World.Config.SetInt($"SQ_PlugSizesMoreMetals_{field.Name}", value);
+            }
+
             api.World.Config.SetInt($"SQ_RubbleStorageMaxSize", Config.RubbleStorageMaxSize);
         }
 
