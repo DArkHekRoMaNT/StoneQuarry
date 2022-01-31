@@ -4,7 +4,7 @@
     "op": "replace",
     "path": "/attributes/searchrangeByType/*-copper-*",
     "condition": {
-      "when": "SQ_PlugSizes_copper",
+      "when": "SQ_PlugSizes_Copper",
       "useValue": "true"
     }
   },
@@ -13,7 +13,7 @@
     "op": "replace",
     "path": "/attributes/searchrangeByType/*-tinbronze-*",
     "condition": {
-      "when": "SQ_PlugSizes_tinbronze",
+      "when": "SQ_PlugSizes_TinBronze",
       "useValue": "true"
     }
   },
@@ -22,7 +22,7 @@
     "op": "replace",
     "path": "/attributes/searchrangeByType/*-bismuthbronze-*",
     "condition": {
-      "when": "SQ_PlugSizes_bismuthbronze",
+      "when": "SQ_PlugSizes_BismuthBronze",
       "useValue": "true"
     }
   },
@@ -31,7 +31,7 @@
     "op": "replace",
     "path": "/attributes/searchrangeByType/*-blackbronze-*",
     "condition": {
-      "when": "SQ_PlugSizes_blackbronze",
+      "when": "SQ_PlugSizes_BlackBronze",
       "useValue": "true"
     }
   },
@@ -40,7 +40,7 @@
     "op": "replace",
     "path": "/attributes/searchrangeByType/*-iron-*",
     "condition": {
-      "when": "SQ_PlugSizes_iron",
+      "when": "SQ_PlugSizes_Iron",
       "useValue": "true"
     }
   },
@@ -49,7 +49,7 @@
     "op": "replace",
     "path": "/attributes/searchrangeByType/*-meteoriciron-*",
     "condition": {
-      "when": "SQ_PlugSizes_meteoriciron",
+      "when": "SQ_PlugSizes_MeteoricIron",
       "useValue": "true"
     }
   },
@@ -58,7 +58,7 @@
     "op": "replace",
     "path": "/attributes/searchrangeByType/*-steel-*",
     "condition": {
-      "when": "SQ_PlugSizes_steel",
+      "when": "SQ_PlugSizes_Steel",
       "useValue": "true"
     }
   }
