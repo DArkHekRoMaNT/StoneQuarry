@@ -327,7 +327,8 @@ namespace StoneQuarry
             string sizeModFillerString = GetSizeFillerString(dropItemFillerString);
             string dropItemString = "stonestorage" + dropItemFillerString + "-" + rockpath + sizeModFillerString + "north";
 
-            Block dropItem = world.GetBlock(new AssetLocation(Code.Domain, dropItemString.ToLower()));
+            AssetLocation dropitemLoc = new AssetLocation(Code.Domain, dropItemString.ToLower());
+            Block dropItem = world.GetBlock(dropitemLoc);
             if (dropItem != null)
             {
                 ItemStack dropItemStack = new ItemStack(dropItem, 1);
@@ -338,6 +339,10 @@ namespace StoneQuarry
                     Y = ((cube[1].Y - cube[0].Y) / 2f) + cube[0].Y,
                     Z = ((cube[1].Z - cube[0].Z) / 2f) + cube[0].Z
                 });
+            }
+            else
+            {
+                api.Logger.Warning("[" + Code.Domain + "] Unknown drop item " + dropitemLoc);
             }
             world.BlockAccessor.BreakBlock(be.master.AsBlockPos, byPlayer);
         }
@@ -641,7 +646,7 @@ namespace StoneQuarry
             {
                 filler = "-zero-zero-";
             }
-            else if (rocksize == "Gient")
+            else if (rocksize == "Giant")
             {
                 filler = "-zero-zero-";
             }
@@ -670,7 +675,7 @@ namespace StoneQuarry
             }
             else if (quantity >= 168)
             {
-                dropType = "Gient";
+                dropType = "Giant";
             }
             return dropType;
         }
