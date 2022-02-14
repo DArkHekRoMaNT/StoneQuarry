@@ -4,7 +4,7 @@
     <Configurations>Debug;Release;Publish</Configurations>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <MinGameVersion>1.16.0</MinGameVersion>
-    <RunGameVersion>1.16.1</RunGameVersion>
+    <RunGameVersion>1.16.3</RunGameVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
@@ -36,6 +36,10 @@
     <Reference Include="cairo-sharp">
       <HintPath>$(VINTAGE_STORY)/$(MinGameVersion)/Lib/cairo-sharp.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="assets\game\sounds\block\" />
   </ItemGroup>
 
 
