@@ -238,7 +238,7 @@ namespace StoneQuarry
             world.SpawnItemEntity(dropStack, dropPos, dropVel);
 
             rcbe.blockStack.Attributes.SetInt("stonestored", rcbe.blockStack.Attributes.GetInt("stonestored") - 1);
-            if (rcbe.blockStack.Attributes.GetInt("stonestored") <= 0)
+            if (rcbe.blockStack.Attributes.GetInt("stonestored") <= 0 && api.Side == EnumAppSide.Server)
             {
                 world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
             }
