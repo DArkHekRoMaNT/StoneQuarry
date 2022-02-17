@@ -37,12 +37,7 @@
       <HintPath>$(VINTAGE_STORY)/$(MinGameVersion)/Lib/cairo-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="assets\game\sounds\block\" />
-  </ItemGroup>
-
-
+  
   <Target Name="CollectMod" AfterTargets="PostBuildEvent">
     <RemoveDir Directories="mods/$(TargetName)" />
 
