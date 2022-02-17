@@ -124,7 +124,7 @@ namespace StoneQuarry
                 return false;
             }
 
-            if (rcbe.blockStack.Attributes.GetInt("stonestored") > 0 && activeStack.Collectible is ItemSlabTool tool)
+            if (rcbe.blockStack.Attributes.GetInt("stonestored") > 0 && activeStack.Collectible is ItemSlabTool)
             {
                 return true;
             }
@@ -135,7 +135,7 @@ namespace StoneQuarry
         public override bool OnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
         {
             ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
-            if (activeStack.Collectible is ItemSlabTool tool)
+            if (activeStack.Collectible is ItemSlabTool)
             {
                 if (api.Side == EnumAppSide.Client)
                 {
@@ -185,9 +185,8 @@ namespace StoneQuarry
             }
 
             ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
-            var tool = activeStack.Collectible as ItemSlabTool;
 
-            if (secondsUsed < Core.Config.SlabInteractionTime || tool == null)
+            if (secondsUsed < Core.Config.SlabInteractionTime || !(activeStack.Collectible is ItemSlabTool tool))
             {
                 base.OnBlockInteractStop(secondsUsed, world, byPlayer, blockSel);
                 return;
@@ -238,6 +237,8 @@ namespace StoneQuarry
             world.SpawnItemEntity(dropStack, dropPos, dropVel);
 
             rcbe.blockStack.Attributes.SetInt("stonestored", rcbe.blockStack.Attributes.GetInt("stonestored") - 1);
+            rcbe.MarkDirty();
+
             if (rcbe.blockStack.Attributes.GetInt("stonestored") <= 0 && api.Side == EnumAppSide.Server)
             {
                 world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
