@@ -97,7 +97,7 @@ namespace StoneQuarry
         {
             var be = (world.BlockAccessor.GetBlockEntity(pos) as BEGenericMultiblockPart)?.Core;
 
-            if (be is BERoughCutStorage rcbe && rcbe.blockStack.Attributes.GetInt("stonestored") > 0)
+            if (be is BERoughCutStorage rcbe && rcbe.blockStack?.Attributes.GetInt("stonestored") > 0)
             {
                 world.SpawnItemEntity(rcbe.blockStack.Clone(), pos.ToVec3d());
             }
