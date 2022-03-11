@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Server;
 
 namespace StoneQuarry
 {
@@ -8,17 +10,39 @@ namespace StoneQuarry
     {
         public static Config Config { get; private set; }
 
+        ICoreAPI api;
+
         public override void StartPre(ICoreAPI api)
         {
-            LoadConfig(api);
-            SetConfigForPatches(api);
-        }
-        public override void Start(ICoreAPI api)
-        {
-            ClassRegister(api);
+            this.api = api;
+
+            if (api is ICoreServerAPI sapi)
+            {
+                LoadConfig();
+                SetConfigForPatches();
+
+                sapi.Network.RegisterChannel(Mod.Info.ModID)
+                    .RegisterMessageType<Config>();
+
+                sapi.Event.PlayerJoin += (player) =>
+                {
+                    var channel = api.Network.GetChannel(Mod.Info.ModID) as IServerNetworkChannel;
+                    channel.SendPacket(Config, player);
+                };
+            }
+
+            if (api is ICoreClientAPI capi)
+            {
+                capi.Network.RegisterChannel(Mod.Info.ModID)
+                    .RegisterMessageType<Config>()
+                    .SetMessageHandler<Config>((config) => { Config = config; });
+
+            }
         }
 
-        private void SetConfigForPatches(ICoreAPI api)
+        public override void Start(ICoreAPI api) => ClassRegister();
+
+        private void SetConfigForPatches()
         {
             foreach (var field in typeof(PlugSizes).GetFields())
             {
@@ -35,7 +59,7 @@ namespace StoneQuarry
             api.World.Config.SetInt($"SQ_RubbleStorageMaxSize", Config.RubbleStorageMaxSize);
         }
 
-        private void LoadConfig(ICoreAPI api)
+        private void LoadConfig()
         {
             string configFilename = Mod.Info.ModID + ".json";
             if (!File.Exists(api.GetOrCreateDataPath("ModConfig") + "/" + configFilename))
@@ -57,7 +81,7 @@ namespace StoneQuarry
             api.StoreModConfig(Config, configFilename);
         }
 
-        private void ClassRegister(ICoreAPI api)
+        private void ClassRegister()
         {
             api.RegisterItemClass("ItemSlabTool", typeof(ItemSlabTool));
             api.RegisterItemClass("ItemSlabContentSetter", typeof(ItemSlabContentSetter));
@@ -73,11 +97,12 @@ namespace StoneQuarry
             api.RegisterBlockEntityClass("PlugAndFeather", typeof(BEPlugAndFeather));
 
 
-            //legacy
+            // Legacy
             api.RegisterBlockEntityClass("RubbleStorageBE", typeof(BERubbleStorage));
             api.RegisterBlockEntityClass("StoneStorageCoreBE", typeof(BERoughCutStorage));
             api.RegisterBlockEntityClass("StoneStorageCapBE", typeof(BEGenericMultiblockPart));
             api.RegisterBlockEntityClass("PlugFeatherBE", typeof(BEPlugAndFeather));
         }
+
     }
 }
