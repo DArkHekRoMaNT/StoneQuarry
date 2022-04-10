@@ -17,14 +17,6 @@
 		<RunGameVersion>1.16.4</RunGameVersion>
 	</PropertyGroup>
 
-	<ItemGroup>
-	  <None Remove="ignore\Constantscs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Include="ignore\Constantscs" />
-	</ItemGroup>
-
 	<ItemGroup Label="Game Refs">
 		<Reference Include="VintagestoryAPI">
 			<HintPath>$(VINTAGE_STORY)/$(MinGameVersion)/VintagestoryAPI.dll</HintPath>

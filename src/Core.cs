@@ -2,6 +2,7 @@
 using System.IO;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Server;
 
 namespace StoneQuarry
 {
@@ -20,8 +21,28 @@ namespace StoneQuarry
             ModId = Mod.Info.ModID;
             ModLogger = Mod.Logger;
 
-            LoadConfig();
-            SetConfigForPatches();
+            if (api is ICoreServerAPI sapi)
+            {
+                LoadConfig();
+                SetConfigForPatches();
+
+                sapi.Network.RegisterChannel(Mod.Info.ModID)
+                    .RegisterMessageType<Config>();
+
+                sapi.Event.PlayerJoin += (player) =>
+                {
+                    var channel = api.Network.GetChannel(Mod.Info.ModID) as IServerNetworkChannel;
+                    channel.SendPacket(Config, player);
+                };
+            }
+
+            if (api is ICoreClientAPI capi)
+            {
+                capi.Network.RegisterChannel(Mod.Info.ModID)
+                    .RegisterMessageType<Config>()
+                    .SetMessageHandler<Config>((config) => { Config = config; });
+
+            }
         }
 
         public override void Start(ICoreAPI api)
