@@ -1,297 +1,377 @@
 {
   "code": "rubblestorage",
-  "class": "BlockRubbleStorage",
-  "entityclass": "RubbleStorage",
+  "class": "BlockRubbleStorage2",
+  "entityclass": "RubbleStorage2",
+
   "variantgroups": [
     {
-      "code": "stone",
-      "loadFromProperties": "block/rock"
-    },
-    {
-      "code": "type",
-      "states": [ "empty", "stone", "gravel", "sand" ]
-    },
-    {
-      "code": "dir",
-      "states": [ "north", "south", "east", "west" ]
+      "code": "side",
+      "loadFromProperties": "abstract/horizontalorientation"
     }
   ],
-  "maxStackSize": 1,
   "creativeinventory": {
-    "general": [ "*-sandstone-empty-north" ],
-    "stonequarry": [ "*-sandstone-empty-north" ]
+    "general": [ "*-north" ],
+    "stonequarry": [ "*-north" ]
   },
+
   "attributes": {
-    "type": "null",
-    "sand": 0,
-    "gravel": 0,
-    "stone": 0,
     "maxStorable": 512,
-    "capsByType": {
-      "*-east": [
-        {
-          "x": 0,
-          "y": 0,
-          "z": 1,
-          "varType": [ [ "dir", "west" ] ]
-        }
-      ],
-      "*-south": [
-        {
-          "x": -1,
-          "y": 0,
-          "z": 0,
-          "varType": [ [ "dir", "north" ] ]
-        }
-      ],
-      "*-north": [
-        {
-          "x": 1,
-          "y": 0,
-          "z": 0,
-          "varType": [ [ "dir", "south" ] ]
-        }
-      ],
-      "*-west": [
-        {
-          "x": 0,
-          "y": 0,
-          "z": -1,
-          "varType": [ [ "dir", "east" ] ]
-        }
-      ]
-    }
-  },
-  "textures": {
-    "sand": { "base": "game:block/stone/sand/{stone}" },
-    "gravel": { "base": "game:block/stone/gravel/{stone}" },
-    "stone": { "base": "game:block/stone/rock/{stone}1" }
-  },
-  "shapeByType": {
-    "*-north": { "base": "block/rubblestorage/rubblebin{type}" },
-    "*-east": {
-      "base": "block/rubblestorage/rubblebin{type}",
-      "rotatey": -90
-    },
-    "*-south": {
-      "base": "block/rubblestorage/rubblebin{type}",
-      "rotatey": 180
-    },
-    "*-west": {
-      "base": "block/rubblestorage/rubblebin{type}",
-      "rotatey": 90
-    }
-  },
-  "selectionBoxesByType": {
-    "*-empty-*": [
+    "allowedCodes": [
       {
-        "x1": 0,
-        "y1": 0,
-        "z1": 0,
-        "x2": 1,
-        "y2": 1,
-        "z2": 1
-      }
-    ],
-    "*-east": [
-      {
-        "x1": 0,
-        "y1": 0,
-        "z1": 0,
-        "x2": 1,
-        "y2": 1,
-        "z2": 1
+        "rock": "game:rock-andesite",
+        "stone": "game:stone-andesite",
+        "gravel": "game:gravel-andesite",
+        "sand": "game:sand-andesite"
       },
       {
-        "x1": -0.0621,
-        "y1": 0.6875,
-        "z1": 0.0625,
-        "x2": 0.0625,
-        "y2": 0.8125,
-        "z2": 0.1875
+        "rock": "game:rock-chalk",
+        "stone": "game:stone-chalk",
+        "gravel": "game:gravel-chalk",
+        "sand": "game:sand-chalk"
       },
       {
-        "x1": 0.0629,
-        "y1": 0.6875,
-        "z1": 0.25,
-        "x2": -0.0621,
-        "y2": 0.8125,
-        "z2": 0.375
+        "rock": "game:rock-chert",
+        "stone": "game:stone-chert",
+        "gravel": "game:gravel-chert",
+        "sand": "game:sand-chert"
       },
       {
-        "x1": -0.0621,
-        "y1": 0.6875,
-        "z1": 0.4375,
-        "x2": 0.0625,
-        "y2": 0.8125,
-        "z2": 0.5625
-      }
-    ],
-    "*-west": [
-      {
-        "x1": 0,
-        "y1": 0,
-        "z1": 0,
-        "x2": 1,
-        "y2": 1,
-        "z2": 1
+        "rock": "game:rock-conglomerate",
+        "stone": "game:stone-conglomerate",
+        "gravel": "game:gravel-conglomerate",
+        "sand": "game:sand-conglomerate"
       },
       {
-        "x1": 1.0625,
-        "y1": 0.8125,
-        "z1": 0.9375,
-        "x2": 0.9375,
-        "y2": 0.6875,
-        "z2": 0.8125
+        "rock": "game:rock-limestone",
+        "stone": "game:stone-limestone",
+        "gravel": "game:gravel-limestone",
+        "sand": "game:sand-limestone"
       },
       {
-        "x1": 1.0625,
-        "y1": 0.8125,
-        "z1": 0.75,
-        "x2": 0.9375,
-        "y2": 0.6875,
-        "z2": 0.625
+        "rock": "game:rock-claystone",
+        "stone": "game:stone-claystone",
+        "gravel": "game:gravel-claystone",
+        "sand": "game:sand-claystone"
       },
       {
-        "x1": 1.0625,
-        "y1": 0.8125,
-        "z1": 0.5625,
-        "x2": 0.9375,
-        "y2": 0.6875,
-        "z2": 0.4375
-      }
-    ],
-    "*-north": [
-      {
-        "x1": 0,
-        "y1": 0,
-        "z1": 0,
-        "x2": 1,
-        "y2": 1,
-        "z2": 1
+        "rock": "game:rock-granite",
+        "stone": "game:stone-granite",
+        "gravel": "game:gravel-granite",
+        "sand": "game:sand-granite"
       },
       {
-        "x1": 0.0625,
-        "y1": 0.6875,
-        "z1": 0.9375,
-        "x2": 0.1875,
-        "y2": 0.8125,
-        "z2": 1.0625
+        "rock": "game:rock-sandstone",
+        "stone": "game:stone-sandstone",
+        "gravel": "game:gravel-sandstone",
+        "sand": "game:sand-sandstone"
       },
       {
-        "x1": 0.25,
-        "y1": 0.6875,
-        "z1": 0.9375,
-        "x2": 0.375,
-        "y2": 0.8125,
-        "z2": 1.0625
+        "rock": "game:rock-shale",
+        "stone": "game:stone-shale",
+        "gravel": "game:gravel-shale",
+        "sand": "game:sand-shale"
       },
       {
-        "x1": 0.4375,
-        "y1": 0.6875,
-        "z1": 0.9375,
-        "x2": 0.5625,
-        "y2": 0.8125,
-        "z2": 1.0625
-      }
-    ],
-    "*-south": [
-      {
-        "x1": 0,
-        "y1": 0,
-        "z1": 0,
-        "x2": 1,
-        "y2": 1,
-        "z2": 1
+        "rock": "game:rock-basalt",
+        "stone": "game:stone-basalt",
+        "gravel": "game:gravel-basalt",
+        "sand": "game:sand-basalt"
       },
       {
-        "x1": 0.9375,
-        "y1": 0.8125,
-        "z1": 0.0625,
-        "x2": 0.8125,
-        "y2": 0.6875,
-        "z2": -0.0625
+        "rock": "game:rock-peridotite",
+        "stone": "game:stone-peridotite",
+        "gravel": "game:gravel-peridotite",
+        "sand": "game:sand-peridotite"
       },
       {
-        "x1": 0.75,
-        "y1": 0.8125,
-        "z1": 0.0625,
-        "x2": 0.625,
-        "y2": 0.6875,
-        "z2": -0.0625
+        "rock": "game:rock-phyllite",
+        "stone": "game:stone-phyllite",
+        "gravel": "game:gravel-phyllite",
+        "sand": "game:sand-phyllite"
       },
       {
-        "x1": 0.5625,
-        "y1": 0.8125,
-        "z1": 0.0625,
-        "x2": 0.4375,
-        "y2": 0.6875,
-        "z2": -0.0625
+        "rock": "game:rock-slate",
+        "stone": "game:stone-slate",
+        "gravel": "game:gravel-slate",
+        "sand": "game:sand-slate"
+      },
+      {
+        "rock": "game:rock-bauxite",
+        "stone": "game:stone-bauxite",
+        "gravel": "game:gravel-bauxite",
+        "sand": "game:sand-bauxite"
       }
     ]
   },
-  "shapeinventory": { "base": "block/rubblestorage/rubblebinclosed" },
+
+  "behaviors": [
+    { "name": "HorizontalOrientable" },
+    {
+      "name": "Multiblock",
+      "propertiesByType": {
+        "*-north": {
+          "sizex": 2,
+          "sizey": 1,
+          "sizez": 1,
+          "cposition": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "*-east": {
+          "sizex": 1,
+          "sizey": 1,
+          "sizez": 2,
+          "cposition": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "*-south": {
+          "sizex": 2,
+          "sizey": 1,
+          "sizez": 1,
+          "cposition": {
+            "x": 1,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "*-west": {
+          "sizex": 1,
+          "sizey": 1,
+          "sizez": 2,
+          "cposition": {
+            "x": 0,
+            "y": 0,
+            "z": 1
+          }
+        }
+      }
+    }
+  ],
+
+  "textures": {
+    "wood": { "base": "game:block/wood/planks/generic" },
+    "metal": { "base": "game:block/metal/anvil/copper" },
+
+    "stone-game:rock-andesite": { "base": "game:block/stone/rock/andesite1" },
+    "stone-game:rock-chalk": { "base": "game:block/stone/rock/chalk1" },
+    "stone-game:rock-chert": { "base": "game:block/stone/rock/chert1" },
+    "stone-game:rock-conglomerate": { "base": "game:block/stone/rock/conglomerate1" },
+    "stone-game:rock-limestone": { "base": "game:block/stone/rock/limestone1" },
+    "stone-game:rock-claystone": { "base": "game:block/stone/rock/claystone1" },
+    "stone-game:rock-granite": { "base": "game:block/stone/rock/granite1" },
+    "stone-game:rock-sandstone": { "base": "game:block/stone/rock/sandstone1" },
+    "stone-game:rock-shale": { "base": "game:block/stone/rock/shale1" },
+    "stone-game:rock-basalt": { "base": "game:block/stone/rock/basalt1" },
+    "stone-game:rock-peridotite": { "base": "game:block/stone/rock/peridotite1" },
+    "stone-game:rock-phyllite": { "base": "game:block/stone/rock/phyllite1" },
+    "stone-game:rock-slate": { "base": "game:block/stone/rock/slate1" },
+    "stone-game:rock-bauxite": { "base": "game:block/stone/rock/bauxite1" },
+
+    "gravel-game:rock-andesite": { "base": "game:block/stone/gravel/andesite" },
+    "gravel-game:rock-chalk": { "base": "game:block/stone/gravel/chalk" },
+    "gravel-game:rock-chert": { "base": "game:block/stone/gravel/chert" },
+    "gravel-game:rock-conglomerate": { "base": "game:block/stone/gravel/conglomerate" },
+    "gravel-game:rock-limestone": { "base": "game:block/stone/gravel/limestone" },
+    "gravel-game:rock-claystone": { "base": "game:block/stone/gravel/claystone" },
+    "gravel-game:rock-granite": { "base": "game:block/stone/gravel/granite" },
+    "gravel-game:rock-sandstone": { "base": "game:block/stone/gravel/sandstone" },
+    "gravel-game:rock-shale": { "base": "game:block/stone/gravel/shale" },
+    "gravel-game:rock-basalt": { "base": "game:block/stone/gravel/basalt" },
+    "gravel-game:rock-peridotite": { "base": "game:block/stone/gravel/peridotite" },
+    "gravel-game:rock-phyllite": { "base": "game:block/stone/gravel/phyllite" },
+    "gravel-game:rock-slate": { "base": "game:block/stone/gravel/slate" },
+    "gravel-game:rock-bauxite": { "base": "game:block/stone/gravel/bauxite" },
+
+    "sand-game:rock-andesite": { "base": "game:block/stone/sand/andesite" },
+    "sand-game:rock-chalk": { "base": "game:block/stone/sand/chalk" },
+    "sand-game:rock-chert": { "base": "game:block/stone/sand/chert" },
+    "sand-game:rock-conglomerate": { "base": "game:block/stone/sand/conglomerate" },
+    "sand-game:rock-limestone": { "base": "game:block/stone/sand/limestone" },
+    "sand-game:rock-claystone": { "base": "game:block/stone/sand/claystone" },
+    "sand-game:rock-granite": { "base": "game:block/stone/sand/granite" },
+    "sand-game:rock-sandstone": { "base": "game:block/stone/sand/sandstone" },
+    "sand-game:rock-shale": { "base": "game:block/stone/sand/shale" },
+    "sand-game:rock-basalt": { "base": "game:block/stone/sand/basalt" },
+    "sand-game:rock-peridotite": { "base": "game:block/stone/sand/peridotite" },
+    "sand-game:rock-phyllite": { "base": "game:block/stone/sand/phyllite" },
+    "sand-game:rock-slate": { "base": "game:block/stone/sand/slate" },
+    "sand-game:rock-bauxite": { "base": "game:block/stone/sand/bauxite" }
+  },
+  "shape": {
+    "base": "block/rubblestorage/storage-empty",
+    "rotateyByType": {
+      "*-north": 0,
+      "*-east": 270,
+      "*-south": 180,
+      "*-west": 90
+    }
+  },
+  "shapeinventory": { "base": "block/rubblestorage/storage-closed" },
+  "selectionBoxes": [
+    {
+      "x1": 0,
+      "y1": 0,
+      "z1": 0,
+      "x2": 1,
+      "y2": 1,
+      "z2": 1,
+      "rotateYByType": {
+        "*-north": 0,
+        "*-east": 270,
+        "*-south": 180,
+        "*-west": 90
+      }
+    },
+    {
+      "x1": 0.0625,
+      "y1": 0.6875,
+      "z1": 0.9375,
+      "x2": 0.1875,
+      "y2": 0.8125,
+      "z2": 1.0625,
+      "rotateYByType": {
+        "*-north": 0,
+        "*-east": 270,
+        "*-south": 180,
+        "*-west": 90
+      }
+    },
+    {
+      "x1": 0.25,
+      "y1": 0.6875,
+      "z1": 0.9375,
+      "x2": 0.375,
+      "y2": 0.8125,
+      "z2": 1.0625,
+      "rotateYByType": {
+        "*-north": 0,
+        "*-east": 270,
+        "*-south": 180,
+        "*-west": 90
+      }
+    },
+    {
+      "x1": 0.4375,
+      "y1": 0.6875,
+      "z1": 0.9375,
+      "x2": 0.5625,
+      "y2": 0.8125,
+      "z2": 1.0625,
+      "rotateYByType": {
+        "*-north": 0,
+        "*-east": 270,
+        "*-south": 180,
+        "*-west": 90
+      }
+    }
+  ],
+  "collisionBoxes": [
+    {
+      "x1": 0,
+      "y1": 0,
+      "z1": 0,
+      "x2": 1,
+      "y2": 0.0625,
+      "z2": 1,
+      "rotateYByType": {
+        "*-north": 0,
+        "*-east": 270,
+        "*-south": 180,
+        "*-west": 90
+      }
+    },
+    {
+      "x1": 0.0625,
+      "y1": 0.0625,
+      "z1": 0,
+      "x2": 1,
+      "y2": 1,
+      "z2": 0.0625,
+      "rotateYByType": {
+        "*-north": 0,
+        "*-east": 270,
+        "*-south": 180,
+        "*-west": 90
+      }
+    },
+    {
+      "x1": 0.0625,
+      "y1": 0.0625,
+      "z1": 0.9375,
+      "x2": 1,
+      "y2": 1,
+      "z2": 1,
+      "rotateYByType": {
+        "*-north": 0,
+        "*-east": 270,
+        "*-south": 180,
+        "*-west": 90
+      }
+    },
+    {
+      "x1": 0,
+      "y1": 0.0625,
+      "z1": 0,
+      "x2": 0.0625,
+      "y2": 1,
+      "z2": 1,
+      "rotateYByType": {
+        "*-north": 0,
+        "*-east": 270,
+        "*-south": 180,
+        "*-west": 90
+      }
+    }
+  ],
+
   "drawtype": "json",
   "facecullmode": "nevercull",
+  "lightAbsorption": 0,
+  "sideAo": { "all": false },
   "sidesolid": { "all": false },
   "sideopaque": { "all": false },
+  "emitSideAo": { "all": false },
+
+  "maxStackSize": 1,
   "blockmaterial": "Wood",
   "materialDensity": 600,
-  "lightAbsorption": 99,
-  "emitSideAo": { "all": true },
-  "lightabsorption": 0,
+
   "heldTpIdleAnimation": "holdbothhandslarge",
   "heldTpUseAnimation": "twohandplaceblock",
-  "fpHandTransform": {
-    "translation": {
-      "x": -2.4,
-      "y": -0.35,
-      "z": 0.5
-    },
-    "rotation": {
-      "x": 4,
-      "y": -43,
-      "z": 0
-    },
-    "scale": 1.83
-  },
   "guiTransform": {
     "translation": {
-      "x": -8,
-      "y": 2,
-      "z": 0
-    },
-    "scale": 0.87
-  },
-  "tpHandTransform": {
-    "translation": {
-      "x": -1.6,
-      "y": -0.8,
-      "z": -0.8
-    },
-    "rotation": {
-      "x": -82,
-      "y": 16,
-      "z": -100
-    },
-    "scale": 0.4
-  },
-  "groundTransform": {
-    "translation": {
-      "x": 0,
+      "x": -0.5,
       "y": 0,
-      "z": 0
-    },
-    "rotation": {
-      "x": 0,
-      "y": -45,
       "z": 0
     },
     "origin": {
-      "x": 0.5,
-      "y": 0,
+      "x": 1,
+      "y": 0.5,
       "z": 0.5
     },
-    "scale": 2
+    "scale": 0.75
+  },
+  "tpHandTransform": {
+    "translation": {
+      "x": -3,
+      "y": -0.6,
+      "z": -1.75
+    },
+    "rotation": {
+      "x": 101,
+      "y": -6,
+      "z": -77
+    },
+    "origin": {
+      "x": 1,
+      "y": 0.5,
+      "z": 1
+    },
+    "scale": 0.4
   }
 }

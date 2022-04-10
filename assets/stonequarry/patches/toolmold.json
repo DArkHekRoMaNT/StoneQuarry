@@ -22,7 +22,7 @@
       "onmoldrackTransform": { "rotation": { "z": 90 } },
       "drop": {
         "type": "block",
-        "code": "stonequarry:plugandfeather-{metal}-one-down-north"
+        "code": "stonequarry:plugandfeather-{metal}-0-down-north"
       }
     }
   },

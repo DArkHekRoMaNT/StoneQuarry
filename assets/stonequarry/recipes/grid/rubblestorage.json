@@ -6,5 +6,5 @@
   },
   "width": 3,
   "height": 2,
-  "output": { "type": "block", "code": "rubblestorage-sandstone-empty-north", "quantity": 1 }
+  "output": { "type": "block", "code": "rubblestorage-north", "quantity": 1 }
 }

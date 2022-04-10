@@ -1,0 +1,41 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+	},
+	"elements": [
+		{
+			"name": "TopPlate",
+			"from": [ 1.0, 14.5, 1.0 ], 
+			"to": [ 16.0, 15.5, 15.0 ], 
+			"rotationOrigin": [ 1.0, 14.5, 1.0 ],
+			"faces": {
+				"north": { "texture": "#wood", "uv": [ 0.0, 0.0, 15.0, 1.0 ] },
+				"east": { "texture": "#wood", "uv": [ 0.0, 0.0, 14.0, 1.0 ] },
+				"south": { "texture": "#wood", "uv": [ 0.0, 0.0, 15.0, 1.0 ] },
+				"west": { "texture": "#wood", "uv": [ 0.0, 0.0, 14.0, 1.0 ] },
+				"up": { "texture": "#wood", "uv": [ 0.0, 0.0, 15.0, 14.0 ] },
+				"down": { "texture": "#wood", "uv": [ 0.0, 0.0, 15.0, 14.0 ] }
+			}
+		},
+		{
+			"name": "TopPlate2",
+			"from": [ 16.0, 14.5, 1.0 ], 
+			"to": [ 31.0, 15.5, 15.0 ], 
+			"rotationOrigin": [ 16.0, 14.5, 1.0 ],
+			"faces": {
+				"north": { "texture": "#wood", "uv": [ 0.0, 0.0, 15.0, 1.0 ] },
+				"east": { "texture": "#wood", "uv": [ 0.0, 0.0, 14.0, 1.0 ] },
+				"south": { "texture": "#wood", "uv": [ 0.0, 0.0, 15.0, 1.0 ] },
+				"west": { "texture": "#wood", "uv": [ 0.0, 0.0, 14.0, 1.0 ] },
+				"up": { "texture": "#wood", "uv": [ 0.0, 0.0, 15.0, 14.0 ] },
+				"down": { "texture": "#wood", "uv": [ 0.0, 0.0, 15.0, 14.0 ] }
+			}
+		}
+	]}

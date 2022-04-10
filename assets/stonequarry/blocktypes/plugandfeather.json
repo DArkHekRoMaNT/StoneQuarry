@@ -2,16 +2,30 @@
   "code": "plugandfeather",
   "class": "BlockPlugAndFeather",
   "entityclass": "PlugAndFeather",
+
   "variantgroups": [
     {
       "code": "metal",
-      "states": ["copper", "tinbronze", "bismuthbronze", "blackbronze", "iron", "meteoriciron", "steel"]
+      "states": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "iron", "meteoriciron", "steel" ]
     },
-    { "code": "type", "states": ["one", "two", "three"] },
-    { "code": "orientation", "states": ["horizontal", "up", "down"] },
-    { "code": "direction", "states": ["north", "south", "east", "west"] }
+    {
+      "code": "stage",
+      "states": [ "0", "1", "2" ]
+    },
+    {
+      "code": "orientation",
+      "states": [ "up", "down", "horizontal" ]
+    },
+    {
+      "code": "direction",
+      "loadFromProperties": "abstract/horizontalorientation"
+    }
   ],
-  "storageFlags": 5,
+  "creativeinventory": {
+    "general": [ "*-0-down-north" ],
+    "stonequarry": [ "*-0-down-north" ]
+  },
+
   "attributes": {
     "searchrangeByType": {
       "*-copper-*": 3,
@@ -21,60 +35,248 @@
       "*-iron-*": 6,
       "*-meteoriciron-*": 6,
       "*-steel-*": 7
+    },
+    "allowedCodes": [
+      "rock-*",
+      "ore-*"
+    ]
+  },
+
+  "shape": {
+    "base": "block/plugandfeather/stage-{stage}",
+    "rotatexByType": {
+      "*-down-*": 0,
+      "*-up-*": 180,
+      "*-horizontal-north": 90,
+      "*-horizontal-south": -90
+    },
+    "rotateyByType": {
+      "*-north": 90,
+      "*-east": 0,
+      "*-south": 90,
+      "*-west": 0
+    },
+    "rotatezByType": {
+      "*-horizontal-east": 90,
+      "*-horizontal-west": -90
     }
   },
-  "shapeByType": {
-    "*-down-east": { "base": "block/quarry/plugandfeather-{type}" },
-    "*-down-west": { "base": "block/quarry/plugandfeather-{type}" },
-    "*-down-north": { "base": "block/quarry/plugandfeather-{type}", "rotatey": 90 },
-    "*-down-south": { "base": "block/quarry/plugandfeather-{type}", "rotatey": 90 },
-    "*-up-east": { "base": "block/quarry/plugandfeather-{type}", "rotatex": 180 },
-    "*-up-west": { "base": "block/quarry/plugandfeather-{type}", "rotatex": 180 },
-    "*-up-north": { "base": "block/quarry/plugandfeather-{type}", "rotatex": 180, "rotatey": 90 },
-    "*-up-south": { "base": "block/quarry/plugandfeather-{type}", "rotatex": 180, "rotatey": 90 },
-    "*-horizontal-north": { "base": "block/quarry/plugandfeather-{type}", "rotatex": 90, "rotatey": 90 },
-    "*-horizontal-south": { "base": "block/quarry/plugandfeather-{type}", "rotatex": -90, "rotatey": 90 },
-    "*-horizontal-east": { "base": "block/quarry/plugandfeather-{type}", "rotatez": 90 },
-    "*-horizontal-west": { "base": "block/quarry/plugandfeather-{type}", "rotatez": -90 }
-  },
   "textures": { "metal": { "base": "game:block/metal/plate/{metal}" } },
+
   "drawtype": "json",
   "facecullmode": "nevercull",
+  "lightAbsorption": 0,
+  "sideAo": { "all": false },
   "sidesolid": { "all": false },
   "sideopaque": { "all": false },
-  "rainPermeable": true,
-  "lightAbsorption": 0,
-  "creativeinventory": { "general": ["*-one-down-north"], "stonequarry": ["*-one-down-north"] },
+  "emitSideAo": { "all": false },
+
+  "blockmaterial": "Metal",
+
   "collisionboxByType": {
-    "*-up-east": { "x1": 0.3, "y1": 0.5, "z1": 0, "x2": 0.7, "y2": 1, "z2": 1 },
-    "*-up-west": { "x1": 0.3, "y1": 0.5, "z1": 0, "x2": 0.7, "y2": 1, "z2": 1 },
-    "*-up-north": { "x1": 0, "y1": 0.5, "z1": 0.3, "x2": 1, "y2": 1, "z2": 0.7 },
-    "*-up-south": { "x1": 0, "y1": 0.5, "z1": 0.3, "x2": 1, "y2": 1, "z2": 0.7 },
-    "*-down-east": { "x1": 0.3, "y1": 0, "z1": 0, "x2": 0.7, "y2": 0.5, "z2": 1 },
-    "*-down-west": { "x1": 0.3, "y1": 0, "z1": 0, "x2": 0.7, "y2": 0.5, "z2": 1 },
-    "*-down-north": { "x1": 0, "y1": 0, "z1": 0.3, "x2": 1, "y2": 0.5, "z2": 0.7 },
-    "*-down-south": { "x1": 0, "y1": 0, "z1": 0.3, "x2": 1, "y2": 0.5, "z2": 0.7 },
-    "*-horizontal-east": { "x1": 0.5, "y1": 0.3, "z1": 0, "x2": 1, "y2": 0.7, "z2": 1 },
-    "*-horizontal-west": { "x1": 0, "y1": 0.3, "z1": 0, "x2": 0.5, "y2": 0.7, "z2": 1 },
-    "*-horizontal-north": { "x1": 0, "y1": 0.3, "z1": 0, "x2": 1, "y2": 0.7, "z2": 0.5 },
-    "*-horizontal-south": { "x1": 0, "y1": 0.3, "z1": 0.5, "x2": 1, "y2": 0.7, "z2": 1 }
+    "*-up-east": {
+      "x1": 0.3,
+      "y1": 0.5,
+      "z1": 0,
+      "x2": 0.7,
+      "y2": 1,
+      "z2": 1
+    },
+    "*-up-west": {
+      "x1": 0.3,
+      "y1": 0.5,
+      "z1": 0,
+      "x2": 0.7,
+      "y2": 1,
+      "z2": 1
+    },
+    "*-up-north": {
+      "x1": 0,
+      "y1": 0.5,
+      "z1": 0.3,
+      "x2": 1,
+      "y2": 1,
+      "z2": 0.7
+    },
+    "*-up-south": {
+      "x1": 0,
+      "y1": 0.5,
+      "z1": 0.3,
+      "x2": 1,
+      "y2": 1,
+      "z2": 0.7
+    },
+    "*-down-east": {
+      "x1": 0.3,
+      "y1": 0,
+      "z1": 0,
+      "x2": 0.7,
+      "y2": 0.5,
+      "z2": 1
+    },
+    "*-down-west": {
+      "x1": 0.3,
+      "y1": 0,
+      "z1": 0,
+      "x2": 0.7,
+      "y2": 0.5,
+      "z2": 1
+    },
+    "*-down-north": {
+      "x1": 0,
+      "y1": 0,
+      "z1": 0.3,
+      "x2": 1,
+      "y2": 0.5,
+      "z2": 0.7
+    },
+    "*-down-south": {
+      "x1": 0,
+      "y1": 0,
+      "z1": 0.3,
+      "x2": 1,
+      "y2": 0.5,
+      "z2": 0.7
+    },
+    "*-horizontal-east": {
+      "x1": 0.5,
+      "y1": 0.3,
+      "z1": 0,
+      "x2": 1,
+      "y2": 0.7,
+      "z2": 1
+    },
+    "*-horizontal-west": {
+      "x1": 0,
+      "y1": 0.3,
+      "z1": 0,
+      "x2": 0.5,
+      "y2": 0.7,
+      "z2": 1
+    },
+    "*-horizontal-north": {
+      "x1": 0,
+      "y1": 0.3,
+      "z1": 0,
+      "x2": 1,
+      "y2": 0.7,
+      "z2": 0.5
+    },
+    "*-horizontal-south": {
+      "x1": 0,
+      "y1": 0.3,
+      "z1": 0.5,
+      "x2": 1,
+      "y2": 0.7,
+      "z2": 1
+    }
   },
   "selectionboxByType": {
-    "*-up-east": { "x1": 0.3, "y1": 0.5, "z1": 0, "x2": 0.7, "y2": 1, "z2": 1 },
-    "*-up-west": { "x1": 0.3, "y1": 0.5, "z1": 0, "x2": 0.7, "y2": 1, "z2": 1 },
-    "*-up-north": { "x1": 0, "y1": 0.5, "z1": 0.3, "x2": 1, "y2": 1, "z2": 0.7 },
-    "*-up-south": { "x1": 0, "y1": 0.5, "z1": 0.3, "x2": 1, "y2": 1, "z2": 0.7 },
-    "*-down-east": { "x1": 0.3, "y1": 0, "z1": 0, "x2": 0.7, "y2": 0.5, "z2": 1 },
-    "*-down-west": { "x1": 0.3, "y1": 0, "z1": 0, "x2": 0.7, "y2": 0.5, "z2": 1 },
-    "*-down-north": { "x1": 0, "y1": 0, "z1": 0.3, "x2": 1, "y2": 0.5, "z2": 0.7 },
-    "*-down-south": { "x1": 0, "y1": 0, "z1": 0.3, "x2": 1, "y2": 0.5, "z2": 0.7 },
-    "*-horizontal-east": { "x1": 0.5, "y1": 0.3, "z1": 0, "x2": 1, "y2": 0.7, "z2": 1 },
-    "*-horizontal-west": { "x1": 0, "y1": 0.3, "z1": 0, "x2": 0.5, "y2": 0.7, "z2": 1 },
-    "*-horizontal-north": { "x1": 0, "y1": 0.3, "z1": 0, "x2": 1, "y2": 0.7, "z2": 0.5 },
-    "*-horizontal-south": { "x1": 0, "y1": 0.3, "z1": 0.5, "x2": 1, "y2": 0.7, "z2": 1 }
+    "*-up-east": {
+      "x1": 0.3,
+      "y1": 0.5,
+      "z1": 0,
+      "x2": 0.7,
+      "y2": 1,
+      "z2": 1
+    },
+    "*-up-west": {
+      "x1": 0.3,
+      "y1": 0.5,
+      "z1": 0,
+      "x2": 0.7,
+      "y2": 1,
+      "z2": 1
+    },
+    "*-up-north": {
+      "x1": 0,
+      "y1": 0.5,
+      "z1": 0.3,
+      "x2": 1,
+      "y2": 1,
+      "z2": 0.7
+    },
+    "*-up-south": {
+      "x1": 0,
+      "y1": 0.5,
+      "z1": 0.3,
+      "x2": 1,
+      "y2": 1,
+      "z2": 0.7
+    },
+    "*-down-east": {
+      "x1": 0.3,
+      "y1": 0,
+      "z1": 0,
+      "x2": 0.7,
+      "y2": 0.5,
+      "z2": 1
+    },
+    "*-down-west": {
+      "x1": 0.3,
+      "y1": 0,
+      "z1": 0,
+      "x2": 0.7,
+      "y2": 0.5,
+      "z2": 1
+    },
+    "*-down-north": {
+      "x1": 0,
+      "y1": 0,
+      "z1": 0.3,
+      "x2": 1,
+      "y2": 0.5,
+      "z2": 0.7
+    },
+    "*-down-south": {
+      "x1": 0,
+      "y1": 0,
+      "z1": 0.3,
+      "x2": 1,
+      "y2": 0.5,
+      "z2": 0.7
+    },
+    "*-horizontal-east": {
+      "x1": 0.5,
+      "y1": 0.3,
+      "z1": 0,
+      "x2": 1,
+      "y2": 0.7,
+      "z2": 1
+    },
+    "*-horizontal-west": {
+      "x1": 0,
+      "y1": 0.3,
+      "z1": 0,
+      "x2": 0.5,
+      "y2": 0.7,
+      "z2": 1
+    },
+    "*-horizontal-north": {
+      "x1": 0,
+      "y1": 0.3,
+      "z1": 0,
+      "x2": 1,
+      "y2": 0.7,
+      "z2": 0.5
+    },
+    "*-horizontal-south": {
+      "x1": 0,
+      "y1": 0.3,
+      "z1": 0.5,
+      "x2": 1,
+      "y2": 0.7,
+      "z2": 1
+    }
   },
-  "drops": [{ "type": "block", "code": "plugandfeather-{metal}-one-down-north", "quantity": { "avg": 1, "var": 0 } }],
+
+  "drops": [
+    {
+      "type": "block",
+      "code": "plugandfeather-{metal}-0-down-north"
+    }
+  ],
   "groundTransform": {
-    "scale": 3
+    "scale": 2.5
   }
 }
