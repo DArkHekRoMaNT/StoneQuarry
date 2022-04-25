@@ -109,7 +109,7 @@ namespace StoneQuarry
             {
                 if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BEStoneSlab be)
                 {
-                    be.ContentFromAttributes(byItemStack.Attributes, world);
+                    be.ContentFromAttributes(byItemStack.Attributes.Clone(), world);
                 }
             }
 
