@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -19,7 +18,11 @@ namespace StoneQuarry
         public override void Initialize(ICoreAPI api)
         {
             base.Initialize(api);
-            Inventory = new StoneSlabInventory(api, Pos, AllowedCodes);
+
+            if (Inventory == null)
+            {
+                Inventory = new StoneSlabInventory(api, Pos, AllowedCodes);
+            }
         }
 
         public Block CurrentRock => Inventory.MostQuantityRock;
