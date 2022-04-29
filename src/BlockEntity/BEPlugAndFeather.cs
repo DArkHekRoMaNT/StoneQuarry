@@ -103,22 +103,27 @@ namespace StoneQuarry
             else if (rockQuantity >= 42) slabSize = "medium";
             else if (rockQuantity > 0) slabSize = "small";
 
-            string dropItemString = "stoneslab-andesite-" + slabSize + "-north";
-
-            AssetLocation dropItemLoc = new AssetLocation(Core.ModId, dropItemString);
-            var dropItem = world.GetBlock(dropItemLoc) as BlockStoneSlab;
-            if (dropItem != null)
+            if (slabSize != null)
             {
-                ItemStack dropItemStack = new ItemStack(dropItem, 1);
+                string dropItemString = "stoneslab-" + slabSize + "-north";
 
-                StoneSlabInventory.StacksToTreeAttributes(contentStacks, dropItemStack.Attributes, Api, dropItem.AllowedCodes);
+                AssetLocation dropItemLoc = new AssetLocation(Core.ModId, dropItemString);
+                if (world.GetBlock(dropItemLoc) is BlockStoneSlab dropItem)
+                {
+                    ItemStack dropItemStack = new ItemStack(dropItem, 1);
 
-                world.SpawnItemEntity(dropItemStack, GetInsideCube().Center.ToVec3d().Add(.5, .5, .5));
+                    var inv = StoneSlabInventory.StacksToTreeAttributes(contentStacks, dropItemStack.Attributes, Api, dropItem.AllowedCodes);
+                    var preset = new StoneSlabPreset(inv, dropItem);
+                    preset.ToAttributes(dropItemStack.Attributes);
+
+                    world.SpawnItemEntity(dropItemStack, GetInsideCube().Center.ToVec3d().Add(.5, .5, .5));
+                }
+                else
+                {
+                    Api.Logger.Warning("[" + Core.ModId + "] Unknown drop item " + dropItemLoc);
+                }
             }
-            else
-            {
-                Api.Logger.Warning("[" + Core.ModId + "] Unknown drop item " + dropItemLoc);
-            }
+
             world.BlockAccessor.BreakBlock(Pos, byPlayer);
         }
 
@@ -220,29 +225,6 @@ namespace StoneQuarry
             }
 
             return null;
-        }
-
-        public Dictionary<string, int> FindRockCountsOld(IWorldAccessor world, List<BlockPos> blocks)
-        {
-            Dictionary<string, int> quantitiesByRock = new Dictionary<string, int>();
-
-            foreach (var pos in blocks)
-            {
-                Block block = world.BlockAccessor.GetBlock(pos);
-                string rockCode = block.FirstCodePart(1);
-                if (block.FirstCodePart() == "rock")
-                {
-                    if (quantitiesByRock.ContainsKey(rockCode))
-                    {
-                        quantitiesByRock[rockCode] += 1;
-                    }
-                    else
-                    {
-                        quantitiesByRock.Add(rockCode, 1);
-                    }
-                }
-            }
-            return quantitiesByRock;
         }
 
         public void TogglePreview()

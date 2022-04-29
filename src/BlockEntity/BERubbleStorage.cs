@@ -210,10 +210,13 @@ namespace StoneQuarry
 
                 if (StoredRock == rockName)
                 {
-                    Content[contentType] += quantity;
-                    slot.TakeOut(quantity);
-                    slot.MarkDirty();
-                    return true;
+                    if (Content.ContainsKey(contentType))
+                    {
+                        Content[contentType] += quantity;
+                        slot.TakeOut(quantity);
+                        slot.MarkDirty();
+                        return true;
+                    }
                 }
             }
             return false;

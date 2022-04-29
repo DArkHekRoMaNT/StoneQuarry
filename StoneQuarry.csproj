@@ -13,8 +13,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<MinGameVersion>1.16.1</MinGameVersion>
-		<RunGameVersion>1.16.4</RunGameVersion>
+		<MinGameVersion>1.16.5</MinGameVersion>
+		<RunGameVersion>1.16.5</RunGameVersion>
 	</PropertyGroup>
 
 	<ItemGroup Label="Game Refs">
@@ -46,11 +46,6 @@
 			<HintPath>$(VINTAGE_STORY)/$(MinGameVersion)/Lib/cairo-sharp.dll</HintPath>
 		</Reference>
 	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="modtools\" />
-	</ItemGroup>
-
 
 	<Target Name="CollectMod" AfterTargets="PostBuildEvent">
 		<RemoveDir Directories="mods/$(TargetName)" />

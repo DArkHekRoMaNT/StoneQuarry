@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
@@ -41,22 +40,13 @@ namespace StoneQuarry
             }
         }
 
-        public Block MostQuantityRock
+        public StoneSlabPreset RenderPreset { get; private set; }
+
+        public StoneSlabInventory(ICoreAPI api, BlockPos pos, BaseAllowedCodes allowedCodes, int quantitySlots = 0)
+            : base(quantitySlots, "SQ_StoneSlab", pos?.ToString() ?? "-fake", api, OnNewSlot)
         {
-            get
-            {
-                int max = -1;
-                Block block = null;
-                foreach (var slot in slots)
-                {
-                    if (!slot.Empty && slot.StackSize > max)
-                    {
-                        max = slot.StackSize;
-                        block = slot.Itemstack.Block;
-                    }
-                }
-                return block;
-            }
+            Pos = pos;
+            AllowedCodes = allowedCodes;
         }
 
         public void NextSlot()
@@ -88,21 +78,6 @@ namespace StoneQuarry
                 } while (prevSlotId != CurrentSlotId);
                 CurrentSlotId = -1; // If all slots are empty
             }
-        }
-
-        public StoneSlabInventory(ICoreAPI api, BlockPos pos, BaseAllowedCodes allowedCodes, int quantitySlots = 0)
-            : base(quantitySlots, "SQ_StoneSlab", pos?.ToString() ?? "-fake", api, OnNewSlot)
-        {
-            Pos = pos;
-            AllowedCodes = allowedCodes;
-        }
-
-        private static ItemSlot OnNewSlot(int slotId, InventoryGeneric self)
-        {
-            return new ItemSlotUniversal(self)
-            {
-                MaxSlotStackSize = int.MaxValue
-            };
         }
 
         public ItemStack GetContent(IPlayer byPlayer, string type, NatFloat quantity, string rock = null)
@@ -159,8 +134,9 @@ namespace StoneQuarry
 
         private void MarkBEDirty()
         {
-            if (Api.World.BlockAccessor.GetBlockEntity(Pos) is BEStoneSlab be)
+            if (Pos != null && Api.World.BlockAccessor.GetBlockEntity(Pos) is BEStoneSlab be)
             {
+                be?.RenderPreset?.Update(this, be.Block);
                 be?.MarkDirty(true);
             }
         }
@@ -256,19 +232,19 @@ namespace StoneQuarry
             return false;
         }
 
-        public override void ToTreeAttributes(ITreeAttribute invtree)
+        public override void ToTreeAttributes(ITreeAttribute tree)
         {
-            base.ToTreeAttributes(invtree);
-            invtree.SetInt("currentslotid", CurrentSlotId);
+            base.ToTreeAttributes(tree);
+            tree.SetInt("currentslotid", CurrentSlotId);
         }
 
-        public override void FromTreeAttributes(ITreeAttribute treeAttribute)
+        public override void FromTreeAttributes(ITreeAttribute tree)
         {
-            base.FromTreeAttributes(treeAttribute);
-            CurrentSlotId = treeAttribute.GetInt("currentslotid", -1);
+            base.FromTreeAttributes(tree);
+            CurrentSlotId = tree.GetInt("currentslotid", -1);
         }
 
-        public static void StacksToTreeAttributes(List<ItemStack> stacks, ITreeAttribute tree, ICoreAPI api, BaseAllowedCodes allowedCodes)
+        public static StoneSlabInventory StacksToTreeAttributes(List<ItemStack> stacks, ITreeAttribute tree, ICoreAPI api, BaseAllowedCodes allowedCodes)
         {
             var inv = new StoneSlabInventory(api, null, allowedCodes, stacks.Count);
 
@@ -279,6 +255,15 @@ namespace StoneQuarry
             }
 
             inv.ToTreeAttributes(tree);
+            return inv;
+        }
+
+        private static ItemSlot OnNewSlot(int slotId, InventoryGeneric self)
+        {
+            return new ItemSlotUniversal(self)
+            {
+                MaxSlotStackSize = int.MaxValue
+            };
         }
     }
 }

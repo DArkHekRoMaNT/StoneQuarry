@@ -5,11 +5,6 @@
 
   "variantgroups": [
     {
-      "code": "rock",
-      "loadFromProperties": "block/rockwithdeposit",
-      "states": []
-    },
-    {
       "code": "size",
       "states": [ "small", "medium", "large", "huge", "giant" ]
     },
@@ -166,6 +161,7 @@
     { "name": "HorizontalOrientable" },
     {
       "name": "Multiblock",
+      "properties": { "type": "modular" },
       "propertiesByType": {
         "*-small-*": {
           "sizex": 1,
@@ -287,14 +283,120 @@
     "*-small-*": 16
   },
 
-  "creativeinventory": {
-    "general": [ "*-north" ],
-    "stonequarry": [ "*-north" ]
+  "creativeinventory": {},
+  "creativeinventoryStacksByType": {
+    "*-small-north": [
+      {
+        "tabs": [ "general", "stonequarry" ],
+        "stacks": [
+          {
+            "type": "block",
+            "code": "stoneslab-small-north",
+            "attributes": {
+              "preset": {
+                "size": 1,
+                "0": "game:rock-bauxite"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "*-medium-north": [
+      {
+        "tabs": [ "general", "stonequarry" ],
+        "stacks": [
+          {
+            "type": "block",
+            "code": "stoneslab-medium-north",
+            "attributes": {
+              "preset": {
+                "size": 2,
+                "0": "game:rock-bauxite",
+                "1": "game:rock-andesite"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "*-large-north": [
+      {
+        "tabs": [ "general", "stonequarry" ],
+        "stacks": [
+          {
+            "type": "block",
+            "code": "stoneslab-large-north",
+            "attributes": {
+              "preset": {
+                "size": 4,
+                "0": "game:rock-bauxite",
+                "1": "game:rock-andesite",
+                "2": "game:rock-chalk",
+                "3": "game:rock-chert"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "*-huge-north": [
+      {
+        "tabs": [ "general", "stonequarry" ],
+        "stacks": [
+          {
+            "type": "block",
+            "code": "stoneslab-huge-north",
+            "attributes": {
+              "preset": {
+                "size": 8,
+                "0": "game:rock-bauxite",
+                "1": "game:rock-andesite",
+                "2": "game:rock-chalk",
+                "3": "game:rock-chert",
+                "4": "game:rock-conglomerate",
+                "5": "game:rock-limestone",
+                "6": "game:rock-claystone",
+                "7": "game:rock-granite"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "*-giant-north": [
+      {
+        "tabs": [ "general", "stonequarry" ],
+        "stacks": [
+          {
+            "type": "block",
+            "code": "stoneslab-giant-north",
+            "attributes": {
+              "preset": {
+                "size": 12,
+                "0": "game:rock-bauxite",
+                "1": "game:rock-andesite",
+                "2": "game:rock-chalk",
+                "3": "game:rock-chert",
+                "4": "game:rock-conglomerate",
+                "5": "game:rock-limestone",
+                "6": "game:rock-claystone",
+                "7": "game:rock-granite",
+                "8": "game:rock-sandstone",
+                "9": "game:rock-shale",
+                "10": "game:rock-basalt",
+                "11": "game:rock-peridotite"
+              }
+            }
+          }
+        ]
+      }
+    ]
   },
 
   "textures": {
-    "stone": { "base": "game:block/stone/rock/{rock}1" },
-    "wood": { "base": "game:block/wood/planks/generic" }
+    "wood": { "base": "game:block/wood/planks/generic" },
+    "filler": { "base": "game:block/transparent" }
   },
   "shape": {
     "base": "block/stoneslab/{size}",

@@ -30,12 +30,12 @@
 					"to": [ 12.0, 16.0, 16.0 ], 
 					"rotationOrigin": [ -3.0, 3.0, 1.0 ],
 					"faces": {
-						"north": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
-						"east": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
-						"south": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
-						"west": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
-						"up": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 15.0 ] },
-						"down": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 15.0 ] }
+						"north": { "texture": "#stone0", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
+						"east": { "texture": "#stone0", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
+						"south": { "texture": "#stone0", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
+						"west": { "texture": "#stone0", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
+						"up": { "texture": "#stone0", "uv": [ 0.0, 0.0, 15.0, 15.0 ] },
+						"down": { "texture": "#stone0", "uv": [ 0.0, 0.0, 15.0, 15.0 ] }
 					}
 				}
 			]
@@ -60,12 +60,12 @@
 					"to": [ 6.0, 16.0, 16.0 ], 
 					"rotationOrigin": [ -9.0, 3.0, 1.0 ],
 					"faces": {
-						"north": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
-						"east": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
-						"south": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
-						"west": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
-						"up": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 15.0 ] },
-						"down": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 15.0 ] }
+						"north": { "texture": "#stone1", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
+						"east": { "texture": "#stone1", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
+						"south": { "texture": "#stone1", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
+						"west": { "texture": "#stone1", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
+						"up": { "texture": "#stone1", "uv": [ 0.0, 0.0, 15.0, 15.0 ] },
+						"down": { "texture": "#stone1", "uv": [ 0.0, 0.0, 15.0, 15.0 ] }
 					}
 				}
 			]
@@ -90,12 +90,12 @@
 					"to": [ 12.0, 16.0, 16.0 ], 
 					"rotationOrigin": [ -3.0, 3.0, 1.0 ],
 					"faces": {
-						"north": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
-						"east": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
-						"south": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
-						"west": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
-						"up": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 15.0 ] },
-						"down": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 15.0 ] }
+						"north": { "texture": "#stone2", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
+						"east": { "texture": "#stone2", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
+						"south": { "texture": "#stone2", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
+						"west": { "texture": "#stone2", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
+						"up": { "texture": "#stone2", "uv": [ 0.0, 0.0, 15.0, 15.0 ] },
+						"down": { "texture": "#stone2", "uv": [ 0.0, 0.0, 15.0, 15.0 ] }
 					}
 				}
 			]
@@ -120,12 +120,12 @@
 					"to": [ 6.0, 16.0, 16.0 ], 
 					"rotationOrigin": [ -9.0, 3.0, 1.0 ],
 					"faces": {
-						"north": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
-						"east": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
-						"south": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
-						"west": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
-						"up": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 15.0 ] },
-						"down": { "texture": "#stone", "uv": [ 0.0, 0.0, 15.0, 15.0 ] }
+						"north": { "texture": "#stone3", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
+						"east": { "texture": "#stone3", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
+						"south": { "texture": "#stone3", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
+						"west": { "texture": "#stone3", "uv": [ 0.0, 0.0, 15.0, 13.0 ], "enabled": false },
+						"up": { "texture": "#stone3", "uv": [ 0.0, 0.0, 15.0, 15.0 ] },
+						"down": { "texture": "#stone3", "uv": [ 0.0, 0.0, 15.0, 15.0 ] }
 					}
 				}
 			]

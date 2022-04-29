@@ -1,19 +1,19 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
-using Vintagestory.API.MathTools;
 
 namespace StoneQuarry
 {
 
-    public class BEStoneSlab : BlockEntity, ITexPositionSource
+    public class BEStoneSlab : BlockEntity
     {
+        public StoneSlabPreset RenderPreset { get; private set; }
         public StoneSlabInventory Inventory { get; private set; }
+        public BaseAllowedCodes AllowedCodes => (Block as BlockStoneSlab)?.AllowedCodes;
 
-        public BaseAllowedCodes AllowedCodes => (Block as BlockStoneSlab).AllowedCodes;
+        private StoneSlabMeshCache meshCache;
 
         public override void Initialize(ICoreAPI api)
         {
@@ -23,56 +23,42 @@ namespace StoneQuarry
             {
                 Inventory = new StoneSlabInventory(api, Pos, AllowedCodes);
             }
-        }
 
-        public Block CurrentRock => Inventory.MostQuantityRock;
-
-        public ICoreClientAPI capi => Api as ICoreClientAPI;
-
-        public Size2i AtlasSize => capi.BlockTextureAtlas.Size;
-
-        public TextureAtlasPosition this[string textureCode]
-        {
-            get
+            if (api is ICoreClientAPI)
             {
-                if (textureCode == "stone")
-                {
-                    ITexPositionSource tex = capi.Tesselator.GetTexSource(CurrentRock);
-                    string otherCode = CurrentRock.Textures.FirstOrDefault().Key;
-                    return tex[otherCode];
-                }
-
-                return capi.Tesselator.GetTexSource(Block)[textureCode];
+                meshCache = api.ModLoader.GetModSystem<StoneSlabMeshCache>();
             }
         }
 
         public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tessThreadTesselator)
         {
-            Block rockBlock = Inventory.MostQuantityRock;
-            if (rockBlock == null)
+            MeshData mesh = meshCache.GetMesh(this, tessThreadTesselator);
+
+            if (mesh != null)
             {
-                return base.OnTesselation(mesher, tessThreadTesselator);
+                mesher.AddMeshData(mesh);
+                return true;
             }
 
-            string path = Block.Shape.Base.Domain + ":shapes/" + Block.Shape.Base.Path + ".json";
-            Shape blockShape = Api.Assets.Get<Shape>(new AssetLocation(path));
-            Vec3f rotation = new Vec3f(0, Block.Shape.rotateY, 0);
-            tessThreadTesselator.TesselateShape(nameof(BEStoneSlab), blockShape, out MeshData mesh, this, rotation);
-
-            mesher.AddMeshData(mesh);
-
-            return true;
+            return base.OnTesselation(mesher, tessThreadTesselator);
         }
 
         public void ContentToAttributes(ITreeAttribute tree)
         {
             Inventory.ToTreeAttributes(tree);
+            RenderPreset.ToAttributes(tree);
         }
 
         public void ContentFromAttributes(ITreeAttribute tree, IWorldAccessor world)
         {
             Inventory = new StoneSlabInventory(world.Api, Pos, AllowedCodes);
             Inventory.FromTreeAttributes(tree);
+
+            RenderPreset = StoneSlabPreset.FromAttributes(tree, world);
+            if (RenderPreset == null)
+            {
+                RenderPreset = new StoneSlabPreset(Inventory, Block);
+            }
         }
 
         public override void ToTreeAttributes(ITreeAttribute tree)
@@ -120,7 +106,8 @@ namespace StoneQuarry
                 return null;
             }
 
-            ItemStack stack = new ItemStack(Block);
+            Block block = Api.World.GetBlock(Block.CodeWithVariant("side", "north"));
+            ItemStack stack = new ItemStack(block);
             ContentToAttributes(stack.Attributes);
             return stack;
         }

@@ -44,12 +44,12 @@
 			"to": [ 15.0, 16.0, 15.0 ], 
 			"rotationOrigin": [ 1.0, 2.0, 1.0 ],
 			"faces": {
-				"north": { "texture": "#stone", "uv": [ 0.0, 0.0, 14.0, 14.0 ] },
-				"east": { "texture": "#stone", "uv": [ 0.0, 0.0, 14.0, 14.0 ] },
-				"south": { "texture": "#stone", "uv": [ 0.0, 0.0, 14.0, 14.0 ] },
-				"west": { "texture": "#stone", "uv": [ 0.0, 0.0, 14.0, 14.0 ] },
-				"up": { "texture": "#stone", "uv": [ 0.0, 0.0, 14.0, 14.0 ] },
-				"down": { "texture": "#stone", "uv": [ 0.0, 0.0, 14.0, 14.0 ] }
+				"north": { "texture": "#stone0", "uv": [ 0.0, 0.0, 14.0, 14.0 ] },
+				"east": { "texture": "#stone0", "uv": [ 0.0, 0.0, 14.0, 14.0 ] },
+				"south": { "texture": "#stone0", "uv": [ 0.0, 0.0, 14.0, 14.0 ] },
+				"west": { "texture": "#stone0", "uv": [ 0.0, 0.0, 14.0, 14.0 ] },
+				"up": { "texture": "#stone0", "uv": [ 0.0, 0.0, 14.0, 14.0 ] },
+				"down": { "texture": "#stone0", "uv": [ 0.0, 0.0, 14.0, 14.0 ] }
 			}
 		}
 	]}

@@ -6,11 +6,10 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
-using Vintagestory.GameContent;
 
 namespace StoneQuarry
 {
-    public class BlockStoneSlab : Block, IMultiBlockMonolithicSmall
+    public class BlockStoneSlab : BaseMultiblock
     {
         const float HitTime = .2f;
 
@@ -19,8 +18,9 @@ namespace StoneQuarry
 
         public WorldInteraction[] WorldInteractions { get; private set; }
         public SimpleParticleProperties InteractParticles { get; private set; }
-
         public BaseAllowedCodes AllowedCodes { get; private set; }
+
+        private StoneSlabMeshCache meshCache;
 
         public override void OnLoaded(ICoreAPI api)
         {
@@ -47,6 +47,8 @@ namespace StoneQuarry
 
             AllowedCodes = new BaseAllowedCodes();
             AllowedCodes.FromJson(Attributes["allowedCodes"].ToString());
+
+            meshCache = api.ModLoader.GetModSystem<StoneSlabMeshCache>();
         }
 
         public void InitWorldInteractions()
@@ -151,7 +153,7 @@ namespace StoneQuarry
             return base.OnBlockInteractStart(world, byPlayer, blockSel);
         }
 
-        public override bool OnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
+        public override bool MBOnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, Vec3i offset)
         {
             ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
             if (activeStack?.Collectible is ItemSlabTool)
@@ -162,8 +164,8 @@ namespace StoneQuarry
                     {
                         ModelTransform tf = ModelTransform.NoTransform;
 
-                        float offset = secondsUsed / Core.Config.SlabInteractionTime;
-                        tf.Translation.Set(offset * .25f, 0, offset * .5f);
+                        float tfOffset = secondsUsed / Core.Config.SlabInteractionTime;
+                        tf.Translation.Set(tfOffset * .25f, 0, tfOffset * .5f);
 
                         byPlayer.Entity.Controls.UsingHeldItemTransformBefore = tf;
                     }
@@ -178,7 +180,7 @@ namespace StoneQuarry
                         if (secondsUsed > times * HitTime)
                         {
                             InteractParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
-                            InteractParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
+                            InteractParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition + offset;
                             world.SpawnParticles(InteractParticles, byPlayer);
 
                             world.PlaySoundAt(HitSoundLocation, byPlayer, byPlayer, true, 32, .5f);
@@ -220,9 +222,7 @@ namespace StoneQuarry
 
             if (api.Side == EnumAppSide.Server)
             {
-
-                var be = world.BlockAccessor.GetBlockEntity(blockSel.Position) as BEStoneSlab;
-                if (be != null && !be.Inventory.Empty)
+                if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BEStoneSlab be && !be.Inventory.Empty)
                 {
                     var dropStack = be.Inventory.GetContent(byPlayer, tool.DropType, tool.Quantity);
                     if (dropStack == null)
@@ -293,14 +293,11 @@ namespace StoneQuarry
             return (world.BlockAccessor.GetBlockEntity(pos) as BEStoneSlab)?.GetSelfDrop() ?? base.OnPickBlock(world, pos);
         }
 
-        public Cuboidf[] MBGetCollisionBoxes(IBlockAccessor blockAccessor, BlockPos pos, Vec3i offset)
+        public override void OnBeforeRender(ICoreClientAPI capi, ItemStack itemstack, EnumItemRenderTarget target, ref ItemRenderInfo renderinfo)
         {
-            return CollisionBoxes;
-        }
+            base.OnBeforeRender(capi, itemstack, target, ref renderinfo);
 
-        public Cuboidf[] MBGetSelectionBoxes(IBlockAccessor blockAccessor, BlockPos pos, Vec3i offset)
-        {
-            return CollisionBoxes;
+            renderinfo.ModelRef = meshCache.GetInventoryMeshRef(itemstack, this);
         }
     }
 }
