@@ -8,6 +8,10 @@
 	"textureSizes": {
 	},
 	"textures": {
+    "stone0": "game:block/stone/cobblestone/granite1",
+    "stone1": "game:block/stone/cobblestone/granite1",
+    "stone2": "game:block/stone/cobblestone/granite1",
+    "stone3": "game:block/stone/cobblestone/granite1"
 	},
 	"elements": [
 		{
