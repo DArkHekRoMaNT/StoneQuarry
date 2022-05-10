@@ -151,6 +151,18 @@ namespace StoneQuarry
             Block block = Api.World.GetBlock(Block.CodeWithVariant("side", "north"));
             ItemStack stack = new ItemStack(block);
             ContentToAttributes(stack.Attributes);
+
+            // Hack for prevent ItemStack compare without stacksize in ItemstackAttribute.Equal -> ItemStack.Equal
+            ITreeAttribute hackTree = stack.Attributes.GetOrAddTreeAttribute("itemstackequalhack");
+            for (int i = 0; i < Inventory.Count; i++)
+            {
+                ItemSlot slot = Inventory[i];
+                if (!slot.Empty)
+                {
+                    hackTree.SetInt("slotsize" + i, slot.StackSize);
+                }
+            }
+
             return stack;
         }
     }
