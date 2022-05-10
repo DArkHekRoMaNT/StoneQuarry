@@ -153,6 +153,11 @@ namespace StoneQuarry
             return base.OnBlockInteractStart(world, byPlayer, blockSel);
         }
 
+        public override bool OnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
+        {
+            return MBOnBlockInteractStep(secondsUsed, world, byPlayer, blockSel, Vec3i.Zero);
+        }
+
         public override bool MBOnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, Vec3i offset)
         {
             ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
