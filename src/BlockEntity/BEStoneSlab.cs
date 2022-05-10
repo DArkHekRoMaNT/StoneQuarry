@@ -3,6 +3,7 @@ using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
+using Vintagestory.API.MathTools;
 
 namespace StoneQuarry
 {
@@ -13,11 +14,52 @@ namespace StoneQuarry
         public StoneSlabInventory Inventory { get; private set; }
         public BaseAllowedCodes AllowedCodes => (Block as BlockStoneSlab)?.AllowedCodes;
 
+
+        private SimpleParticleProperties interactParticles;
+        public SimpleParticleProperties InteractParticles
+        {
+            get
+            {
+                if (interactParticles != null)
+                {
+                    Block rock = Api.World.GetBlock(new AssetLocation(Inventory.CurrentRock));
+                    if (rock != null)
+                    {
+                        interactParticles.ColorByBlock = rock;
+                    }
+                    else
+                    {
+                        interactParticles.ColorByBlock = Block;
+                    }
+                }
+
+                return interactParticles;
+            }
+        }
+
+
         private StoneSlabMeshCache meshCache;
 
         public override void Initialize(ICoreAPI api)
         {
             base.Initialize(api);
+
+            interactParticles = new SimpleParticleProperties()
+            {
+                MinPos = new Vec3d(),
+                AddPos = new Vec3d(.5, .5, .5),
+                MinQuantity = 5,
+                AddQuantity = 20,
+                GravityEffect = .9f,
+                WithTerrainCollision = true,
+                ParticleModel = EnumParticleModel.Quad,
+                LifeLength = 0.5f,
+                MinVelocity = new Vec3f(-0.4f, -0.4f, -0.4f),
+                AddVelocity = new Vec3f(0.8f, 1.2f, 0.8f),
+                MinSize = 0.1f,
+                MaxSize = 0.4f,
+                DieOnRainHeightmap = false
+            };
 
             if (Inventory == null)
             {

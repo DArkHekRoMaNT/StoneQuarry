@@ -17,7 +17,6 @@ namespace StoneQuarry
         public static AssetLocation DropSoundLocation => new AssetLocation("game", "sounds/block/heavyice");
 
         public WorldInteraction[] WorldInteractions { get; private set; }
-        public SimpleParticleProperties InteractParticles { get; private set; }
         public BaseAllowedCodes AllowedCodes { get; private set; }
 
         private StoneSlabMeshCache meshCache;
@@ -25,23 +24,6 @@ namespace StoneQuarry
         public override void OnLoaded(ICoreAPI api)
         {
             base.OnLoaded(api);
-
-            InteractParticles = new SimpleParticleProperties()
-            {
-                MinPos = new Vec3d(),
-                AddPos = new Vec3d(.5, .5, .5),
-                MinQuantity = 5,
-                AddQuantity = 20,
-                GravityEffect = .9f,
-                WithTerrainCollision = true,
-                ParticleModel = EnumParticleModel.Quad,
-                LifeLength = 0.5f,
-                MinVelocity = new Vec3f(-0.4f, -0.4f, -0.4f),
-                AddVelocity = new Vec3f(0.8f, 1.2f, 0.8f),
-                MinSize = 0.1f,
-                MaxSize = 0.4f,
-                DieOnRainHeightmap = false
-            };
 
             InitWorldInteractions();
 
@@ -174,7 +156,7 @@ namespace StoneQuarry
 
                         byPlayer.Entity.Controls.UsingHeldItemTransformBefore = tf;
                     }
-                    else
+                    else if (world.BlockAccessor.GetBlockEntity(blockSel.Position + offset.AsBlockPos) is BEStoneSlab be)
                     {
                         ModelTransform tf = ModelTransform.NoTransform;
                         tf.Translation.Set(secondsUsed % HitTime, 0, 0);
@@ -184,9 +166,8 @@ namespace StoneQuarry
 
                         if (secondsUsed > times * HitTime)
                         {
-                            InteractParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
-                            InteractParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition + offset;
-                            world.SpawnParticles(InteractParticles, byPlayer);
+                            be.InteractParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
+                            world.SpawnParticles(be.InteractParticles, byPlayer);
 
                             world.PlaySoundAt(HitSoundLocation, byPlayer, byPlayer, true, 32, .5f);
 
@@ -203,11 +184,15 @@ namespace StoneQuarry
 
         public override void OnBlockInteractStop(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
         {
+            MBOnBlockInteractStop(secondsUsed, world, byPlayer, blockSel, Vec3i.Zero);
+        }
+
+        public override void MBOnBlockInteractStop(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, Vec3i offset)
+        {
             if (api.Side == EnumAppSide.Client)
             {
                 byPlayer.Entity.WatchedAttributes.SetInt("sq_slab_times", 1);
             }
-
 
             ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
             if (secondsUsed < Core.Config.SlabInteractionTime || !(activeStack.Collectible is ItemSlabTool tool))
@@ -216,18 +201,17 @@ namespace StoneQuarry
                 return;
             }
 
-            if (activeStack?.Collectible.FirstCodePart() == "rubblehammer")
+            if (world.BlockAccessor.GetBlockEntity(blockSel.Position + offset.AsBlockPos) is BEStoneSlab be && !be.Inventory.Empty)
             {
-                InteractParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
-                InteractParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
-                world.SpawnParticles(InteractParticles, byPlayer);
-                world.PlaySoundAt(HitSoundLocation, byPlayer, byPlayer, true, 32, .5f);
-            }
+                if (activeStack?.Collectible.FirstCodePart() == "rubblehammer")
+                {
+                    be.InteractParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
+                    world.SpawnParticles(be.InteractParticles, byPlayer);
+                    world.PlaySoundAt(HitSoundLocation, byPlayer, byPlayer, true, 32, .5f);
+                }
 
 
-            if (api.Side == EnumAppSide.Server)
-            {
-                if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BEStoneSlab be && !be.Inventory.Empty)
+                if (api.Side == EnumAppSide.Server)
                 {
                     var dropStack = be.Inventory.GetContent(byPlayer, tool.DropType, tool.Quantity);
                     if (dropStack == null)
