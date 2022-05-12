@@ -12,15 +12,13 @@ namespace StoneQuarry
 {
     public class BlockPlugAndFeather : Block
     {
-        public static AssetLocation CrackSoundLocation => new AssetLocation("game", "sounds/block/heavyice");
-        public static AssetLocation HammerSoundLocation => new AssetLocation("game", "sounds/block/meteoriciron-hit-pickaxe");
+        public static AssetLocation CrackSoundLocation => new("game", "sounds/block/heavyice");
+        public static AssetLocation HammerSoundLocation => new("game", "sounds/block/meteoriciron-hit-pickaxe");
 
         public SimpleParticleProperties QuarryStartParticles { get; private set; }
 
         public WorldInteraction[] CommonWorldInteractions { get; private set; }
         public WorldInteraction[] NetworkPartWorldInteractions { get; private set; }
-
-        public List<AssetLocation> AllowedCodes { get; private set; }
 
         public int MaxSearchRange => Attributes["searchrange"].AsInt(0);
         public string Material => Variant["metal"];
@@ -31,10 +29,9 @@ namespace StoneQuarry
         public readonly int MaxStage = 2;
         public int Stage => int.Parse(Variant["stage"]);
 
-        public override void OnLoaded(ICoreAPI api)
-        {
-            base.OnLoaded(api);
 
+        public BlockPlugAndFeather()
+        {
             QuarryStartParticles = new SimpleParticleProperties()
             {
                 MinQuantity = 16,
@@ -49,33 +46,16 @@ namespace StoneQuarry
                 ParticleModel = EnumParticleModel.Cube
             };
 
+            CommonWorldInteractions = Array.Empty<WorldInteraction>();
+            NetworkPartWorldInteractions = Array.Empty<WorldInteraction>();
+        }
+
+
+        public override void OnLoaded(ICoreAPI api)
+        {
+            base.OnLoaded(api);
+
             InitWorldInteractions();
-
-
-            AllowedCodes = new List<AssetLocation>();
-
-            if (Attributes.KeyExists("allowedCodes"))
-            {
-                string[] codes = Attributes["allowedCodes"]?.AsArray(Array.Empty<string>());
-                foreach (string codeString in codes)
-                {
-                    var code = new AssetLocation(codeString);
-                    if (code.IsWildCard)
-                    {
-                        foreach (var block in api.World.Blocks)
-                        {
-                            if (block?.Code != null && WildcardUtil.Match(code, block.Code))
-                            {
-                                AllowedCodes.Add(block.Code);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        AllowedCodes.Add(code);
-                    }
-                }
-            }
         }
 
         private void InitWorldInteractions()
@@ -202,7 +182,7 @@ namespace StoneQuarry
                         TryCreateNetwork(world, blockSel.Position, byPlayer);
                     }
 
-                    if (be.TryHitPlug(activeStack))
+                    if (activeStack != null && be.TryHitPlug(activeStack))
                     {
                         if (Stage != MaxStage)
                         {
@@ -211,11 +191,11 @@ namespace StoneQuarry
                             activeStack.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
                         }
 
-                        if (api.Side == EnumAppSide.Server)
+                        if (byPlayer is IServerPlayer serverPlayer)
                         {
                             if (be.IsDone(world))
                             {
-                                be.BreakAll(world, byPlayer as IServerPlayer);
+                                be.BreakAll(world, serverPlayer);
                             }
                         }
                     }
@@ -248,18 +228,20 @@ namespace StoneQuarry
 
             if (isImpactTool)
             {
-                List<BlockPos> points = FindNetworkPoints(world, pos);
+                List<BlockPos>? points = FindNetworkPoints(world, pos);
 
                 if (points != null)
                 {
                     foreach (var p in points)
                     {
-                        var pbe = world.BlockAccessor.GetBlockEntity(p) as BEPlugAndFeather;
-                        pbe.Points.AddRange(points);
+                        if (world.BlockAccessor.GetBlockEntity(p) is BEPlugAndFeather pbe)
+                        {
+                            pbe.Points.AddRange(points);
 
-                        QuarryStartParticles.MinPos = p.ToVec3d();
+                            QuarryStartParticles.MinPos = p.ToVec3d();
 
-                        world.SpawnParticles(QuarryStartParticles, byPlayer);
+                            world.SpawnParticles(QuarryStartParticles, byPlayer);
+                        }
                     }
 
                     return true;
@@ -270,11 +252,11 @@ namespace StoneQuarry
             return false;
         }
 
-        private List<BlockPos> FindNetworkPoints(IWorldAccessor world, BlockPos pos)
+        private List<BlockPos>? FindNetworkPoints(IWorldAccessor world, BlockPos pos)
         {
-            List<BlockPos> points = new List<BlockPos>();
+            List<BlockPos> points = new();
 
-            BlockPos oppositePos = FindOppositePlug(world, pos);
+            BlockPos? oppositePos = FindOppositePlug(world, pos);
             if (oppositePos == null)
             {
                 return null;
@@ -286,7 +268,7 @@ namespace StoneQuarry
             points.Add(oppositePos);
 
 
-            BlockPos checkDir = null;
+            BlockPos? checkDir = null;
             switch (Direction)
             {
                 case "north": checkDir = BlockFacing.EAST.Normali.ToBlockPos(); break;
@@ -350,11 +332,11 @@ namespace StoneQuarry
             return points;
         }
 
-        private BlockPos FindOppositePlug(IWorldAccessor world, BlockPos pos)
+        private BlockPos? FindOppositePlug(IWorldAccessor world, BlockPos pos)
         {
-            BlockPos subDir = null;
-            BlockPos mainDir = null;
-            string[] oppositeDirection = null;
+            BlockPos? subDir = null;
+            BlockPos? mainDir = null;
+            string[]? oppositeDirection = null;
 
             if (Orientation == "up")
             {
@@ -424,8 +406,10 @@ namespace StoneQuarry
                     var block1 = world.BlockAccessor.GetBlock(pos1) as BlockPlugAndFeather;
                     var block2 = world.BlockAccessor.GetBlock(pos2) as BlockPlugAndFeather;
 
+#pragma warning disable IDE0019 // Use pattern matching
                     var be1 = world.BlockAccessor.GetBlockEntity(pos1) as BEPlugAndFeather;
                     var be2 = world.BlockAccessor.GetBlockEntity(pos2) as BEPlugAndFeather;
+#pragma warning restore IDE0019 // Use pattern matching
 
                     bool isSuited1 = be1 != null && !be1.IsNetworkPart &&
                         block1?.Material == Material &&
@@ -437,22 +421,22 @@ namespace StoneQuarry
 
                     if (Orientation == "horizontal")
                     {
-                        if (isSuited1 && block1.Orientation == "down")
+                        if (isSuited1 && block1?.Orientation == "down")
                         {
                             return pos1;
                         }
-                        if (isSuited2 && block2.Orientation == "up")
+                        if (isSuited2 && block2?.Orientation == "up")
                         {
                             return pos2;
                         }
                     }
                     else if (Orientation == "up" || Orientation == "down")
                     {
-                        if (isSuited1 && block1.Orientation == "horizontal")
+                        if (isSuited1 && block1?.Orientation == "horizontal")
                         {
                             return pos1;
                         }
-                        if (isSuited2 && block2.Orientation == "horizontal")
+                        if (isSuited2 && block2?.Orientation == "horizontal")
                         {
                             return pos2;
                         }
@@ -463,13 +447,14 @@ namespace StoneQuarry
             return null;
         }
 
-        private static bool IsSuitedNetworkPart(BlockPlugAndFeather template, BlockPos pos, IWorldAccessor world)
+        private static bool IsSuitedNetworkPart(BlockPlugAndFeather? template, BlockPos pos, IWorldAccessor world)
         {
-            var block = world.BlockAccessor.GetBlock(pos) as BlockPlugAndFeather;
-            var be = world.BlockAccessor.GetBlockEntity(pos) as BEPlugAndFeather;
+            return template != null &&
+                world.BlockAccessor.GetBlock(pos) is BlockPlugAndFeather block &&
+                world.BlockAccessor.GetBlockEntity(pos) is BEPlugAndFeather be &&
 
-            return be != null && !be.IsNetworkPart &&
-                block?.Material == template.Material &&
+                !be.IsNetworkPart &&
+                block.Material == template.Material &&
                 block.Direction == template.Direction &&
                 block.Orientation == template.Orientation;
         }

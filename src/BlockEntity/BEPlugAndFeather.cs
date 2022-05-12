@@ -18,8 +18,6 @@ namespace StoneQuarry
         public List<BlockPos> Points { get; private set; } = new List<BlockPos>();
         public bool IsNetworkPart => Points.Count > 0;
 
-        public List<AssetLocation> AllowedCodes => (Block as BlockPlugAndFeather).AllowedCodes;
-
         public int MaxWorkPerStage
         {
             get
@@ -32,10 +30,9 @@ namespace StoneQuarry
         private int _currentStageWork = 0;
         private bool _previewEnabled = false;
 
-        public override void Initialize(ICoreAPI api)
-        {
-            base.Initialize(api);
 
+        public BEPlugAndFeather()
+        {
             BreakParticles = new SimpleParticleProperties()
             {
                 MinQuantity = 5,
@@ -70,23 +67,27 @@ namespace StoneQuarry
 
         public bool TryHitPlug(ItemStack byStack)
         {
-            bool isPlugImpactTool = byStack?.ItemAttributes?.KeyExists("plugimpact") ?? false;
-            if (IsNetworkPart && isPlugImpactTool)
+            if (byStack.ItemAttributes != null)
             {
-                _currentStageWork += byStack.ItemAttributes["plugimpact"].AsInt();
-                if (_currentStageWork > MaxWorkPerStage)
+                bool isPlugImpactTool = byStack.ItemAttributes.KeyExists("plugimpact");
+                if (IsNetworkPart && isPlugImpactTool)
                 {
-                    _currentStageWork -= MaxWorkPerStage;
-                    return true;
+                    _currentStageWork += byStack.ItemAttributes["plugimpact"].AsInt();
+                    if (_currentStageWork > MaxWorkPerStage)
+                    {
+                        _currentStageWork -= MaxWorkPerStage;
+                        return true;
+                    }
                 }
             }
+
             return false;
         }
 
         public void BreakAll(IWorldAccessor world, IServerPlayer byPlayer)
         {
             IDictionary<AssetLocation, int> quantitiesByRock = GetRocksInside(world, byPlayer);
-            List<ItemStack> contentStacks = new List<ItemStack>();
+            List<ItemStack> contentStacks = new();
 
             int rockQuantity = 0;
             foreach (var rock in quantitiesByRock)
@@ -95,7 +96,7 @@ namespace StoneQuarry
                 contentStacks.Add(new ItemStack(world.GetBlock(rock.Key), rock.Value));
             }
 
-            string slabSize = null;
+            string? slabSize = null;
 
             if (rockQuantity >= 168) slabSize = "giant";
             else if (rockQuantity >= 126) slabSize = "huge";
@@ -107,20 +108,24 @@ namespace StoneQuarry
             {
                 string dropItemString = "stoneslab-" + slabSize + "-north";
 
-                AssetLocation dropItemLoc = new AssetLocation(Core.ModId, dropItemString);
+                AssetLocation dropItemLoc = new(Core.ModId, dropItemString);
                 if (world.GetBlock(dropItemLoc) is BlockStoneSlab dropItem)
                 {
-                    ItemStack dropItemStack = new ItemStack(dropItem, 1);
+                    ItemStack dropItemStack = new(dropItem, 1);
 
-                    var inv = StoneSlabInventory.StacksToTreeAttributes(contentStacks, dropItemStack.Attributes, Api, dropItem.AllowedCodes);
-                    var preset = new StoneSlabPreset(inv, dropItem);
+                    var inv = StoneSlabInventory.StacksToTreeAttributes(contentStacks, dropItemStack.Attributes, Api);
+                    var preset = new StoneSlabRenderPreset(inv, dropItem);
                     preset.ToAttributes(dropItemStack.Attributes);
 
-                    world.SpawnItemEntity(dropItemStack, GetInsideCube().Center.ToVec3d().Add(.5, .5, .5));
+                    Cuboidi? insideCube = GetInsideCube();
+                    if (insideCube != null)
+                    {
+                        world.SpawnItemEntity(dropItemStack, insideCube.Center.ToVec3d().Add(.5, .5, .5));
+                    }
                 }
                 else
                 {
-                    Api.Logger.Warning("[" + Core.ModId + "] Unknown drop item " + dropItemLoc);
+                    Core.ModLogger.Warning("Unknown drop item " + dropItemLoc);
                 }
             }
 
@@ -131,10 +136,12 @@ namespace StoneQuarry
         {
             var quantitiesByRock = new Dictionary<AssetLocation, int>();
 
+            RockManager manager = Api.ModLoader.GetModSystem<RockManager>();
+
             foreach (var pos in GetAllBlocksInside())
             {
                 Block block = world.BlockAccessor.GetBlock(pos);
-                if (AllowedCodes.Contains(block.Code))
+                if (manager.IsSuitableRock(block.Code))
                 {
                     if (world.IsPlayerCanBreakBlock(pos, byPlayer))
                     {
@@ -163,7 +170,7 @@ namespace StoneQuarry
         {
             var blocks = new List<BlockPos>();
 
-            Cuboidi cube = GetInsideCube();
+            Cuboidi? cube = GetInsideCube();
 
             if (cube != null)
             {
@@ -182,7 +189,7 @@ namespace StoneQuarry
             return blocks;
         }
 
-        public Cuboidi GetInsideCube()
+        public Cuboidi? GetInsideCube()
         {
             if (IsNetworkPart)
             {
@@ -282,4 +289,6 @@ namespace StoneQuarry
             base.FromTreeAttributes(tree, worldAccessForResolve);
         }
     }
+
+
 }

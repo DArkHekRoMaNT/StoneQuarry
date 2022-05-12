@@ -10,41 +10,41 @@ namespace StoneQuarry
 
     public class BEStoneSlab : BlockEntity
     {
-        public StoneSlabPreset RenderPreset { get; private set; }
-        public StoneSlabInventory Inventory { get; private set; }
-        public BaseAllowedCodes AllowedCodes => (Block as BlockStoneSlab)?.AllowedCodes;
+        public StoneSlabRenderPreset? RenderPreset { get; private set; }
+        public StoneSlabInventory? Inventory { get; private set; }
 
 
-        private SimpleParticleProperties interactParticles;
+        private SimpleParticleProperties? _interactParticles;
         public SimpleParticleProperties InteractParticles
         {
             get
             {
-                if (interactParticles != null)
+                if (_interactParticles != null && Inventory?.CurrentRock != null)
                 {
-                    Block rock = Api.World.GetBlock(new AssetLocation(Inventory.CurrentRock));
+                    Block rock = Api.World.GetBlock(Inventory.CurrentRock);
+
                     if (rock != null)
                     {
-                        interactParticles.ColorByBlock = rock;
+                        _interactParticles.ColorByBlock = rock;
                     }
                     else
                     {
-                        interactParticles.ColorByBlock = Block;
+                        _interactParticles.ColorByBlock = Block;
                     }
                 }
 
-                return interactParticles;
+                return _interactParticles ?? new SimpleParticleProperties();
             }
         }
 
 
-        private StoneSlabMeshCache meshCache;
+        private StoneSlabMeshCache? meshCache;
 
         public override void Initialize(ICoreAPI api)
         {
             base.Initialize(api);
 
-            interactParticles = new SimpleParticleProperties()
+            _interactParticles = new SimpleParticleProperties()
             {
                 MinPos = new Vec3d(),
                 AddPos = new Vec3d(.5, .5, .5),
@@ -63,7 +63,7 @@ namespace StoneQuarry
 
             if (Inventory == null)
             {
-                Inventory = new StoneSlabInventory(api, Pos, AllowedCodes);
+                Inventory = new StoneSlabInventory(api, Pos);
             }
 
             if (api is ICoreClientAPI)
@@ -74,7 +74,7 @@ namespace StoneQuarry
 
         public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tessThreadTesselator)
         {
-            MeshData mesh = meshCache.GetMesh(this, tessThreadTesselator);
+            MeshData? mesh = meshCache?.GetMesh(this, tessThreadTesselator);
 
             if (mesh != null)
             {
@@ -87,19 +87,19 @@ namespace StoneQuarry
 
         public void ContentToAttributes(ITreeAttribute tree)
         {
-            Inventory.ToTreeAttributes(tree);
-            RenderPreset.ToAttributes(tree);
+            Inventory?.ToTreeAttributes(tree);
+            RenderPreset?.ToAttributes(tree);
         }
 
         public void ContentFromAttributes(ITreeAttribute tree, IWorldAccessor world)
         {
-            Inventory = new StoneSlabInventory(world.Api, Pos, AllowedCodes);
+            Inventory = new StoneSlabInventory(world.Api, Pos);
             Inventory.FromTreeAttributes(tree);
 
-            RenderPreset = StoneSlabPreset.FromAttributes(tree, world);
+            RenderPreset = StoneSlabRenderPreset.FromAttributes(tree, world);
             if (RenderPreset == null)
             {
-                RenderPreset = new StoneSlabPreset(Inventory, Block);
+                RenderPreset = new StoneSlabRenderPreset(Inventory, Block);
             }
         }
 
@@ -121,7 +121,7 @@ namespace StoneQuarry
 
             string langKey = Core.ModId + ":info-stoneslab-heldinfo(count={0},stone={1})";
 
-            for (int i = 0; i < Inventory.Count; i++)
+            for (int i = 0; i < Inventory?.Count; i++)
             {
                 var slot = Inventory[i];
 
@@ -141,20 +141,20 @@ namespace StoneQuarry
             }
         }
 
-        public ItemStack GetSelfDrop()
+        public ItemStack? GetSelfDrop()
         {
-            if (Inventory.Empty)
+            if (Inventory == null || Inventory.Empty)
             {
                 return null;
             }
 
             Block block = Api.World.GetBlock(Block.CodeWithVariant("side", "north"));
-            ItemStack stack = new ItemStack(block);
+            ItemStack stack = new(block);
             ContentToAttributes(stack.Attributes);
 
             // Hack for prevent ItemStack compare without stacksize in ItemstackAttribute.Equal -> ItemStack.Equal
             ITreeAttribute hackTree = stack.Attributes.GetOrAddTreeAttribute("itemstackequalhack");
-            for (int i = 0; i < Inventory.Count; i++)
+            for (int i = 0; i < Inventory?.Count; i++)
             {
                 ItemSlot slot = Inventory[i];
                 if (!slot.Empty)

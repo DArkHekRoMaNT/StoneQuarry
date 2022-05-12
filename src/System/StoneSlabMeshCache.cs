@@ -46,7 +46,7 @@ namespace StoneQuarry
                             return tex[otherCode];
                         }
                     }
-                    Core.ModLogger.Warning("Missing texture path for stone slab mesh texture code {0}, seems like a missing texture definition or invalid block.", textureCode);
+                    Mod.Logger.Warning("Missing texture path for stone slab mesh texture code {0}, seems like a missing texture definition or invalid block.", textureCode);
                     return api.BlockTextureAtlas.UnknownTexturePosition;
                 }
 
@@ -54,7 +54,7 @@ namespace StoneQuarry
             }
         }
 
-        private StoneSlabPreset currPreset;
+        private StoneSlabRenderPreset currPreset;
         private Block currBlock;
 
         public MeshRef GetInventoryMeshRef(ItemStack itemstack, BlockStoneSlab block)
@@ -62,7 +62,7 @@ namespace StoneQuarry
             string key = itemstack.TempAttributes.GetString("cachedMeshKey", null);
             if (key == null)
             {
-                currPreset = StoneSlabPreset.FromAttributes(itemstack.Attributes, api.World, block);
+                currPreset = StoneSlabRenderPreset.FromAttributes(itemstack.Attributes, api.World, block);
                 currBlock = block;
                 key = currBlock.Code + "-invmesh-" + currPreset;
                 itemstack.TempAttributes.SetString("cachedMeshKey", key);

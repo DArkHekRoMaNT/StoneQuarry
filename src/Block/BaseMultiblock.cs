@@ -7,7 +7,7 @@ using Vintagestory.GameContent;
 namespace StoneQuarry
 {
     /// <summary>
-    /// Basic implementation of IMultiBlockMonolithic
+    /// Basic implementation of IMultiBlockModular
     /// </summary>
 
     public class BaseMultiblock : Block, IMultiBlockModular

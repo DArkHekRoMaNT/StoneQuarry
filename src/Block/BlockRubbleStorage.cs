@@ -12,22 +12,21 @@ namespace StoneQuarry
 {
     public class BlockRubbleStorage : Block, IMultiBlockMonolithicSmall
     {
-        public static AssetLocation InteractSoundLocation => new AssetLocation("game", "sounds/block/heavyice");
-        public static AssetLocation StoneCrushSoundLocation => new AssetLocation("game", "sounds/effect/stonecrush");
-        public static AssetLocation WaterSplashSoundLocation => new AssetLocation("game", "sounds/environment/largesplash1");
-
-        public BaseAllowedCodes AllowedCodes { get; private set; }
+        public static AssetLocation InteractSoundLocation => new("game", "sounds/block/heavyice");
+        public static AssetLocation StoneCrushSoundLocation => new("game", "sounds/effect/stonecrush");
+        public static AssetLocation WaterSplashSoundLocation => new("game", "sounds/environment/largesplash1");
 
         public List<WorldInteraction[]> WorldInteractionsBySel { get; private set; }
         public SimpleParticleProperties InteractParticles { get; private set; }
 
+        private Cuboidf[] _mirroredCollisionBoxes;
 
-        public Cuboidf[] MirroredCollisionBoxes;
+#nullable disable
+        public RockManager rockManager;
+#nullable restore
 
-        public override void OnLoaded(ICoreAPI api)
+        public BlockRubbleStorage()
         {
-            base.OnLoaded(api);
-
             InteractParticles = new SimpleParticleProperties()
             {
                 MinPos = new Vec3d(),
@@ -45,18 +44,25 @@ namespace StoneQuarry
                 DieOnRainHeightmap = false
             };
 
-            AllowedCodes = new BaseAllowedCodes();
-            AllowedCodes.FromJson(Attributes["allowedCodes"].ToString());
+            WorldInteractionsBySel = default!;
+            _mirroredCollisionBoxes = default!;
+        }
+
+        public override void OnLoaded(ICoreAPI api)
+        {
+            base.OnLoaded(api);
+
+            rockManager = api.ModLoader.GetModSystem<RockManager>();
 
             if (api.Side == EnumAppSide.Client)
             {
                 InitWorldInteractions();
             }
 
-            MirroredCollisionBoxes = new Cuboidf[CollisionBoxes.Length];
+            _mirroredCollisionBoxes = new Cuboidf[CollisionBoxes.Length];
             for (int i = 0; i < CollisionBoxes.Length; i++)
             {
-                MirroredCollisionBoxes[i] = CollisionBoxes[i].RotatedCopy(0, 180, 0, new Vec3d(0.5, 0.5, 0.5));
+                _mirroredCollisionBoxes[i] = CollisionBoxes[i].RotatedCopy(0, 180, 0, new Vec3d(0.5, 0.5, 0.5));
             }
         }
 
@@ -77,15 +83,18 @@ namespace StoneQuarry
                 { "stone", new List<ItemStack>() }
             };
 
-            foreach (var type in stacksByType.Keys)
+            foreach (RockData rockData in rockManager.Data)
             {
-                foreach (var rock in AllowedCodes.Rocks)
+                foreach (string type in stacksByType.Keys)
                 {
-                    string code = AllowedCodes[rock, type];
-                    var colObj = api.World.GetCollectibleObject(new AssetLocation(code));
-                    if (colObj != null)
+                    AssetLocation? code = rockData[type];
+                    if (code != null)
                     {
-                        stacksByType[type].Add(new ItemStack(colObj));
+                        var colObj = api.World.GetCollectibleObject(code);
+                        if (colObj != null)
+                        {
+                            stacksByType[type].Add(new ItemStack(colObj));
+                        }
                     }
                 }
             }
@@ -94,67 +103,72 @@ namespace StoneQuarry
             waterPortion[0].StackSize = 100; // 1 liter of liquid
 
             WorldInteractionsBySel = new List<WorldInteraction[]>() { new WorldInteraction[] {
-                    new WorldInteraction() {
-                        ActionLangCode = Core.ModId + ":wi-rubblestorage-hammer",
-                        MouseButton = EnumMouseButton.Right,
-                        Itemstacks = hammers.ToArray()
-                    },
-                    new WorldInteraction() {
-                        ActionLangCode = Core.ModId + ":wi-rubblestorage-add-one",
-                        MouseButton = EnumMouseButton.Right,
-                        Itemstacks = stacksByType["stone"].ToArray(),
-                        GetMatchingStacks = WIGetMatchingStacks_StoneType
-                    },
-                    new WorldInteraction() {
-                        ActionLangCode = Core.ModId + ":wi-rubblestorage-add-stack",
-                        MouseButton = EnumMouseButton.Right,
-                        HotKeyCode = "sprint",
-                        Itemstacks = stacksByType["stone"].Select((i)=>{
-                            var r = i.Clone(); r.StackSize = r.Collectible.MaxStackSize; return r;
-                        }).ToArray(),
-                        GetMatchingStacks = WIGetMatchingStacks_StoneType
-                    },
-                    new WorldInteraction() {
-                        ActionLangCode = Core.ModId + ":wi-rubblestorage-add-all",
-                        MouseButton = EnumMouseButton.Right,
-                        RequireFreeHand = true
-                    },
-                    new WorldInteraction()
+                new WorldInteraction()
+                {
+                    ActionLangCode = Core.ModId + ":wi-rubblestorage-hammer",
+                    MouseButton = EnumMouseButton.Right,
+                    Itemstacks = hammers.ToArray()
+                },
+                new WorldInteraction()
+                {
+                    ActionLangCode = Core.ModId + ":wi-rubblestorage-add-one",
+                    MouseButton = EnumMouseButton.Right,
+                    Itemstacks = stacksByType["stone"].ToArray(),
+                    GetMatchingStacks = WIGetMatchingStacks_StoneType
+                },
+                new WorldInteraction()
+                {
+                    ActionLangCode = Core.ModId + ":wi-rubblestorage-add-stack",
+                    MouseButton = EnumMouseButton.Right,
+                    HotKeyCode = "sprint",
+                    Itemstacks = stacksByType["stone"].Select((i) =>
                     {
-                        ActionLangCode = Core.ModId + ":wi-rubblestorage-water",
-                        MouseButton = EnumMouseButton.Right,
-                        Itemstacks = waterPortion.ToArray()
-                    }
-                }};
+                        var r = i.Clone(); r.StackSize = r.Collectible.MaxStackSize; return r;
+                    }).ToArray(),
+                    GetMatchingStacks = WIGetMatchingStacks_StoneType
+                },
+                new WorldInteraction()
+                {
+                    ActionLangCode = Core.ModId + ":wi-rubblestorage-add-all",
+                    MouseButton = EnumMouseButton.Right,
+                    RequireFreeHand = true
+                },
+                new WorldInteraction()
+                {
+                    ActionLangCode = Core.ModId + ":wi-rubblestorage-water",
+                    MouseButton = EnumMouseButton.Right,
+                    Itemstacks = waterPortion.ToArray()
+                }
+            }};
 
             foreach (var type in stacksByType.Keys)
             {
 
                 WorldInteractionsBySel.Add(new WorldInteraction[] {
-                        new WorldInteraction()
-                        {
-                            ActionLangCode = Core.ModId + ":wi-rubblestorage-lock",
-                            MouseButton = EnumMouseButton.Right,
-                            HotKeyCode = "sneak"
-                        },
-                        new WorldInteraction()
-                        {
-                            ActionLangCode = Core.ModId + ":wi-rubblestorage-take-one-" + type,
-                            MouseButton = EnumMouseButton.Right,
-                            Itemstacks = stacksByType[type].ToArray(),
-                            GetMatchingStacks = WIGetMatchingStacks_StoneType
-                        },
-                        new WorldInteraction()
-                        {
-                            ActionLangCode = Core.ModId + ":wi-rubblestorage-take-stack-" + type,
-                            MouseButton = EnumMouseButton.Right,
-                            HotKeyCode = "sprint",
-                            Itemstacks = stacksByType[type].Select((i)=>{
-                                var r = i.Clone(); r.StackSize = r.Collectible.MaxStackSize; return r;
-                            }).ToArray(),
-                            GetMatchingStacks = WIGetMatchingStacks_StoneType
-                        }
-                    });
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = Core.ModId + ":wi-rubblestorage-lock",
+                        MouseButton = EnumMouseButton.Right,
+                        HotKeyCode = "sneak"
+                    },
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = Core.ModId + ":wi-rubblestorage-take-one-" + type,
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = stacksByType[type].ToArray(),
+                        GetMatchingStacks = WIGetMatchingStacks_StoneType
+                    },
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = Core.ModId + ":wi-rubblestorage-take-stack-" + type,
+                        MouseButton = EnumMouseButton.Right,
+                        HotKeyCode = "sprint",
+                        Itemstacks = stacksByType[type].Select((i)=>{
+                            var r = i.Clone(); r.StackSize = r.Collectible.MaxStackSize; return r;
+                        }).ToArray(),
+                        GetMatchingStacks = WIGetMatchingStacks_StoneType
+                    }
+                });
             }
         }
 
@@ -162,14 +176,20 @@ namespace StoneQuarry
         {
             var be = api.World.BlockAccessor.GetBlockEntity(blockSel.Position) as BERubbleStorage;
 
-            if (be?.StoredRock == null)
+            if (be?.StoredRock != null)
             {
-                return wi.Itemstacks;
+                RockData? data = rockManager.GetValue(be.StoredRock);
+
+                if (data != null)
+                {
+
+                    return wi.Itemstacks
+                        .Where((item) => data[item.Collectible.Code] != null)
+                        .ToArray();
+                }
             }
 
-            return wi.Itemstacks
-                .Where((item) => AllowedCodes.HasCode(be.StoredRock, item.Collectible.Code.ToString()))
-                .ToArray();
+            return wi.Itemstacks;
         }
 
         public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
@@ -181,20 +201,19 @@ namespace StoneQuarry
                 stockQuantity = byPlayer.InventoryManager.ActiveHotbarSlot.MaxSlotStackSize;
             }
 
-            if (!(world.BlockAccessor.GetBlockEntity(blockSel.Position) is BERubbleStorage be))
+            if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is not BERubbleStorage be)
             {
                 return true;
             }
 
 
-            string selectedType = null;
+            string? selectedType = null;
             switch ((EnumStorageLock)blockSel.SelectionBoxIndex)
             {
                 case EnumStorageLock.Stone: selectedType = "stone"; break;
                 case EnumStorageLock.Gravel: selectedType = "gravel"; break;
                 case EnumStorageLock.Sand: selectedType = "sand"; break;
             }
-
 
             var activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
 
@@ -214,10 +233,7 @@ namespace StoneQuarry
                 // Player try get a resource
                 else if (be.TryRemoveResource(world, byPlayer, blockSel, selectedType, stockQuantity))
                 {
-                    if (world.Side == EnumAppSide.Client)
-                    {
-                        (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
-                    }
+                    (byPlayer as IClientPlayer)?.TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                     world.PlaySoundAt(StoneCrushSoundLocation, byPlayer, byPlayer, true);
 
                     InteractParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
@@ -234,10 +250,7 @@ namespace StoneQuarry
                 {
                     if (be.TryDegradeNext())
                     {
-                        if (world.Side == EnumAppSide.Client)
-                        {
-                            (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
-                        }
+                        (byPlayer as IClientPlayer)?.TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                         world.PlaySoundAt(InteractSoundLocation, byPlayer, byPlayer, true, volume: 0.25f);
 
                         activeStack.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
@@ -250,10 +263,7 @@ namespace StoneQuarry
                 {
                     if (be.TryDrench(world, blockSel, byPlayer))
                     {
-                        if (world.Side == EnumAppSide.Client)
-                        {
-                            (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
-                        }
+                        (byPlayer as IClientPlayer)?.TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                         world.PlaySoundAt(WaterSplashSoundLocation, byPlayer, byPlayer, true);
                     }
                 }
@@ -263,10 +273,7 @@ namespace StoneQuarry
                 {
                     if (be.TryAddResource(byPlayer.InventoryManager.ActiveHotbarSlot, stockQuantity))
                     {
-                        if (world.Side == EnumAppSide.Client)
-                        {
-                            (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
-                        }
+                        (byPlayer as IClientPlayer)?.TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                         world.PlaySoundAt(StoneCrushSoundLocation, byPlayer, byPlayer, true);
                     }
                 }
@@ -278,10 +285,7 @@ namespace StoneQuarry
 
                 if (be.TryAddAll(byPlayer))
                 {
-                    if (world.Side == EnumAppSide.Client)
-                    {
-                        (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
-                    }
+                    (byPlayer as IClientPlayer)?.TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                     world.PlaySoundAt(StoneCrushSoundLocation, byPlayer, byPlayer, true);
                 }
             }
@@ -307,7 +311,12 @@ namespace StoneQuarry
                         be.Content["stone"] = byItemStack.Attributes.GetInt("stone", 0);
                         be.Content["gravel"] = byItemStack.Attributes.GetInt("gravel", 0);
                         be.Content["sand"] = byItemStack.Attributes.GetInt("sand", 0);
-                        be.StoredRock = byItemStack.Attributes.GetString("type", null);
+
+                        string? type = byItemStack.Attributes.GetString("type", null);
+                        if (type != null)
+                        {
+                            be.StoredRock = new AssetLocation(type);
+                        }
                     }
 
                     be.CheckCurrentTop();
@@ -341,17 +350,21 @@ namespace StoneQuarry
             return WorldInteractionsBySel[blockSel.SelectionBoxIndex].Append(base.GetPlacedBlockInteractionHelp(world, blockSel, forPlayer));
         }
 
-        public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
+        public override ItemStack[]? GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
         {
             if (world.BlockAccessor.GetBlockEntity(pos) is BERubbleStorage be)
             {
-                ItemStack dropstack = new ItemStack(world.BlockAccessor.GetBlock(pos));
-                dropstack.Attributes.SetString("type", be.StoredRock);
+                ItemStack dropstack = new(world.BlockAccessor.GetBlock(pos));
+                if (be.StoredRock != null)
+                {
+                    dropstack.Attributes.SetString("type", be.StoredRock.ToShortString());
+                }
                 dropstack.Attributes.SetInt("stone", be.Content["stone"]);
                 dropstack.Attributes.SetInt("gravel", be.Content["gravel"]);
                 dropstack.Attributes.SetInt("sand", be.Content["sand"]);
                 return new ItemStack[] { dropstack };
             }
+
             return null;
         }
 
@@ -372,13 +385,13 @@ namespace StoneQuarry
         {
             if (blockAccessor.GetBlockEntity(pos + offset.AsBlockPos) is BERubbleStorage be)
             {
-                Cuboidf[] collision = new Cuboidf[MirroredCollisionBoxes.Length];
-                MirroredCollisionBoxes.CopyTo(collision, 0);
+                Cuboidf[] collision = new Cuboidf[_mirroredCollisionBoxes.Length];
+                _mirroredCollisionBoxes.CopyTo(collision, 0);
                 collision[0].Y2 = 0.8f - 0.06f * be.CurrentContentLevel;
                 return collision;
             }
 
-            return MirroredCollisionBoxes;
+            return _mirroredCollisionBoxes;
         }
 
         public Cuboidf[] MBGetSelectionBoxes(IBlockAccessor blockAccessor, BlockPos pos, Vec3i offset)

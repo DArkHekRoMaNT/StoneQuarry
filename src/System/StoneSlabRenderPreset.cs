@@ -5,21 +5,21 @@ using Vintagestory.API.Datastructures;
 
 namespace StoneQuarry
 {
-    public class StoneSlabPreset
+    public class StoneSlabRenderPreset
     {
-        public Block[] Blocks { get; private set; }
+        public Block?[] Blocks { get; private set; }
 
-        public StoneSlabPreset(Block[] blocks)
+        public StoneSlabRenderPreset(Block[] blocks)
         {
             Blocks = blocks;
         }
 
-        public StoneSlabPreset(StoneSlabInventory inventory, Block block) : this(block)
+        public StoneSlabRenderPreset(StoneSlabInventory inventory, Block block) : this(block)
         {
             Update(inventory, block);
         }
 
-        public StoneSlabPreset(Block block)
+        public StoneSlabRenderPreset(Block block)
         {
             string size = block.Variant["size"];
             Blocks = new Block[SizeToBlockCount(size) ?? 0];
@@ -73,20 +73,17 @@ namespace StoneQuarry
             }
         }
 
-        public static int? SizeToBlockCount(string size)
+        public static int? SizeToBlockCount(string size) => size switch
         {
-            switch (size)
-            {
-                case "giant": return 12;
-                case "huge": return 8;
-                case "large": return 4;
-                case "medium": return 2;
-                case "small": return 1;
-                default: return null;
-            }
-        }
+            "giant" => 12,
+            "huge" => 8,
+            "large" => 4,
+            "medium" => 2,
+            "small" => 1,
+            _ => null,
+        };
 
-        public static StoneSlabPreset FromAttributes(ITreeAttribute tree, IWorldAccessor worldForResolve, Block block = null)
+        public static StoneSlabRenderPreset? FromAttributes(ITreeAttribute tree, IWorldAccessor worldForResolve, Block? block = null)
         {
             ITreeAttribute subtree = tree.GetTreeAttribute("preset");
 
@@ -107,11 +104,11 @@ namespace StoneQuarry
                         blocks[i] = worldForResolve.GetBlock(new AssetLocation(code));
                     }
                 }
-                return new StoneSlabPreset(blocks);
+                return new StoneSlabRenderPreset(blocks);
             }
             else if (block != null)
             {
-                return new StoneSlabPreset(block);
+                return new StoneSlabRenderPreset(block);
             }
 
             return null;

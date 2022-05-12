@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -13,13 +13,20 @@ namespace StoneQuarry
     {
         const float HitTime = .2f;
 
-        public static AssetLocation HitSoundLocation => new AssetLocation("game", "sounds/block/rock-hit-pickaxe");
-        public static AssetLocation DropSoundLocation => new AssetLocation("game", "sounds/block/heavyice");
+        public static AssetLocation HitSoundLocation => new("game", "sounds/block/rock-hit-pickaxe");
+        public static AssetLocation DropSoundLocation => new("game", "sounds/block/heavyice");
 
         public WorldInteraction[] WorldInteractions { get; private set; }
-        public BaseAllowedCodes AllowedCodes { get; private set; }
 
+#nullable disable
+        private RockManager rockManager;
         private StoneSlabMeshCache meshCache;
+#nullable restore
+
+        public BlockStoneSlab()
+        {
+            WorldInteractions = default!;
+        }
 
         public override void OnLoaded(ICoreAPI api)
         {
@@ -27,10 +34,8 @@ namespace StoneQuarry
 
             InitWorldInteractions();
 
-            AllowedCodes = new BaseAllowedCodes();
-            AllowedCodes.FromJson(Attributes["allowedCodes"].ToString());
-
             meshCache = api.ModLoader.GetModSystem<StoneSlabMeshCache>();
+            rockManager = api.ModLoader.GetModSystem<RockManager>();
         }
 
         public void InitWorldInteractions()
@@ -45,12 +50,11 @@ namespace StoneQuarry
 
             foreach (var collObj in api.World.Collectibles)
             {
-                if (collObj is ItemSlabTool)
+                if (collObj is ItemSlabTool tool)
                 {
-                    string type = (collObj as ItemSlabTool).DropType;
-                    if (type != "")
+                    if (tool.DropType != "")
                     {
-                        toolStacksByType[type].Add(new ItemStack(collObj));
+                        toolStacksByType[tool.DropType].Add(new ItemStack(collObj));
                     }
                 }
             }
@@ -110,24 +114,24 @@ namespace StoneQuarry
                 {
                     if (byPlayer.Entity.Controls.Sprint)
                     {
-                        be.Inventory.TryRemoveStack(activeStack);
+                        be.Inventory?.TryRemoveStack(activeStack);
                         return true;
                     }
-                    else if (AllowedCodes.Rocks.Contains(activeStack.Collectible.Code.ToString()))
+                    else if (rockManager.IsSuitableRock(activeStack.Collectible.Code))
                     {
-                        be.Inventory.TryAddStack(activeStack);
+                        be.Inventory?.TryAddStack(activeStack);
                         return true;
                     }
                 }
 
-                if (!be.Inventory.Empty && activeStack?.Collectible is ItemSlabTool)
+                if (be.Inventory != null && !be.Inventory.Empty && activeStack?.Collectible is ItemSlabTool)
                 {
                     return true;
                 }
 
                 if (byPlayer.Entity.Controls.Sprint)
                 {
-                    be.Inventory.NextSlot();
+                    be.Inventory?.NextSlot();
                     return true;
                 }
             }
@@ -195,13 +199,14 @@ namespace StoneQuarry
             }
 
             ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
-            if (secondsUsed < Core.Config.SlabInteractionTime || !(activeStack.Collectible is ItemSlabTool tool))
+            if (secondsUsed < Core.Config.SlabInteractionTime || activeStack.Collectible is not ItemSlabTool tool)
             {
                 base.OnBlockInteractStop(secondsUsed, world, byPlayer, blockSel);
                 return;
             }
 
-            if (world.BlockAccessor.GetBlockEntity(blockSel.Position + offset.AsBlockPos) is BEStoneSlab be && !be.Inventory.Empty)
+            if (world.BlockAccessor.GetBlockEntity(blockSel.Position + offset.AsBlockPos) is BEStoneSlab be &&
+                be.Inventory != null && !be.Inventory.Empty)
             {
                 if (activeStack?.Collectible.FirstCodePart() == "rubblehammer")
                 {
@@ -231,7 +236,7 @@ namespace StoneQuarry
                         world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
                     }
 
-                    activeStack.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
+                    activeStack?.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
                 }
             }
         }
@@ -271,7 +276,7 @@ namespace StoneQuarry
 
             if (drop == null)
             {
-                return null;
+                return Array.Empty<ItemStack>();
             }
 
             return new[] { drop };

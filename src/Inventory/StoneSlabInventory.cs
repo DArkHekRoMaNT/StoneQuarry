@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
@@ -10,7 +11,7 @@ namespace StoneQuarry
 {
     public class StoneSlabInventory : InventoryGeneric
     {
-        public BaseAllowedCodes AllowedCodes { get; }
+        public RockManager RockManager { get; }
 
         private int _currentSlotId = -1;
         public int CurrentSlotId
@@ -23,7 +24,7 @@ namespace StoneQuarry
             }
         }
 
-        public string CurrentRock
+        public AssetLocation? CurrentRock
         {
             get
             {
@@ -31,22 +32,22 @@ namespace StoneQuarry
                 {
                     if (!this[CurrentSlotId].Empty)
                     {
-                        return this[CurrentSlotId].Itemstack.Collectible.Code.ToString();
+                        return this[CurrentSlotId].Itemstack.Collectible.Code;
                     }
                 }
 
                 CurrentSlotId = -1;
-                return "";
+                return null;
             }
         }
 
-        public StoneSlabPreset RenderPreset { get; private set; }
+        public StoneSlabRenderPreset? RenderPreset { get; private set; }
 
-        public StoneSlabInventory(ICoreAPI api, BlockPos pos, BaseAllowedCodes allowedCodes, int quantitySlots = 0)
+        public StoneSlabInventory(ICoreAPI api, BlockPos? pos, int quantitySlots = 0)
             : base(quantitySlots, "SQ_StoneSlab", pos?.ToString() ?? "-fake", api, OnNewSlot)
         {
             Pos = pos;
-            AllowedCodes = allowedCodes;
+            RockManager = api.ModLoader.GetModSystem<RockManager>();
         }
 
         public void NextSlot()
@@ -80,7 +81,7 @@ namespace StoneQuarry
             }
         }
 
-        public ItemStack GetContent(IPlayer byPlayer, string type, NatFloat quantity, string rock = null)
+        public ItemStack? GetContent(IPlayer byPlayer, string type, NatFloat quantity, AssetLocation? rock = null)
         {
             if (rock == null)
             {
@@ -94,9 +95,14 @@ namespace StoneQuarry
                 }
 
                 rock = CurrentRock;
+
+                if (rock == null)
+                {
+                    return null;
+                }
             }
 
-            if (!AllowedCodes[rock].ContainsKey(type))
+            if (!RockData.types.Contains(type))
             {
                 string errorCode = Core.ModId + ":ingameerror-stoneslab-unknown-tool";
                 (byPlayer as IServerPlayer)?.SendIngameError("", Lang.Get(errorCode));
@@ -105,9 +111,9 @@ namespace StoneQuarry
 
             foreach (var slot in slots)
             {
-                if (!slot.Empty && slot.Itemstack.Collectible.Code.ToString() == rock)
+                if (!slot.Empty && slot.Itemstack.Collectible.Code == rock)
                 {
-                    if (TryGetNextTypedStack(type, rock, quantity, out ItemStack stack))
+                    if (TryGetNextTypedStack(type, rock, quantity, out ItemStack? stack))
                     {
                         slot.TakeOut(1);
                         slot.MarkDirty();
@@ -141,19 +147,25 @@ namespace StoneQuarry
             }
         }
 
-        private bool TryGetNextTypedStack(string type, string rock, NatFloat quantity, out ItemStack stack)
+        private bool TryGetNextTypedStack(string type, AssetLocation rock, NatFloat quantity,
+            [NotNullWhen(true)] out ItemStack? stack)
         {
-            var dropCode = new AssetLocation(AllowedCodes[rock, type]);
-            var dropCollectible = Api.World.GetCollectibleObject(dropCode);
+            AssetLocation? dropCode = RockManager.GetValue(rock, type);
+            if (dropCode == null)
+            {
+                stack = null;
+                return false;
+            }
 
+            var dropCollectible = Api.World.GetCollectibleObject(dropCode);
             if (dropCollectible == null)
             {
                 stack = null;
                 return false;
             }
 
-            var dropStack = new ItemStack(dropCollectible);
-            var blockDrop = new BlockDropItemStack(dropStack) { Quantity = quantity };
+            ItemStack dropStack = new(dropCollectible);
+            BlockDropItemStack blockDrop = new(dropStack) { Quantity = quantity };
 
             stack = blockDrop.GetNextItemStack();
             return true;
@@ -244,9 +256,9 @@ namespace StoneQuarry
             CurrentSlotId = tree.GetInt("currentslotid", -1);
         }
 
-        public static StoneSlabInventory StacksToTreeAttributes(List<ItemStack> stacks, ITreeAttribute tree, ICoreAPI api, BaseAllowedCodes allowedCodes)
+        public static StoneSlabInventory StacksToTreeAttributes(List<ItemStack> stacks, ITreeAttribute tree, ICoreAPI api)
         {
-            var inv = new StoneSlabInventory(api, null, allowedCodes, stacks.Count);
+            var inv = new StoneSlabInventory(api, null, stacks.Count);
 
             for (int i = 0; i < stacks.Count; i++)
             {

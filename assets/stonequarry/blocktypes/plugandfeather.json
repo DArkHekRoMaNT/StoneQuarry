@@ -35,11 +35,7 @@
       "*-iron-*": 6,
       "*-meteoriciron-*": 6,
       "*-steel-*": 7
-    },
-    "allowedCodes": [
-      "rock-*",
-      "ore-*"
-    ]
+    }
   },
 
   "shape": {
