@@ -6,10 +6,9 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NoWarn>CS1591</NoWarn>
 		<WarningLevel>4</WarningLevel>
-	</PropertyGroup>
 
-	<PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
-		<DefaultItemExcludes>$(DefaultItemExcludes);modtools/**</DefaultItemExcludes>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -45,6 +44,13 @@
 		<Reference Include="cairo-sharp">
 			<HintPath>$(VINTAGE_STORY)/$(MinGameVersion)/Lib/cairo-sharp.dll</HintPath>
 		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Nullable" Version="1.3.0">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<Target Name="CollectMod" AfterTargets="PostBuildEvent">
