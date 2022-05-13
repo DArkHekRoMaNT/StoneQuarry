@@ -104,8 +104,11 @@ namespace StoneQuarry
                     (byPlayer as IClientPlayer)?.TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                     world.PlaySoundAt(StoneCrushSoundLocation, byPlayer, byPlayer, true);
 
+                    if (be.StoredRock != null)
+                    {
+                        InteractParticles.ColorByBlock = world.GetBlock(be.StoredRock);
+                    }
                     InteractParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
-                    InteractParticles.ColorByBlock = world.BlockAccessor.GetBlock(blockSel.Position);
                     world.SpawnParticles(InteractParticles, byPlayer);
                 }
             }
@@ -253,7 +256,7 @@ namespace StoneQuarry
                     }
                 }};
 
-                foreach (var type in new string[] { "stone", "gravel", "sand" })
+                foreach (string type in new string[] { "sand", "gravel", "stone" })
                 {
 
                     WorldInteractionsBySel.Add(new WorldInteraction[] {
@@ -355,11 +358,11 @@ namespace StoneQuarry
             return wi.Itemstacks;
         }
 
-        public override ItemStack[]? GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
+        public override ItemStack[]? GetDrops(IWorldAccessor world, BlockPos pos, IPlayer? byPlayer, float dropQuantityMultiplier = 1)
         {
             if (world.BlockAccessor.GetBlockEntity(pos) is BERubbleStorage be)
             {
-                ItemStack dropstack = new(world.BlockAccessor.GetBlock(pos));
+                var dropstack = new ItemStack(world.BlockAccessor.GetBlock(pos));
                 if (be.StoredRock != null)
                 {
                     dropstack.Attributes.SetString("type", be.StoredRock.ToShortString());
@@ -371,6 +374,17 @@ namespace StoneQuarry
             }
 
             return null;
+        }
+
+        public override ItemStack OnPickBlock(IWorldAccessor world, BlockPos pos)
+        {
+            ItemStack[]? drops = GetDrops(world, pos, null);
+            if (drops != null && drops.Length > 0)
+            {
+                return drops[0];
+            }
+
+            return base.OnPickBlock(world, pos);
         }
 
         public override Cuboidf[] GetCollisionBoxes(IBlockAccessor blockAccessor, BlockPos pos)
