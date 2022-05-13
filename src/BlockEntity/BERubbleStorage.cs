@@ -365,11 +365,11 @@ namespace StoneQuarry
         {
             base.GetBlockInfo(forPlayer, dsc);
 
-            string stone = Lang.Get(Core.ModId, ":info-rubblestorage-stone(count={0})", Content["stone"]);
-            string gravel = Lang.Get(Core.ModId, ":info-rubblestorage-gravel(count={0})", Content["gravel"]);
-            string sand = Lang.Get(Core.ModId, ":info-rubblestorage-sand(count={0})", Content["sand"]);
+            string stone = Lang.Get(Core.ModId + ":info-rubblestorage-stone(count={0})", Content["stone"]);
+            string gravel = Lang.Get(Core.ModId + ":info-rubblestorage-gravel(count={0})", Content["gravel"]);
+            string sand = Lang.Get(Core.ModId + ":info-rubblestorage-sand(count={0})", Content["sand"]);
 
-            string locked = Lang.Get(Core.ModId, ":info-rubblestorage-locked");
+            string locked = Lang.Get(Core.ModId + ":info-rubblestorage-locked");
             switch (StorageLock)
             {
                 case EnumStorageLock.Stone:
@@ -383,13 +383,13 @@ namespace StoneQuarry
                     break;
             }
 
-            string rockType = Lang.Get(Core.ModId, ":info-rubblestorage-none");
+            string rockType = Lang.Get(Core.ModId + ":info-rubblestorage-none");
             if (StoredRock != null)
             {
                 rockType = Lang.Get(StoredRock + "");
             }
 
-            dsc.AppendLine(Lang.Get(Core.ModId, ":info-rubblestorage-type(type={0})", rockType));
+            dsc.AppendLine(Lang.Get(Core.ModId + ":info-rubblestorage-type(type={0})", rockType));
             dsc.AppendLine(stone);
             dsc.AppendLine(gravel);
             dsc.AppendLine(sand);
