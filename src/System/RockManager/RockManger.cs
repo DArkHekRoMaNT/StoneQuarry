@@ -11,13 +11,12 @@ namespace StoneQuarry
 {
     public class RockManager : ModSystem
     {
-        private Dictionary<AssetLocation, RockData> _data;
+        private readonly Dictionary<AssetLocation, RockData> _data;
         public IReadOnlyList<RockData> Data => _data.Values.ToList();
 
 #nullable disable
         private ICoreServerAPI api;
 #nullable restore
-        private IServerNetworkChannel? serverChannel;
 
         public RockManager()
         {
@@ -25,7 +24,7 @@ namespace StoneQuarry
         }
 
         // Requires Block and Item Loader: 0.2
-        public override double ExecuteOrder() => 0.5;
+        public override double ExecuteOrder() => 0.21;
 
         public override void StartClientSide(ICoreClientAPI api)
         {
@@ -45,7 +44,7 @@ namespace StoneQuarry
 
             LoadRockData();
 
-            serverChannel = api.Network
+            IServerNetworkChannel serverChannel = api.Network
                 .RegisterChannel(Core.ModId + "-rockmanager")
                 .RegisterMessageType<List<RockData>>();
 

@@ -76,7 +76,7 @@ namespace StoneQuarry
             }
         }
 
-        public void SetWildcardValue(string wildcardValue, ICoreServerAPI api)
+        public void SetWildcardValue(string wildcardValue, ICoreAPI api)
         {
             for (int i = 0; i < types.Length; i++)
             {

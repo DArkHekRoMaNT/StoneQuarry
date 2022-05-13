@@ -16,7 +16,7 @@ namespace StoneQuarry
         public static AssetLocation StoneCrushSoundLocation => new("game", "sounds/effect/stonecrush");
         public static AssetLocation WaterSplashSoundLocation => new("game", "sounds/environment/largesplash1");
 
-        public List<WorldInteraction[]> WorldInteractionsBySel { get; private set; }
+        public List<WorldInteraction[]>? WorldInteractionsBySel { get; private set; }
         public SimpleParticleProperties InteractParticles { get; private set; }
 
         private Cuboidf[] _mirroredCollisionBoxes;
@@ -44,7 +44,6 @@ namespace StoneQuarry
                 DieOnRainHeightmap = false
             };
 
-            WorldInteractionsBySel = default!;
             _mirroredCollisionBoxes = default!;
         }
 
@@ -54,142 +53,11 @@ namespace StoneQuarry
 
             rockManager = api.ModLoader.GetModSystem<RockManager>();
 
-            if (api.Side == EnumAppSide.Client)
-            {
-                InitWorldInteractions();
-            }
-
             _mirroredCollisionBoxes = new Cuboidf[CollisionBoxes.Length];
             for (int i = 0; i < CollisionBoxes.Length; i++)
             {
                 _mirroredCollisionBoxes[i] = CollisionBoxes[i].RotatedCopy(0, 180, 0, new Vec3d(0.5, 0.5, 0.5));
             }
-        }
-
-        private void InitWorldInteractions()
-        {
-            var hammers = new List<ItemStack>();
-            foreach (var colObj in api.World.Collectibles)
-            {
-                if (colObj.Attributes != null && colObj.Attributes["rubbleable"].Exists)
-                {
-                    hammers.Add(new ItemStack(colObj));
-                }
-            }
-
-            var stacksByType = new Dictionary<string, List<ItemStack>> {
-                { "sand", new List<ItemStack>() },
-                { "gravel", new List<ItemStack>() },
-                { "stone", new List<ItemStack>() }
-            };
-
-            foreach (RockData rockData in rockManager.Data)
-            {
-                foreach (string type in stacksByType.Keys)
-                {
-                    AssetLocation? code = rockData[type];
-                    if (code != null)
-                    {
-                        var colObj = api.World.GetCollectibleObject(code);
-                        if (colObj != null)
-                        {
-                            stacksByType[type].Add(new ItemStack(colObj));
-                        }
-                    }
-                }
-            }
-
-            var waterPortion = api.World.GetItem(new AssetLocation("game:waterportion")).GetHandBookStacks(api as ICoreClientAPI);
-            waterPortion[0].StackSize = 100; // 1 liter of liquid
-
-            WorldInteractionsBySel = new List<WorldInteraction[]>() { new WorldInteraction[] {
-                new WorldInteraction()
-                {
-                    ActionLangCode = Core.ModId + ":wi-rubblestorage-hammer",
-                    MouseButton = EnumMouseButton.Right,
-                    Itemstacks = hammers.ToArray()
-                },
-                new WorldInteraction()
-                {
-                    ActionLangCode = Core.ModId + ":wi-rubblestorage-add-one",
-                    MouseButton = EnumMouseButton.Right,
-                    Itemstacks = stacksByType["stone"].ToArray(),
-                    GetMatchingStacks = WIGetMatchingStacks_StoneType
-                },
-                new WorldInteraction()
-                {
-                    ActionLangCode = Core.ModId + ":wi-rubblestorage-add-stack",
-                    MouseButton = EnumMouseButton.Right,
-                    HotKeyCode = "sprint",
-                    Itemstacks = stacksByType["stone"].Select((i) =>
-                    {
-                        var r = i.Clone(); r.StackSize = r.Collectible.MaxStackSize; return r;
-                    }).ToArray(),
-                    GetMatchingStacks = WIGetMatchingStacks_StoneType
-                },
-                new WorldInteraction()
-                {
-                    ActionLangCode = Core.ModId + ":wi-rubblestorage-add-all",
-                    MouseButton = EnumMouseButton.Right,
-                    RequireFreeHand = true
-                },
-                new WorldInteraction()
-                {
-                    ActionLangCode = Core.ModId + ":wi-rubblestorage-water",
-                    MouseButton = EnumMouseButton.Right,
-                    Itemstacks = waterPortion.ToArray()
-                }
-            }};
-
-            foreach (var type in stacksByType.Keys)
-            {
-
-                WorldInteractionsBySel.Add(new WorldInteraction[] {
-                    new WorldInteraction()
-                    {
-                        ActionLangCode = Core.ModId + ":wi-rubblestorage-lock",
-                        MouseButton = EnumMouseButton.Right,
-                        HotKeyCode = "sneak"
-                    },
-                    new WorldInteraction()
-                    {
-                        ActionLangCode = Core.ModId + ":wi-rubblestorage-take-one-" + type,
-                        MouseButton = EnumMouseButton.Right,
-                        Itemstacks = stacksByType[type].ToArray(),
-                        GetMatchingStacks = WIGetMatchingStacks_StoneType
-                    },
-                    new WorldInteraction()
-                    {
-                        ActionLangCode = Core.ModId + ":wi-rubblestorage-take-stack-" + type,
-                        MouseButton = EnumMouseButton.Right,
-                        HotKeyCode = "sprint",
-                        Itemstacks = stacksByType[type].Select((i)=>{
-                            var r = i.Clone(); r.StackSize = r.Collectible.MaxStackSize; return r;
-                        }).ToArray(),
-                        GetMatchingStacks = WIGetMatchingStacks_StoneType
-                    }
-                });
-            }
-        }
-
-        private ItemStack[] WIGetMatchingStacks_StoneType(WorldInteraction wi, BlockSelection blockSel, EntitySelection entitySel)
-        {
-            var be = api.World.BlockAccessor.GetBlockEntity(blockSel.Position) as BERubbleStorage;
-
-            if (be?.StoredRock != null)
-            {
-                RockData? data = rockManager.GetValue(be.StoredRock);
-
-                if (data != null)
-                {
-
-                    return wi.Itemstacks
-                        .Where((item) => data[item.Collectible.Code] != null)
-                        .ToArray();
-                }
-            }
-
-            return wi.Itemstacks;
         }
 
         public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
@@ -347,7 +215,144 @@ namespace StoneQuarry
 
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection blockSel, IPlayer forPlayer)
         {
-            return WorldInteractionsBySel[blockSel.SelectionBoxIndex].Append(base.GetPlacedBlockInteractionHelp(world, blockSel, forPlayer));
+            if (WorldInteractionsBySel == null)
+            {
+                WorldInteractionsBySel = new List<WorldInteraction[]>() { new WorldInteraction[] {
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = Core.ModId + ":wi-rubblestorage-hammer",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = GetRubbleHammers()
+                    },
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = Core.ModId + ":wi-rubblestorage-add-one",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = GetAvailableContent("stone"),
+                        GetMatchingStacks = WIGetMatchingStacks_StoneType
+                    },
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = Core.ModId + ":wi-rubblestorage-add-stack",
+                        MouseButton = EnumMouseButton.Right,
+                        HotKeyCode = "sprint",
+                        Itemstacks = GetAvailableContent("stone", true),
+                        GetMatchingStacks = WIGetMatchingStacks_StoneType
+                    },
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = Core.ModId + ":wi-rubblestorage-add-all",
+                        MouseButton = EnumMouseButton.Right,
+                        RequireFreeHand = true
+                    },
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = Core.ModId + ":wi-rubblestorage-water",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = GetWaterPortionStacks()
+                    }
+                }};
+
+                foreach (var type in new string[] { "stone", "gravel", "sand" })
+                {
+
+                    WorldInteractionsBySel.Add(new WorldInteraction[] {
+                        new WorldInteraction()
+                        {
+                            ActionLangCode = Core.ModId + ":wi-rubblestorage-lock",
+                            MouseButton = EnumMouseButton.Right,
+                            HotKeyCode = "sneak"
+                        },
+                        new WorldInteraction()
+                        {
+                            ActionLangCode = Core.ModId + ":wi-rubblestorage-take-one-" + type,
+                            MouseButton = EnumMouseButton.Right,
+                            Itemstacks = GetAvailableContent(type),
+                            GetMatchingStacks = WIGetMatchingStacks_StoneType
+                        },
+                        new WorldInteraction()
+                        {
+                            ActionLangCode = Core.ModId + ":wi-rubblestorage-take-stack-" + type,
+                            MouseButton = EnumMouseButton.Right,
+                            HotKeyCode = "sprint",
+                            Itemstacks = GetAvailableContent(type, true),
+                            GetMatchingStacks = WIGetMatchingStacks_StoneType
+                        }
+                    });
+                }
+            }
+
+            return WorldInteractionsBySel[blockSel.SelectionBoxIndex]
+                .Append(base.GetPlacedBlockInteractionHelp(world, blockSel, forPlayer));
+        }
+        private ItemStack[] GetRubbleHammers()
+        {
+            var hammers = new List<ItemStack>();
+            foreach (var colObj in api.World.Collectibles)
+            {
+                if (colObj.Attributes != null && colObj.Attributes["rubbleable"].Exists)
+                {
+                    hammers.Add(new ItemStack(colObj));
+                }
+            }
+            return hammers.ToArray();
+        }
+
+        private ItemStack[] GetAvailableContent(string type, bool fullStack = false)
+        {
+            var content = new List<ItemStack>();
+            foreach (RockData rockData in rockManager.Data)
+            {
+                AssetLocation? code = rockData[type];
+                if (code != null)
+                {
+                    var colObj = api.World.GetCollectibleObject(code);
+                    if (colObj != null)
+                    {
+                        var stack = new ItemStack(colObj);
+                        if (fullStack)
+                        {
+                            stack.StackSize = colObj.MaxStackSize;
+                        }
+                        content.Add(stack);
+                    }
+                }
+            }
+            return content.ToArray();
+        }
+
+        private ItemStack[] GetWaterPortionStacks()
+        {
+            List<ItemStack> waterPortion = api.World
+                .GetItem(new AssetLocation("game:waterportion"))
+                .GetHandBookStacks(api as ICoreClientAPI);
+
+            foreach (ItemStack stack in waterPortion)
+            {
+                stack.StackSize = 100; // 1 liter of liquid
+            }
+
+            return waterPortion.ToArray();
+        }
+
+        private ItemStack[] WIGetMatchingStacks_StoneType(WorldInteraction wi, BlockSelection blockSel, EntitySelection entitySel)
+        {
+            var be = api.World.BlockAccessor.GetBlockEntity(blockSel.Position) as BERubbleStorage;
+
+            if (be?.StoredRock != null)
+            {
+                RockData? data = rockManager.GetValue(be.StoredRock);
+
+                if (data != null)
+                {
+
+                    return wi.Itemstacks
+                        .Where((item) => data[item.Collectible.Code] != null)
+                        .ToArray();
+                }
+            }
+
+            return wi.Itemstacks;
         }
 
         public override ItemStack[]? GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)

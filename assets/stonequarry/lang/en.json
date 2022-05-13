@@ -149,10 +149,12 @@
   "wi-stoneslab-rock": "Cut rock",
   "wi-stoneslab-stone": "Cut stones",
   "wi-stoneslab-stonebrick": "Cut bricks",
+  "wi-stoneslab-changerock": "Select rock",
+  "wi-stoneslab-addrock": "Add rock",
+  "wi-stoneslab-removerock": "Remove rock",
 
   "wi-plugandfeather-quarryimpact": "Hammer",
   "wi-plugandfeather-togglepreview": "Toggle preview",
-  "wi-stoneslab-changerock": "Select rock",
 
   /* MoreMetals ---> */
   "block-stoneslabsmall-dolomite-*": "Small dolomite slab",

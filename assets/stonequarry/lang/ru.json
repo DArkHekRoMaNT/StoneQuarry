@@ -147,6 +147,9 @@
   "wi-stoneslab-rock": "Отрезать камень",
   "wi-stoneslab-stone": "Отрезать камешки",
   "wi-stoneslab-stonebrick": "Отрезать кирпичи",
+  "wi-stoneslab-changerock": "Выбрать камень",
+  "wi-stoneslab-addrock": "Добавить камень",
+  "wi-stoneslab-removerock": "Удалить камень",
 
   "wi-plugandfeather-quarryimpact": "Ударить",
   "wi-plugandfeather-togglepreview": "Переключить превью",

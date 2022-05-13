@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -16,77 +17,20 @@ namespace StoneQuarry
         public static AssetLocation HitSoundLocation => new("game", "sounds/block/rock-hit-pickaxe");
         public static AssetLocation DropSoundLocation => new("game", "sounds/block/heavyice");
 
-        public WorldInteraction[] WorldInteractions { get; private set; }
+        public WorldInteraction[]? WorldInteractions { get; private set; }
+        public WorldInteraction[]? WorldInteractionsCreativeOnly { get; private set; }
 
 #nullable disable
         private RockManager rockManager;
         private StoneSlabMeshCache meshCache;
 #nullable restore
 
-        public BlockStoneSlab()
-        {
-            WorldInteractions = default!;
-        }
-
         public override void OnLoaded(ICoreAPI api)
         {
             base.OnLoaded(api);
 
-            InitWorldInteractions();
-
             meshCache = api.ModLoader.GetModSystem<StoneSlabMeshCache>();
             rockManager = api.ModLoader.GetModSystem<RockManager>();
-        }
-
-        public void InitWorldInteractions()
-        {
-            var toolStacksByType = new Dictionary<string, List<ItemStack>>()
-            {
-                {"rockpolished", new List<ItemStack>()},
-                {"rock", new List<ItemStack>()},
-                {"stone", new List<ItemStack>()},
-                {"stonebrick", new List<ItemStack>()}
-            };
-
-            foreach (var collObj in api.World.Collectibles)
-            {
-                if (collObj is ItemSlabTool tool)
-                {
-                    if (tool.DropType != "")
-                    {
-                        toolStacksByType[tool.DropType].Add(new ItemStack(collObj));
-                    }
-                }
-            }
-
-            WorldInteractions = new WorldInteraction[] {
-                new WorldInteraction(){
-                    ActionLangCode = Core.ModId + ":wi-stoneslab-rockpolished",
-                    MouseButton = EnumMouseButton.Right,
-                    Itemstacks = toolStacksByType["rockpolished"].ToArray()
-                },
-                new WorldInteraction(){
-                    ActionLangCode = Core.ModId + ":wi-stoneslab-rock",
-                    MouseButton = EnumMouseButton.Right,
-                    Itemstacks = toolStacksByType["rock"].ToArray()
-                },
-                new WorldInteraction(){
-                    ActionLangCode = Core.ModId + ":wi-stoneslab-stone",
-                    MouseButton = EnumMouseButton.Right,
-                    Itemstacks = toolStacksByType["stone"].ToArray()
-                },
-                new WorldInteraction(){
-                    ActionLangCode = Core.ModId + ":wi-stoneslab-stonebrick",
-                    MouseButton = EnumMouseButton.Right,
-                    Itemstacks = toolStacksByType["stonebrick"].ToArray()
-                },
-                new WorldInteraction()
-                {
-                    ActionLangCode = Core.ModId + ":wi-stoneslab-changerock",
-                    MouseButton = EnumMouseButton.Right,
-                    HotKeyCode = "sprint"
-                }
-            };
         }
 
         public override bool DoPlaceBlock(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, ItemStack byItemStack)
@@ -266,7 +210,86 @@ namespace StoneQuarry
 
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
         {
-            return WorldInteractions.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
+            if (WorldInteractions == null || WorldInteractionsCreativeOnly == null)
+            {
+                WorldInteractions = new WorldInteraction[] {
+                    new WorldInteraction(){
+                        ActionLangCode = Core.ModId + ":wi-stoneslab-rockpolished",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = GetTools("rockpolished")
+                    },
+                    new WorldInteraction(){
+                        ActionLangCode = Core.ModId + ":wi-stoneslab-rock",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = GetTools("rock")
+                    },
+                    new WorldInteraction(){
+                        ActionLangCode = Core.ModId + ":wi-stoneslab-stone",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = GetTools("stone")
+                    },
+                    new WorldInteraction(){
+                        ActionLangCode = Core.ModId + ":wi-stoneslab-stonebrick",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks =  GetTools("stonebrick")
+                    },
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = Core.ModId + ":wi-stoneslab-changerock",
+                        MouseButton = EnumMouseButton.Right,
+                        HotKeyCode = "sprint"
+                    }
+                };
+
+
+                ItemStack[] rocks = rockManager.Data
+                    .Select((data) =>
+                    {
+                        Block block = api.World.GetBlock(data.Rock) ?? api.World.GetBlock(0);
+                        return new ItemStack(block);
+                    })
+                    .ToArray();
+
+                WorldInteractionsCreativeOnly = new WorldInteraction[]
+                    {
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = Core.ModId + ":wi-stoneslab-addrock",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = rocks
+                    },
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = Core.ModId + ":wi-stoneslab-removerock",
+                        MouseButton = EnumMouseButton.Right,
+                        HotKeyCode = "sprint",
+                        Itemstacks = rocks
+                    }
+                };
+            }
+
+            bool isCreativePlayer = forPlayer.WorldData.CurrentGameMode == EnumGameMode.Creative;
+            return WorldInteractions
+                .AppendIf(isCreativePlayer, WorldInteractionsCreativeOnly)
+                .Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
+        }
+
+        private ItemStack[] GetTools(string type)
+        {
+            List<ItemStack> tools = new();
+
+            foreach (CollectibleObject collObj in api.World.Collectibles)
+            {
+                if (collObj is ItemSlabTool tool)
+                {
+                    if (tool.DropType == type)
+                    {
+                        tools.Add(new ItemStack(collObj));
+                    }
+                }
+            }
+
+            return tools.ToArray();
         }
 
         public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
