@@ -213,10 +213,10 @@ namespace StoneQuarry
             {
                 if (StoredRock == null)
                 {
-                    StoredRock = rockName;
+                    StoredRock = rockName.Clone();
                 }
 
-                if (StoredRock == rockName)
+                if (StoredRock.Equals(rockName))
                 {
                     if (Content.ContainsKey(contentType))
                     {
