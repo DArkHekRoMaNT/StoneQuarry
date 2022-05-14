@@ -6,7 +6,7 @@
   "variantgroups": [
     {
       "code": "metal",
-      "states": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "iron", "meteoriciron", "steel" ]
+      "states": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "iron", "meteoriciron", "steel", "admin" ]
     },
     {
       "code": "stage",
@@ -34,7 +34,8 @@
       "*-blackbronze-*": 5,
       "*-iron-*": 6,
       "*-meteoriciron-*": 6,
-      "*-steel-*": 7
+      "*-steel-*": 7,
+      "*-admin-*": 128
     }
   },
 
@@ -58,6 +59,9 @@
     }
   },
   "textures": { "metal": { "base": "game:block/metal/plate/{metal}" } },
+  "texturesByType": {
+    "*-admin-*": { "metal": { "base": "game:block/fire-pink" } }
+  },
 
   "drawtype": "json",
   "facecullmode": "nevercull",

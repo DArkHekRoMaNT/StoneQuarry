@@ -14,6 +14,7 @@
   "block-plugandfeather-iron-*": "Iron plug",
   "block-plugandfeather-meteoriciron-*": "Meteoric iron plug",
   "block-plugandfeather-steel-*": "Steel plug",
+  "block-plugandfeather-admin-*": "Admin plug",
   "block-handbooktitle-*-plugandfeather-*": "Uses",
   "block-handbooktext-*-plugandfeather-*": "Used to split stone into stone slabs. Higher tier plugs can split more at once.\n\n-Copper: 3x3\n-Tin bronze: 4x4\n-Bismuth bronze: 4x4\n-Black bronze: 5x5\n-Iron: 6x6 \n-Meteoric iron: 6x6 \n-Steel: 7x7 \n\n<strong>Created By</strong> \n<a href=\"handbook://craftinginfo-smelting\">Metal Molding</a>",
 

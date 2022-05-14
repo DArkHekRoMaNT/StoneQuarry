@@ -12,6 +12,7 @@
   "block-plugandfeather-iron-*": "Костыль (железо)",
   "block-plugandfeather-meteoriciron-*": "Костыль (метеоритное железо)",
   "block-plugandfeather-steel-*": "Костыль (сталь)",
+  "block-plugandfeather-admin-*": "Костыль (администратор)",
   "block-handbooktitle-*-plugandfeather-*": "Использование",
   "block-handbooktext-*-plugandfeather-*": "Используется, чтобы отделить каменный массив от скалы. Чем выше уровень металла костыля, там больший массив можно отделить.\n\n-Медь: 3x3\n-Оловянная бронза: 4x4\n-Висмутовая бронза: 4x4\n-Черная бронза: 5x5\n-Железо: 6x6 \n\n<strong>Создается:</strong> \n<a href=\"handbook://craftinginfo-smelting\">Отливка</a>",
 
