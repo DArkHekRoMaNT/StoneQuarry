@@ -1,7 +1,15 @@
 {
   "code": "adminhammer",
   "attributes": {
-    "plugimpact": 100000
+    "plugimpact": 100000,
+    "toolrackTransform": {
+      "rotation": {
+        "y": 1,
+        "z": -1
+      },
+      "translation": { "x": -0.2 },
+      "scale": 1.5
+    }
   },
   "tool": "hammer",
   "damagedby": [

@@ -18,7 +18,9 @@
     }
   ],
   "attributes": {
-    "handbook": { "groupBy": [ "roughcutchisel-*" ] },
+    "handbook": {
+      "groupBy": [ "roughcutchisel-*" ]
+    },
     "slabtool": {
       "type": "rock",
       "quantity": { "avg": 1 }
@@ -26,20 +28,16 @@
     "rackable": true,
     "toolrackTransform": {
       "translation": {
-        "x": 0.2,
-        "y": 0.5,
-        "z": 0.5
+        "x": 0,
+        "y": 0.61,
+        "z": 0
       },
       "rotation": {
-        "x": 0,
+        "x": 5,
         "y": 180,
-        "z": 0
+        "z": -1
       },
-      "origin": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
+      "scale": 1.25
     }
   },
   "durabilityByType": {
@@ -55,72 +53,56 @@
   },
   "shape": { "base": "item/tool/roughcutchisel" },
   "textures": {
-    "metal": { "base": "game:block/metal/plate/{material}" },
-    "wood": { "base": "game:block/wood/debarked/birch" }
+    "metal": { "base": "game:block/metal/ingot/{material}" },
+    "wood": { "base": "game:item/tool/material/handle" }
   },
   "creativeinventory": {
     "general": [ "*" ],
+    "items": [ "*" ],
+    "tools": [ "*" ],
     "stonequarry": [ "*" ]
   },
   "heldTpUseAnimation": "knap",
-  "fpHandTransform": {
-    "translation": {
-      "x": -0.4,
-      "y": 0.7,
-      "z": 1.1
-    },
-    "rotation": {
-      "x": 59,
-      "y": -51,
-      "z": -64
-    },
-    "origin": {
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "scale": 2.14
-  },
-  "tpHandTransform": {
-    "translation": {
-      "x": 0.06,
-      "y": 0.01,
-      "z": 0.03
-    },
-    "rotation": {
-      "x": 0,
-      "y": 180,
-      "z": 0
-    },
-    "origin": {
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "scale": 0.7799
-  },
   "guiTransform": {
     "translation": {
-      "x": 0,
-      "y": 0,
+      "x": 2,
+      "y": 1,
       "z": 0
     },
     "rotation": {
-      "x": 41,
-      "y": 180,
-      "z": 56
+      "x": -7,
+      "y": 129,
+      "z": -45
     },
     "origin": {
-      "x": 0,
+      "x": 0.5,
       "y": 0,
+      "z": 0.5
+    },
+    "scale": 2.85
+  },
+  "fpHandTransform": {
+    "translation": {
+      "x": -0.1,
+      "y": 0.2,
       "z": 0
     },
-    "scale": 3.51
+    "rotation": {
+      "x": 90,
+      "y": 99,
+      "z": -42
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 2.15
   },
   "groundTransform": {
     "translation": {
       "x": 0,
-      "y": 0.43,
+      "y": 0,
       "z": 0
     },
     "rotation": {
@@ -128,6 +110,29 @@
       "y": 0,
       "z": 0
     },
-    "scale": 4
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 4.31
+  },
+  "tpHandTransform": {
+    "translation": {
+      "x": -0.78,
+      "y": -0.09,
+      "z": -0.67
+    },
+    "rotation": {
+      "x": 9,
+      "y": -1,
+      "z": -16
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 0.76
   }
 }

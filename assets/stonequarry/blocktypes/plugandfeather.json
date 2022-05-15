@@ -58,7 +58,9 @@
       "*-horizontal-west": -90
     }
   },
-  "textures": { "metal": { "base": "game:block/metal/plate/{metal}" } },
+  "textures": {
+    "metal": { "base": "game:block/metal/ingot/{metal}" }
+  },
   "texturesByType": {
     "*-admin-*": { "metal": { "base": "game:block/fire-pink" } }
   },

@@ -8,15 +8,15 @@
 	"textureSizes": {
 	},
 	"textures": {
-    "stone0": "game:block/stone/cobblestone/granite1",
-    "stone1": "game:block/stone/cobblestone/granite1"
+		"stone0": "game:block/stone/cobblestone/granite1",
+		"stone1": "game:block/stone/cobblestone/granite1"
 	},
 	"elements": [
 		{
 			"name": "Cube1",
-			"from": [ 4.0, 0.0, -1.0 ], 
-			"to": [ 7.0, 3.0, 17.0 ], 
-			"rotationOrigin": [ 4.0, 0.0, -1.0 ],
+			"from": [ 4.0, 0.0, 0.0 ], 
+			"to": [ 7.0, 3.0, 16.0 ], 
+			"rotationOrigin": [ 4.0, 0.0, 0.0 ],
 			"faces": {
 				"north": { "texture": "#wood", "uv": [ 0.0, 0.0, 3.0, 3.0 ] },
 				"east": { "texture": "#wood", "uv": [ 0.0, 0.0, 15.5, 3.0 ], "autoUv": false },
@@ -28,9 +28,9 @@
 			"children": [
 				{
 					"name": "Cube2",
-					"from": [ -3.0, 3.0, 2.0 ], 
-					"to": [ 12.0, 16.0, 16.0 ], 
-					"rotationOrigin": [ -3.0, 3.0, 2.0 ],
+					"from": [ -3.0, 3.0, 1.0 ], 
+					"to": [ 12.0, 16.0, 15.0 ], 
+					"rotationOrigin": [ -3.0, 3.0, 1.0 ],
 					"faces": {
 						"north": { "texture": "#stone0", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
 						"east": { "texture": "#stone0", "uv": [ 0.0, 0.0, 14.0, 13.0 ], "enabled": false },
@@ -44,9 +44,9 @@
 		},
 		{
 			"name": "Cube3",
-			"from": [ 25.0, 0.0, -1.0 ], 
-			"to": [ 28.0, 3.0, 17.0 ], 
-			"rotationOrigin": [ 25.0, 0.0, -1.0 ],
+			"from": [ 25.0, 0.0, 0.0 ], 
+			"to": [ 28.0, 3.0, 16.0 ], 
+			"rotationOrigin": [ 25.0, 0.0, 0.0 ],
 			"faces": {
 				"north": { "texture": "#wood", "uv": [ 0.0, 0.0, 3.0, 3.0 ] },
 				"east": { "texture": "#wood", "uv": [ 0.0, 0.0, 15.5, 3.0 ], "autoUv": false },
@@ -58,9 +58,9 @@
 			"children": [
 				{
 					"name": "Cube4",
-					"from": [ -9.0, 3.0, 2.0 ], 
-					"to": [ 6.0, 16.0, 16.0 ], 
-					"rotationOrigin": [ -9.0, 3.0, 2.0 ],
+					"from": [ -9.0, 3.0, 1.0 ], 
+					"to": [ 6.0, 16.0, 15.0 ], 
+					"rotationOrigin": [ -9.0, 3.0, 1.0 ],
 					"faces": {
 						"north": { "texture": "#stone1", "uv": [ 0.0, 0.0, 15.0, 13.0 ] },
 						"east": { "texture": "#stone1", "uv": [ 0.0, 0.0, 14.0, 13.0 ] },

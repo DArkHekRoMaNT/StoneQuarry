@@ -19,68 +19,83 @@
   "maxStackSize": 4,
   "shape": { "base": "item/tool/rubblehammer" },
   "textures": {
-    "metal": { "base": "game:block/metal/plate/{material}" },
+    "metal": { "base": "game:block/metal/ingot/{material}" },
     "wood": { "base": "game:block/transparent" }
   },
   "creativeinventory": {
     "general": [ "*" ],
     "stonequarry": [ "*" ]
   },
-  "fpHandTransform": {
-    "translation": {
-      "x": 0.15,
-      "y": 0.3,
-      "z": 0.4
-    },
-    "rotation": {
-      "x": -131,
-      "y": -12,
-      "z": -74
-    },
-    "scale": 2.14
-  },
-  "tpHandTransform": {
-    "translation": {
-      "x": -0.75,
-      "y": -0.4,
-      "z": -0.2
-    },
-    "rotation": {
-      "x": 85,
-      "y": -8,
-      "z": -5
-    },
-    "scale": 0.7
-  },
   "guiTransform": {
     "translation": {
-      "x": 25,
-      "y": 30,
+      "x": 0,
+      "y": 0,
       "z": 0
     },
     "rotation": {
-      "x": 18,
-      "y": 38,
-      "z": -39
+      "x": -89,
+      "y": 45,
+      "z": 6
     },
-    "scale": 2.35
+    "origin": {
+      "x": 0.95,
+      "y": 0,
+      "z": 0.48
+    },
+    "scale": 3
+  },
+  "fpHandTransform": {
+    "translation": {
+      "x": -0.1,
+      "y": -1.1,
+      "z": 0.6
+    },
+    "rotation": {
+      "x": -35,
+      "y": 0,
+      "z": 85
+    },
+    "origin": {
+      "x": 0.1,
+      "y": 0.5,
+      "z": 0.5
+    },
+    "scale": 2.5
   },
   "groundTransform": {
     "translation": {
       "x": 0,
-      "y": 0.5,
+      "y": 0,
       "z": 0
     },
     "rotation": {
-      "x": -1,
+      "x": 0,
       "y": 0,
       "z": 0
     },
     "origin": {
       "x": 0.5,
-      "y": 0.5,
-      "z": 0.5299
+      "y": 0,
+      "z": 0.5
     },
-    "scale": 4
+    "scale": 3.4
+  },
+  "tpHandTransform": {
+    "translation": {
+      "x": -0.9,
+      "y": 0.49,
+      "z": -0.45
+    },
+    "rotation": {
+      "x": -80,
+      "y": -90,
+      "z": 0
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 0.8
   }
 }

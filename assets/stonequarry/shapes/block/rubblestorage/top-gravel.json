@@ -186,9 +186,9 @@
 				},
 				{
 					"name": "Cube14",
-					"from": [ 11.2, 1.2, 7.2 ], 
-					"to": [ 12.2, 2.2, 8.2 ], 
-					"rotationOrigin": [ 11.2, 1.2, 7.2 ],
+					"from": [ 11.2, 0.2, 7.2 ], 
+					"to": [ 12.2, 1.2, 8.2 ], 
+					"rotationOrigin": [ 11.2, 0.2, 7.2 ],
 					"rotationX": -22.5,
 					"rotationZ": 22.5,
 					"faces": {

@@ -8,14 +8,14 @@
 	"textureSizes": {
 	},
 	"textures": {
-    "stone0": "game:block/stone/cobblestone/granite1"
+		"stone0": "game:block/stone/cobblestone/granite1"
 	},
 	"elements": [
 		{
 			"name": "Pole1",
-			"from": [ 3.0, 0.0, -1.0 ], 
-			"to": [ 6.0, 2.0, 17.0 ], 
-			"rotationOrigin": [ 3.0, 0.0, -1.0 ],
+			"from": [ 3.0, 0.0, 0.0 ], 
+			"to": [ 6.0, 2.0, 16.0 ], 
+			"rotationOrigin": [ 3.0, 0.0, 0.0 ],
 			"faces": {
 				"north": { "texture": "#wood", "uv": [ 0.0, 0.0, 3.0, 2.0 ] },
 				"east": { "texture": "#wood", "uv": [ 0.0, 2.5, 16.0, 4.5 ], "autoUv": false },
@@ -27,9 +27,9 @@
 		},
 		{
 			"name": "Pole2",
-			"from": [ 10.0, 0.0, -1.0 ], 
-			"to": [ 13.0, 2.0, 17.0 ], 
-			"rotationOrigin": [ 10.0, 0.0, -1.0 ],
+			"from": [ 10.0, 0.0, 0.0 ], 
+			"to": [ 13.0, 2.0, 16.0 ], 
+			"rotationOrigin": [ 10.0, 0.0, 0.0 ],
 			"faces": {
 				"north": { "texture": "#wood", "uv": [ 0.0, 0.0, 3.0, 2.0 ] },
 				"east": { "texture": "#wood", "uv": [ 0.0, 0.0, 15.5, 2.0 ], "autoUv": false },

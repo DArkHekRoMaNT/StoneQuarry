@@ -128,12 +128,12 @@
   "shapeinventory": { "base": "block/rubblestorage/storage-closed" },
   "selectionBoxes": [
     {
-      "x1": 0,
+      "x1": 0.0315,
       "y1": 0,
-      "z1": 0,
+      "z1": 0.0315,
       "x2": 1,
       "y2": 1,
-      "z2": 1,
+      "z2": 0.9685,
       "rotateYByType": {
         "*-north": 0,
         "*-east": 270,
@@ -147,7 +147,7 @@
       "z1": 0.9375,
       "x2": 0.1875,
       "y2": 0.8125,
-      "z2": 1.0625,
+      "z2": 1.031,
       "rotateYByType": {
         "*-north": 0,
         "*-east": 270,
@@ -161,7 +161,7 @@
       "z1": 0.9375,
       "x2": 0.375,
       "y2": 0.8125,
-      "z2": 1.0625,
+      "z2": 1.031,
       "rotateYByType": {
         "*-north": 0,
         "*-east": 270,
@@ -175,7 +175,7 @@
       "z1": 0.9375,
       "x2": 0.5625,
       "y2": 0.8125,
-      "z2": 1.0625,
+      "z2": 1.031,
       "rotateYByType": {
         "*-north": 0,
         "*-east": 270,
