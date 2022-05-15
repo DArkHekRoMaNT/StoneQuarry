@@ -28,8 +28,6 @@ namespace StoneQuarry
         }
 
         private int _currentStageWork = 0;
-        private bool _previewEnabled = false;
-
 
         public BEPlugAndFeather()
         {
@@ -234,26 +232,14 @@ namespace StoneQuarry
             return null;
         }
 
-        public void TogglePreview()
+        public override void OnReceivedServerPacket(int packetid, byte[] data)
         {
-            if (Api is ICoreClientAPI capi)
+            base.OnReceivedServerPacket(packetid, data);
+
+            if (packetid == PlugPreviewManager.BEPacketId)
             {
-                _previewEnabled = !_previewEnabled;
-
-                var forPlayer = capi.World.Player;
-                int highlightSlotId = 1312;
-
-                if (_previewEnabled && IsNetworkPart)
-                {
-                    var blocks = GetAllBlocksInside();
-                    if (blocks != null)
-                    {
-                        capi.World.HighlightBlocks(forPlayer, highlightSlotId, blocks);
-                        return;
-                    }
-                }
-
-                capi.World.HighlightBlocks(forPlayer, highlightSlotId, new List<BlockPos>());
+                PlugPreviewManager ppm = Api.ModLoader.GetModSystem<Core>().PlugPreviewManager;
+                ppm?.DisablePreview(Pos);
             }
         }
 

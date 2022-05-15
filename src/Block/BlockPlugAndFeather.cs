@@ -29,7 +29,6 @@ namespace StoneQuarry
         public readonly int MaxStage = 2;
         public int Stage => int.Parse(Variant["stage"]);
 
-
         public BlockPlugAndFeather()
         {
             QuarryStartParticles = new SimpleParticleProperties()
@@ -121,6 +120,11 @@ namespace StoneQuarry
 
         public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
         {
+            if (api is ICoreServerAPI sapi)
+            {
+                sapi.Network.SendBlockEntityPacket<int>(byPlayer as IServerPlayer, pos, PlugPreviewManager.BEPacketId);
+            }
+
             if (world.BlockAccessor.GetBlockEntity(pos) is BEPlugAndFeather be && be.IsNetworkPart)
             {
                 if (be.IsDone(world))
@@ -168,7 +172,8 @@ namespace StoneQuarry
             {
                 if (byPlayer.Entity.Controls.Sneak)
                 {
-                    be.TogglePreview();
+                    PlugPreviewManager ppm = api.ModLoader.GetModSystem<Core>().PlugPreviewManager;
+                    ppm?.TogglePreview(blockSel.Position);
                     return true;
                 }
 

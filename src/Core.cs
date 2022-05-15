@@ -12,6 +12,8 @@ namespace StoneQuarry
         public static string ModId { get; private set; }
         public static ILogger ModLogger { get; private set; }
 
+        public PlugPreviewManager PlugPreviewManager { get; private set; }
+
         ICoreAPI api;
 
         public override void StartPre(ICoreAPI api)
@@ -42,6 +44,7 @@ namespace StoneQuarry
                     .RegisterMessageType<Config>()
                     .SetMessageHandler<Config>((config) => { Config = config; });
 
+                PlugPreviewManager = new PlugPreviewManager(capi);
             }
         }
 
