@@ -112,7 +112,7 @@
   "item-wedgechiselhead-iron": "Оголовье клинового зубила (железо)",
   "item-wedgechiselhead-meteoriciron": "Оголовье клинового зубила (метеоритное железо)",
   "item-wedgechiselhead-steel": "Оголовье клинового зубила (сталь)",
-  
+
   "item-adminhammer": "Молоток администратора",
 
   "ingameerror-stoneslab-unknown-drop": "Такой тип для этого камня не существует",
@@ -132,6 +132,7 @@
   "info-rubblestorage-sand(count={0})": "Песок: {0}",
   "info-rubblestorage-locked": " (заблокировано)",
   "info-rubblestorage-none": "Нет",
+  "info-rubblestorage-empty": "Пустое",
 
   "wi-rubblestorage-hammer": "Измельчать",
   "wi-rubblestorage-add-one": "Добавить один",

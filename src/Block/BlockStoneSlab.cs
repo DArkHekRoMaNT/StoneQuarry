@@ -21,7 +21,7 @@ namespace StoneQuarry
         public WorldInteraction[]? WorldInteractionsCreativeOnly { get; private set; }
 
 #nullable disable
-        private RockManager rockManager;
+        private IRockManager rockManager;
         private StoneSlabMeshCache meshCache;
 #nullable restore
 

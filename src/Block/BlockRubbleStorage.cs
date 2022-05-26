@@ -22,7 +22,7 @@ namespace StoneQuarry
         private Cuboidf[] _mirroredCollisionBoxes;
 
 #nullable disable
-        public RockManager rockManager;
+        public IRockManager rockManager;
 #nullable restore
 
         public BlockRubbleStorage()
@@ -62,11 +62,11 @@ namespace StoneQuarry
 
         public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
         {
-            int stockQuantity = 1;
+            int stackQuantity = 1;
 
             if (byPlayer.Entity.Controls.Sprint)
             {
-                stockQuantity = byPlayer.InventoryManager.ActiveHotbarSlot.MaxSlotStackSize;
+                stackQuantity = byPlayer.InventoryManager.ActiveHotbarSlot.MaxSlotStackSize;
             }
 
             if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is not BERubbleStorage be)
@@ -99,14 +99,14 @@ namespace StoneQuarry
                 }
 
                 // Player try get a resource
-                else if (be.TryRemoveResource(world, byPlayer, blockSel, selectedType, stockQuantity))
+                else if (be.TryRemoveResource(world, blockSel, selectedType, stackQuantity))
                 {
                     (byPlayer as IClientPlayer)?.TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                     world.PlaySoundAt(StoneCrushSoundLocation, byPlayer, byPlayer, true);
 
-                    if (be.StoredRock != null)
+                    if (be.Inventory?.StoredRock != null)
                     {
-                        InteractParticles.ColorByBlock = world.GetBlock(be.StoredRock);
+                        InteractParticles.ColorByBlock = world.GetBlock(be.Inventory.StoredRock);
                     }
                     InteractParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
                     world.SpawnParticles(InteractParticles, byPlayer);
@@ -119,7 +119,7 @@ namespace StoneQuarry
                 // Rubble hammer
                 if (activeStack.ItemAttributes?["rubbleable"]?.AsBool() ?? false)
                 {
-                    if (be.TryDegradeNext())
+                    if (be.TryDegrade())
                     {
                         (byPlayer as IClientPlayer)?.TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                         world.PlaySoundAt(InteractSoundLocation, byPlayer, byPlayer, true, volume: 0.25f);
@@ -142,7 +142,7 @@ namespace StoneQuarry
                 // Resource
                 else
                 {
-                    if (be.TryAddResource(byPlayer.InventoryManager.ActiveHotbarSlot, stockQuantity))
+                    if (be.TryAddResource(byPlayer.InventoryManager.ActiveHotbarSlot, stackQuantity))
                     {
                         (byPlayer as IClientPlayer)?.TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
                         world.PlaySoundAt(StoneCrushSoundLocation, byPlayer, byPlayer, true);
@@ -161,17 +161,12 @@ namespace StoneQuarry
                 }
             }
 
-            if (be.CurrentQuantity <= 0)
-            {
-                be.StoredRock = null;
-            }
-
-            be.CheckCurrentTop();
+            be.UpdateDisplayedTop();
 
             return true;
         }
 
-        public override bool DoPlaceBlock(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, ItemStack byItemStack)
+        public override bool DoPlaceBlock(IWorldAccessor world, IPlayer? byPlayer, BlockSelection blockSel, ItemStack? byItemStack)
         {
             if (base.DoPlaceBlock(world, byPlayer, blockSel, byItemStack))
             {
@@ -179,18 +174,10 @@ namespace StoneQuarry
                 {
                     if (byItemStack != null)
                     {
-                        be.Content["stone"] = byItemStack.Attributes.GetInt("stone", 0);
-                        be.Content["gravel"] = byItemStack.Attributes.GetInt("gravel", 0);
-                        be.Content["sand"] = byItemStack.Attributes.GetInt("sand", 0);
-
-                        string? type = byItemStack.Attributes.GetString("type", null);
-                        if (type != null)
-                        {
-                            be.StoredRock = new AssetLocation(type);
-                        }
+                        be.SetDataFromStack(byItemStack);
                     }
 
-                    be.CheckCurrentTop();
+                    be.UpdateDisplayedTop();
 
                     return true;
                 }
@@ -203,17 +190,26 @@ namespace StoneQuarry
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
 
-            string rockType = inSlot.Itemstack.Attributes.GetString("type");
-            int stoneCount = inSlot.Itemstack.Attributes.GetInt("stone");
-            int gravelCount = inSlot.Itemstack.Attributes.GetInt("gravel");
-            int sandCount = inSlot.Itemstack.Attributes.GetInt("sand");
+            RubbleStorageInventory inv = new(api);
+            inv.FromTreeAttributes(inSlot.Itemstack.Attributes);
 
-            if (string.IsNullOrEmpty(rockType)) rockType = Lang.Get(Core.ModId + ":info-rubblestorage-none");
+            if (inv.StoredRock == null)
+            {
+                dsc.AppendLine(Lang.Get(Core.ModId + ":info-rubblestorage-empty"));
+            }
+            else
+            {
+                string stoneLangCode = Core.ModId + ":info-rubblestorage-stone(count={0})";
+                string gravelLangCode = Core.ModId + ":info-rubblestorage-gravel(count={0})";
+                string sandLangCode = Core.ModId + ":info-rubblestorage-sand(count={0})";
 
-            dsc.AppendLine(Lang.Get(Core.ModId + ":info-rubblestorage-type(type={0})", rockType));
-            dsc.AppendLine(Lang.Get(Core.ModId + ":info-rubblestorage-stone(count={0})", stoneCount));
-            dsc.AppendLine(Lang.Get(Core.ModId + ":info-rubblestorage-gravel(count={0})", gravelCount));
-            dsc.AppendLine(Lang.Get(Core.ModId + ":info-rubblestorage-sand(count={0})", sandCount));
+                string rockName = Lang.Get(inv.StoredRock.ToString());
+
+                dsc.AppendLine(Lang.Get(Core.ModId + ":info-rubblestorage-type(type={0})", rockName));
+                dsc.AppendLine(Lang.Get(stoneLangCode, inv.StoneSlot.StackSize));
+                dsc.AppendLine(Lang.Get(gravelLangCode, inv.GravelSlot.StackSize));
+                dsc.AppendLine(Lang.Get(sandLangCode, inv.SandSlot.StackSize));
+            }
         }
 
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection blockSel, IPlayer forPlayer)
@@ -288,6 +284,7 @@ namespace StoneQuarry
             return WorldInteractionsBySel[blockSel.SelectionBoxIndex]
                 .Append(base.GetPlacedBlockInteractionHelp(world, blockSel, forPlayer));
         }
+
         private ItemStack[] GetRubbleHammers()
         {
             var hammers = new List<ItemStack>();
@@ -342,13 +339,12 @@ namespace StoneQuarry
         {
             var be = api.World.BlockAccessor.GetBlockEntity(blockSel.Position) as BERubbleStorage;
 
-            if (be?.StoredRock != null)
+            if (be?.Inventory?.StoredRock != null)
             {
-                RockData? data = rockManager.GetValue(be.StoredRock);
+                RockData? data = rockManager.GetValue(be.Inventory.StoredRock);
 
                 if (data != null)
                 {
-
                     return wi.Itemstacks
                         .Where((item) => data[item.Collectible.Code] != null)
                         .ToArray();
@@ -362,15 +358,7 @@ namespace StoneQuarry
         {
             if (world.BlockAccessor.GetBlockEntity(pos) is BERubbleStorage be)
             {
-                var dropstack = new ItemStack(world.BlockAccessor.GetBlock(pos));
-                if (be.StoredRock != null)
-                {
-                    dropstack.Attributes.SetString("type", be.StoredRock.ToShortString());
-                }
-                dropstack.Attributes.SetInt("stone", be.Content["stone"]);
-                dropstack.Attributes.SetInt("gravel", be.Content["gravel"]);
-                dropstack.Attributes.SetInt("sand", be.Content["sand"]);
-                return new ItemStack[] { dropstack };
+                return new ItemStack[] { be.GetSelfStack() };
             }
 
             return null;
@@ -378,10 +366,9 @@ namespace StoneQuarry
 
         public override ItemStack OnPickBlock(IWorldAccessor world, BlockPos pos)
         {
-            ItemStack[]? drops = GetDrops(world, pos, null);
-            if (drops != null && drops.Length > 0)
+            if (world.BlockAccessor.GetBlockEntity(pos) is BERubbleStorage be)
             {
-                return drops[0];
+                return be.GetSelfStack();
             }
 
             return base.OnPickBlock(world, pos);

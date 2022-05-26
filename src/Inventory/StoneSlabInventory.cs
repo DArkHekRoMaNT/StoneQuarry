@@ -11,7 +11,7 @@ namespace StoneQuarry
 {
     public class StoneSlabInventory : InventoryGeneric
     {
-        public RockManager RockManager { get; }
+        public IRockManager RockManager { get; }
 
         private int _currentSlotId = -1;
         public int CurrentSlotId

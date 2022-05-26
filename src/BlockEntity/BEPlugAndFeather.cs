@@ -134,7 +134,7 @@ namespace StoneQuarry
         {
             var quantitiesByRock = new Dictionary<AssetLocation, int>();
 
-            RockManager manager = Api.ModLoader.GetModSystem<RockManager>();
+            IRockManager manager = Api.ModLoader.GetModSystem<RockManager>();
 
             foreach (var pos in GetAllBlocksInside())
             {

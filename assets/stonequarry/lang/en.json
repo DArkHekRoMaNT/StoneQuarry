@@ -134,6 +134,7 @@
   "info-rubblestorage-sand(count={0})": "Sand: {0}",
   "info-rubblestorage-locked": " (locked)",
   "info-rubblestorage-none": "None",
+  "info-rubblestorage-empty": "Empty",
 
   "wi-rubblestorage-hammer": "Crashing",
   "wi-rubblestorage-add-one": "Add one",

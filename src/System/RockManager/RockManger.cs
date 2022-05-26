@@ -9,7 +9,7 @@ using Vintagestory.API.Util;
 
 namespace StoneQuarry
 {
-    public class RockManager : ModSystem
+    public class RockManager : ModSystem, IRockManager
     {
         private readonly Dictionary<AssetLocation, RockData> _data;
         public IReadOnlyList<RockData> Data => _data.Values.ToList();
