@@ -400,9 +400,20 @@ namespace StoneQuarry
             return _mirroredCollisionBoxes;
         }
 
+        public override Cuboidf[] GetSelectionBoxes(IBlockAccessor blockAccessor, BlockPos pos)
+        {
+            if (blockAccessor.GetBlockEntity(pos) is BERubbleStorage be
+                && be.Inventory?.StoredRock == null)
+            {
+                return new Cuboidf[] { SelectionBoxes[0] };
+            }
+
+            return base.GetSelectionBoxes(blockAccessor, pos);
+        }
+
         public Cuboidf[] MBGetSelectionBoxes(IBlockAccessor blockAccessor, BlockPos pos, Vec3i offset)
         {
-            return new Cuboidf[] { Cuboidf.Default() };
+            return new Cuboidf[] { SelectionBoxes[0].RotatedCopy(0, 180, 0, new Vec3d(0.5, 0.5, 0.5)) };
         }
     }
 }
