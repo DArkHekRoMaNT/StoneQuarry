@@ -17,6 +17,7 @@
       ]
     }
   ],
+  "tool": "pickaxe",
   "attributes": {
     "handbook": {
       "groupBy": [ "finishingchisel-*" ]
