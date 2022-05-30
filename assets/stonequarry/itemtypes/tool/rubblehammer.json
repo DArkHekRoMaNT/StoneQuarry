@@ -1,5 +1,6 @@
 {
   "code": "rubblehammer",
+  "class": "ItemRubbleHammer",
   "variantgroups": [
     {
       "code": "material",

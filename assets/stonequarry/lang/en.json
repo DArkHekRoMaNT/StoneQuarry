@@ -70,7 +70,7 @@
   "item-rubblehammer-meteoriciron": "Meteoric iron rubble hammer",
   "item-rubblehammer-steel": "Steel rubble hammer",
   "stonequarry:item-handbooktitle-stonequarry:rubblehammer-*": "Uses",
-  "stonequarry:item-handbooktext-stonequarry:rubblehammer-*": "Used on stone slabs to extract <strong>stones</strong> from them. See <a href=\"handbook://stonequarry-masonguide\">Stone Cutting Guide</a> for more details.",
+  "stonequarry:item-handbooktext-stonequarry:rubblehammer-*": "Used on stone slabs to extract <strong>stones</strong> from them. See <a href=\"handbook://stonequarry-masonguide\">Stone Cutting Guide</a> for more details.<br><br>Can turn rock into gravel and gravel into sand in the world (left-click on block)",
 
   "item-wedgechisel-copper": "Copper wedge chisel",
   "item-wedgechisel-tinbronze": "Tin bronze wedge chisel",

@@ -102,6 +102,8 @@ namespace StoneQuarry
 
             api.RegisterBlockClass("BlockPlugAndFeather", typeof(BlockPlugAndFeather));
             api.RegisterBlockEntityClass("PlugAndFeather", typeof(BEPlugAndFeather));
+
+            api.RegisterItemClass("ItemRubbleHammer", typeof(ItemRubbleHammer));
         }
     }
 }
