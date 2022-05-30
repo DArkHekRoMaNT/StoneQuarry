@@ -11,6 +11,7 @@ namespace StoneQuarry
         {
             return (CollectibleObject)world.GetItem(code) ?? world.GetBlock(code);
         }
+
         public static bool IsPlayerCanBreakBlock(this IWorldAccessor world, BlockPos pos, IServerPlayer byPlayer)
         {
             if (byPlayer.WorldData.CurrentGameMode == EnumGameMode.Creative)

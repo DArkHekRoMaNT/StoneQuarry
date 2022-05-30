@@ -4,7 +4,7 @@
   "name": "Stone Quarry",
   "authors": [ "DArkHekRoMaNT", "Wraith" ],
   "description": "",
-  "version": "2.0.0-pre.4",
+  "version": "2.0.0-pre.5",
   "dependencies": {
     "game": "1.16.1"
   }
