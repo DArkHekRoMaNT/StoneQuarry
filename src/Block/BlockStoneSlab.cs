@@ -5,6 +5,7 @@ using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
 
@@ -68,7 +69,7 @@ namespace StoneQuarry
                     }
                 }
 
-                if (be.Inventory != null && !be.Inventory.Empty && activeStack?.Collectible is ItemSlabTool)
+                if (be.Inventory != null && !be.Inventory.Empty && activeStack?.Collectible?.Attributes?["slabtool"] != null)
                 {
                     return true;
                 }
@@ -91,7 +92,7 @@ namespace StoneQuarry
         public override bool MBOnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, Vec3i offset)
         {
             ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
-            if (activeStack?.Collectible is ItemSlabTool)
+            if (activeStack?.Collectible?.Attributes?["slabtool"] != null)
             {
                 if (api.Side == EnumAppSide.Client)
                 {
@@ -143,7 +144,8 @@ namespace StoneQuarry
             }
 
             ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
-            if (secondsUsed < Core.Config.SlabInteractionTime || activeStack.Collectible is not ItemSlabTool tool)
+            JsonObject? slabtool = activeStack?.Collectible.Attributes["slabtool"];
+            if (secondsUsed < Core.Config.SlabInteractionTime || slabtool == null)
             {
                 base.OnBlockInteractStop(secondsUsed, world, byPlayer, blockSel);
                 return;
@@ -162,25 +164,29 @@ namespace StoneQuarry
 
                 if (api.Side == EnumAppSide.Server)
                 {
-                    var dropStack = be.Inventory.GetContent(byPlayer, tool.DropType, tool.Quantity);
-                    if (dropStack == null)
+                    string? dropType = slabtool["type"]?.AsString();
+                    NatFloat quantity = slabtool["quantity"]?.AsObject<NatFloat>() ?? NatFloat.One;
+
+                    if (dropType != null)
                     {
-                        return;
+                        var dropStack = be.Inventory.GetContent(byPlayer, dropType, quantity);
+                        if (dropStack != null)
+                        {
+                            var dropPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
+                            var dropVel = new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z);
+
+                            world.PlaySoundAt(DropSoundLocation, byPlayer, byPlayer, true, 32, .05f);
+
+                            world.SpawnItemEntity(dropStack, dropPos, dropVel);
+
+                            if (be.Inventory.Empty)
+                            {
+                                world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
+                            }
+
+                            activeStack?.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
+                        }
                     }
-
-                    var dropPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
-                    var dropVel = new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z);
-
-                    world.PlaySoundAt(DropSoundLocation, byPlayer, byPlayer, true, 32, .05f);
-
-                    world.SpawnItemEntity(dropStack, dropPos, dropVel);
-
-                    if (be.Inventory.Empty)
-                    {
-                        world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
-                    }
-
-                    activeStack?.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
                 }
             }
         }
@@ -280,9 +286,9 @@ namespace StoneQuarry
 
             foreach (CollectibleObject collObj in api.World.Collectibles)
             {
-                if (collObj is ItemSlabTool tool)
+                if (collObj?.Attributes?.KeyExists("slabtool") == true)
                 {
-                    if (tool.DropType == type)
+                    if (collObj.Attributes["slabtool"]["type"]?.AsString() == type)
                     {
                         tools.Add(new ItemStack(collObj));
                     }

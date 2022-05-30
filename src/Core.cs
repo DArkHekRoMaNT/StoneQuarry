@@ -96,7 +96,6 @@ namespace StoneQuarry
         {
             api.RegisterBlockClass("BlockStoneSlab", typeof(BlockStoneSlab));
             api.RegisterBlockEntityClass("StoneSlab", typeof(BEStoneSlab));
-            api.RegisterItemClass("ItemSlabTool", typeof(ItemSlabTool));
 
             api.RegisterBlockClass("BlockRubbleStorage2", typeof(BlockRubbleStorage));
             api.RegisterBlockEntityClass("RubbleStorage2", typeof(BERubbleStorage));
