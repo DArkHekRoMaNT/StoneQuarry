@@ -3,12 +3,15 @@
     "type": "item",
     "code": "game:ingot-*",
     "name": "metal",
-    "allowedVariants": ["copper", "tinbronze", "bismuthbronze", "blackbronze", "iron", "meteoriciron", "steel"]
+    "allowedVariants": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "iron", "meteoriciron", "steel" ]
   },
   "pattern": [
-    ["_#####", "######"],
-    ["_#####", "######"]
+    [ "_#####", "######" ],
+    [ "_#####", "######" ]
   ],
-  "name": "Plug",
-  "output": { "type": "block", "code": "plugandfeather-{metal}-0-down-north" }
+  "name": "Splitter plug",
+  "output": {
+    "type": "block",
+    "code": "plugandfeather-{metal}-0-down-north"
+  }
 }
