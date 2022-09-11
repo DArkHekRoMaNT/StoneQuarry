@@ -63,7 +63,7 @@ namespace StoneQuarry
 
             if (Inventory == null)
             {
-                Inventory = new StoneSlabInventory(api, Pos);
+                Inventory = new StoneSlabInventory(api, Pos, 0);
             }
 
             if (api is ICoreClientAPI)
@@ -93,7 +93,7 @@ namespace StoneQuarry
 
         public void ContentFromAttributes(ITreeAttribute tree, IWorldAccessor world)
         {
-            Inventory = new StoneSlabInventory(world.Api, Pos);
+            Inventory = new StoneSlabInventory(world.Api, Pos, tree.GetInt("qslots"));
             Inventory.FromTreeAttributes(tree);
 
             RenderPreset = StoneSlabRenderPreset.FromAttributes(tree, world);

@@ -43,7 +43,7 @@ namespace StoneQuarry
 
         public StoneSlabRenderPreset? RenderPreset { get; private set; }
 
-        public StoneSlabInventory(ICoreAPI api, BlockPos? pos, int quantitySlots = 0)
+        public StoneSlabInventory(ICoreAPI api, BlockPos? pos, int quantitySlots)
             : base(quantitySlots, "SQ_StoneSlab", pos?.ToString() ?? "-fake", api, OnNewSlot)
         {
             Pos = pos;
@@ -251,7 +251,7 @@ namespace StoneQuarry
         }
 
         public override void FromTreeAttributes(ITreeAttribute tree)
-        {
+        {            
             base.FromTreeAttributes(tree);
             CurrentSlotId = tree.GetInt("currentslotid", -1);
         }
