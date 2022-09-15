@@ -90,12 +90,15 @@ namespace StoneQuarry
                 {
                     foreach (Block block in api.World.Blocks)
                     {
-                        if (WildcardUtil.Match(rockCode, block.Code))
+                        if (block.Code != null)
                         {
-                            string wildcardValue = WildcardUtil.GetWildcardValue(rockCode, block.Code);
-                            RockData resolved = (RockData)rockData.Clone();
-                            resolved.SetWildcardValue(wildcardValue, api);
-                            resolvedWildcards.Add(resolved);
+                            if (WildcardUtil.Match(rockCode, block.Code))
+                            {
+                                string wildcardValue = WildcardUtil.GetWildcardValue(rockCode, block.Code);
+                                RockData resolved = (RockData)rockData.Clone();
+                                resolved.SetWildcardValue(wildcardValue, api);
+                                resolvedWildcards.Add(resolved);
+                            }
                         }
                     }
                     toRemove.Add(rockData.Rock);
