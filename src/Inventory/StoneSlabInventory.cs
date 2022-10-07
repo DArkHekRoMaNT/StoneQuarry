@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -248,10 +249,21 @@ namespace StoneQuarry
         {
             base.ToTreeAttributes(tree);
             tree.SetInt("currentslotid", CurrentSlotId);
+
+            // Hack for prevent ItemStack compare without stacksize in ItemstackAttribute.Equal -> ItemStack.Equal
+            ITreeAttribute hackTree = tree.GetOrAddTreeAttribute("itemstackequalhack");
+            for (int i = 0; i < slots?.Length; i++)
+            {
+                ItemSlot slot = slots[i];
+                if (!slot.Empty)
+                {
+                    hackTree.SetInt("slotsize" + i, slot.StackSize);
+                }
+            }
         }
 
         public override void FromTreeAttributes(ITreeAttribute tree)
-        {            
+        {
             base.FromTreeAttributes(tree);
             CurrentSlotId = tree.GetInt("currentslotid", -1);
         }
