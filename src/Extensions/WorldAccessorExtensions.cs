@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 
 namespace StoneQuarry
 {
-    public static class WorldAccessorExtenshions
+    public static class WorldAccessorExtensions
     {
         public static CollectibleObject GetCollectibleObject(this IWorldAccessor world, AssetLocation code)
         {

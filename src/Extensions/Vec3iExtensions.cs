@@ -1,8 +1,8 @@
-﻿using Vintagestory.API.MathTools;
+using Vintagestory.API.MathTools;
 
 namespace StoneQuarry
 {
-    public static class Vec3iExtenshions
+    public static class Vec3iExtensions
     {
         public static Vec3f ToVec3f(this Vec3i pos)
         {
