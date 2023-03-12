@@ -1,0 +1,14 @@
+<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema https://raw.githubusercontent.com/DArkHekRoMaNT/VSMods/master/Mod.xsd">
+	<PropertyGroup>
+		<Name>Stone Quarry</Name>
+		<ModId>stonequarry</ModId>
+		<Version>2.1.0</Version>
+		<Authors>DArkHekRoMaNT</Authors>
+		<GameVersion>1.18.0-pre.6</GameVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<!-- IncludeFiles Include="modicon.png" /-->
+		<!-- IncludeFiles Include="LICENSE" /-->
+		<IncludeFiles Include="README.md" />
+	</ItemGroup>
+</Project>

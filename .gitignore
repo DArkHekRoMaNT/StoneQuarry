@@ -1,8 +1,11 @@
-/ignore
-/bin
-/obj
-/mods
-/releases
-/.vs
-/*.csproj.user
-/*.sln
+# Common CSharp
+.vs
+bin
+obj
+*.sln
+*.user
+
+# Mod Builder
+/[Mm]ods
+/[Ii]gnore
+/[Rr]eleases

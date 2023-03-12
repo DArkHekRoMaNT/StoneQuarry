@@ -3,7 +3,6 @@ using ProtoBuf;
 using System;
 using System.Collections;
 using Vintagestory.API.Common;
-using Vintagestory.API.Server;
 
 namespace StoneQuarry
 {
