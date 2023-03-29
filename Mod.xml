@@ -4,7 +4,7 @@
 		<ModId>stonequarry</ModId>
 		<Version>2.1.0</Version>
 		<Authors>DArkHekRoMaNT</Authors>
-		<GameVersion>1.18.0-pre.6</GameVersion>
+		<GameVersion>1.18.0-pre.8</GameVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<!-- IncludeFiles Include="modicon.png" /-->
