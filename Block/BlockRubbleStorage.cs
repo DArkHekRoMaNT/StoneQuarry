@@ -1,3 +1,4 @@
+using CommonLib.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ using Vintagestory.GameContent;
 
 namespace StoneQuarry
 {
-    public class BlockRubbleStorage : Block, IMultiBlockMonolithicSmall
+    public class BlockRubbleStorage : Block, IMultiBlockColSelBoxes
     {
         public static AssetLocation InteractSoundLocation => new("game", "sounds/block/heavyice");
         public static AssetLocation StoneCrushSoundLocation => new("game", "sounds/effect/stonecrush");
@@ -21,9 +22,7 @@ namespace StoneQuarry
 
         private Cuboidf[] _mirroredCollisionBoxes;
 
-#nullable disable
-        public IRockManager rockManager;
-#nullable restore
+        public IRockManager rockManager = null!;
 
         public BlockRubbleStorage()
         {
@@ -387,6 +386,17 @@ namespace StoneQuarry
             return base.GetCollisionBoxes(blockAccessor, pos);
         }
 
+        public override Cuboidf[] GetSelectionBoxes(IBlockAccessor blockAccessor, BlockPos pos)
+        {
+            if (blockAccessor.GetBlockEntity(pos) is BERubbleStorage be
+                && be.Inventory?.StoredRock == null)
+            {
+                return new Cuboidf[] { SelectionBoxes[0] };
+            }
+
+            return base.GetSelectionBoxes(blockAccessor, pos);
+        }
+
         public Cuboidf[] MBGetCollisionBoxes(IBlockAccessor blockAccessor, BlockPos pos, Vec3i offset)
         {
             if (blockAccessor.GetBlockEntity(pos + offset.AsBlockPos) is BERubbleStorage be)
@@ -398,17 +408,6 @@ namespace StoneQuarry
             }
 
             return _mirroredCollisionBoxes;
-        }
-
-        public override Cuboidf[] GetSelectionBoxes(IBlockAccessor blockAccessor, BlockPos pos)
-        {
-            if (blockAccessor.GetBlockEntity(pos) is BERubbleStorage be
-                && be.Inventory?.StoredRock == null)
-            {
-                return new Cuboidf[] { SelectionBoxes[0] };
-            }
-
-            return base.GetSelectionBoxes(blockAccessor, pos);
         }
 
         public Cuboidf[] MBGetSelectionBoxes(IBlockAccessor blockAccessor, BlockPos pos, Vec3i offset)

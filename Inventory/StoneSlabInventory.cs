@@ -1,3 +1,4 @@
+using CommonLib.Utils;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Vintagestory.API.Common;
@@ -148,7 +149,7 @@ namespace StoneQuarry
         }
 
         private bool TryGetNextTypedStack(string type, AssetLocation rock, NatFloat quantity,
-            [NotNullWhen(true)] out ItemStack? stack)
+            [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out ItemStack? stack)
         {
             AssetLocation? dropCode = RockManager.GetValue(rock, type);
             if (dropCode == null)

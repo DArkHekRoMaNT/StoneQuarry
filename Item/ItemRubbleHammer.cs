@@ -1,4 +1,5 @@
-﻿using Vintagestory.API.Common;
+using CommonLib.Utils;
+using Vintagestory.API.Common;
 using Vintagestory.API.Server;
 
 namespace StoneQuarry
@@ -26,7 +27,7 @@ namespace StoneQuarry
                     {
                         Block? block = api.World.GetBlock(newBlockCode);
                         if (block != null)
-                        {                            
+                        {
                             if (api.Side == EnumAppSide.Server)
                             {
                                 IServerPlayer? player = ((EntityPlayer)byEntity)?.Player as IServerPlayer;

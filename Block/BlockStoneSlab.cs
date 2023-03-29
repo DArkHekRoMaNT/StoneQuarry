@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +11,7 @@ using Vintagestory.API.Util;
 
 namespace StoneQuarry
 {
-    public class BlockStoneSlab : BaseMultiblock
+    public class BlockStoneSlab : MultiBlockBase
     {
         const float HitTime = .2f;
 
@@ -21,10 +21,8 @@ namespace StoneQuarry
         public WorldInteraction[]? WorldInteractions { get; private set; }
         public WorldInteraction[]? WorldInteractionsCreativeOnly { get; private set; }
 
-#nullable disable
-        private IRockManager rockManager;
-        private StoneSlabMeshCache meshCache;
-#nullable restore
+        private IRockManager rockManager = null!;
+        private StoneSlabMeshCache meshCache = null!;
 
         public override void OnLoaded(ICoreAPI api)
         {
