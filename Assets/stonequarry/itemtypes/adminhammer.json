@@ -1,5 +1,7 @@
 {
   "code": "adminhammer",
+  "class": "ItemHammer",
+  "storageFlags": 257,
   "attributes": {
     "plugimpact": 100000,
     "toolrackTransform": {
@@ -7,43 +9,68 @@
         "y": 1,
         "z": -1
       },
-      "translation": { "x": -0.2 },
+      "translation": {
+        "x": -0.2,
+        "y": 0.02
+      },
       "scale": 1.5
-    }
-  },
-  "tool": "hammer",
-  "damagedby": [
-    "blockbreaking",
-    "attacking"
-  ],
-  "heldTpHitAnimation": "smithing",
-  "shape": {
-    "base": "game:item/tool/hammer"
-  },
-  "textures": {
-    "metal": {
-      "base": "game:block/fire-pink"
     },
-    "wood": {
-      "base": "game:item/tool/material/wood"
+    "groundStorageTransform": {
+      "translation": {
+        "x": 0,
+        "y": -0.16,
+        "z": 0.33
+      },
+      "rotation": {
+        "x": 26,
+        "y": 88,
+        "z": -87
+      },
+      "scale": 1.01
     }
+  },
+  "behaviors": [
+    {
+      "name": "GroundStorable",
+      "properties": {
+        "layout": "WallHalves",
+        "wallOffY": 1,
+        "sprintKey": true,
+        "selectionBox": {
+          "x1": 0,
+          "y1": 0,
+          "z1": 0,
+          "x2": 1,
+          "y2": 0.1,
+          "z2": 1
+        },
+        "collisionBox": {
+          "x1": 0,
+          "y1": 0,
+          "z1": 0,
+          "x2": 0,
+          "y2": 0,
+          "z2": 0
+        }
+      }
+    }
+  ],
+  "tool": "hammer",
+  "damagedby": [ "blockbreaking", "attacking" ],
+  "heldTpHitAnimation": "smithing",
+  "shape": { "base": "game:item/tool/hammer" },
+  "textures": {
+    "metal": { "base": "game:block/fire-pink" },
+    "wood": { "base": "game:item/tool/material/wood" }
   },
   "tooltier": 5,
   "durability": 100000,
   "attackpower": 1000,
   "creativeinventory": {
-    "general": [
-      "*"
-    ],
-    "items": [
-      "*"
-    ],
-    "tools": [
-      "*"
-    ],
-    "stonequarry": [
-      "*"
-    ]
+    "general": [ "*" ],
+    "items": [ "*" ],
+    "tools": [ "*" ],
+    "stonequarry": [ "*" ]
   },
   "fpHandTransform": {
     "translation": {
