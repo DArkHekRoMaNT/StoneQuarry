@@ -7,7 +7,7 @@
 		<GameVersion>1.18.0-rc.1</GameVersion>
 	</PropertyGroup>
 	<ItemGroup>
-		<!-- IncludeFiles Include="modicon.png" /-->
+		<IncludeFiles Include="modicon.png" />
 		<IncludeFiles Include="LICENSE" />
 		<IncludeFiles Include="README.md" />
 	</ItemGroup>
