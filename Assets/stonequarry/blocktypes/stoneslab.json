@@ -20,7 +20,6 @@
     { "name": "HorizontalOrientable" },
     {
       "name": "Multiblock",
-      "properties": { "type": "modular" },
       "propertiesByType": {
         "*-small-*": {
           "sizex": 1,
