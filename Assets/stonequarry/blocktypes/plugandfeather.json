@@ -41,12 +41,8 @@
       "*-horizontal-west": -90
     }
   },
-  "textures": {
-    "metal": { "base": "game:block/metal/ingot/{metal}" }
-  },
-  "texturesByType": {
-    "*-admin-*": { "metal": { "base": "game:block/fire-pink" } }
-  },
+  "textures": { "metal": { "base": "game:block/metal/ingot/{metal}" } },
+  "texturesByType": { "*-admin-*": { "metal": { "base": "game:block/fire-pink" } } },
   "drawtype": "json",
   "facecullmode": "nevercull",
   "lightAbsorption": 0,
@@ -55,7 +51,7 @@
   "sideopaque": { "all": false },
   "emitSideAo": { "all": false },
   "blockmaterial": "Metal",
-  "collisionbox": { "x1": 0, "y1": 0, "z1": 0, "x2": 0, "y2": 0, "z2": 0 },
+  "collisionbox": null,
   "selectionboxByType": {
     "*-up-east": { "x1": 0.3, "y1": 0.5, "z1": 0, "x2": 0.7, "y2": 1, "z2": 1 },
     "*-up-west": { "x1": 0.3, "y1": 0.5, "z1": 0, "x2": 0.7, "y2": 1, "z2": 1 },

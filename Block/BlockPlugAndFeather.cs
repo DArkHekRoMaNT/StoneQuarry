@@ -54,23 +54,8 @@ namespace StoneQuarry
 
         public override bool DoPlaceBlock(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, ItemStack byItemStack)
         {
-            string orientation, direction;
-
-            if (blockSel.Face == BlockFacing.DOWN)
-            {
-                orientation = "up";
-                direction = SuggestedHVOrientation(byPlayer, blockSel)[0].ToString();
-            }
-            else if (blockSel.Face == BlockFacing.UP)
-            {
-                orientation = "down";
-                direction = SuggestedHVOrientation(byPlayer, blockSel)[0].ToString();
-            }
-            else
-            {
-                orientation = "horizontal";
-                direction = blockSel.Face.Opposite.ToString();
-            }
+            GetDirectionAndOrientation(world, byPlayer, blockSel,
+                out string orientation, out string direction);
 
             Block orientedBlock = world.GetBlock(CodeWithVariants(new Dictionary<string, string>() {
                 { "orientation", orientation },
@@ -130,6 +115,33 @@ namespace StoneQuarry
             else
             {
                 base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
+            }
+        }
+
+        public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
+        {
+            GetDirectionAndOrientation(world, byPlayer, blockSel,
+                out string orientation, out string direction);
+
+            BlockFacing facing = orientation switch
+            {
+                "up" => BlockFacing.UP,
+                "down" => BlockFacing.DOWN,
+                "horizontal" => BlockFacing.FromCode(direction),
+                _ => throw new NotImplementedException()
+
+            };
+
+            Block block = world.BlockAccessor.GetBlock(blockSel.Position + facing.Normali.ToBlockPos());
+
+            if (block.SideSolid.OnSide(facing.Opposite))
+            {
+                return base.TryPlaceBlock(world, byPlayer, itemstack, blockSel, ref failureCode);
+            }
+            else
+            {
+                failureCode = "requireattachable";
+                return false;
             }
         }
 
@@ -463,6 +475,34 @@ namespace StoneQuarry
                     HotKeyCode = "sneak"
                 })
                 .Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
+        }
+
+        private static void GetDirectionAndOrientation(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, out string orientation, out string direction)
+        {
+            BlockPos offset = blockSel.Face.Opposite.Normali.AsBlockPos;
+            Block block = world.BlockAccessor.GetBlock(blockSel.Position + offset);
+            if (block is BlockPlugAndFeather plug)
+            {
+                orientation = plug.Orientation;
+                direction = plug.Direction;
+                return;
+            }
+
+            if (blockSel.Face == BlockFacing.DOWN)
+            {
+                orientation = "up";
+                direction = SuggestedHVOrientation(byPlayer, blockSel)[0].ToString();
+            }
+            else if (blockSel.Face == BlockFacing.UP)
+            {
+                orientation = "down";
+                direction = SuggestedHVOrientation(byPlayer, blockSel)[0].ToString();
+            }
+            else
+            {
+                orientation = "horizontal";
+                direction = blockSel.Face.Opposite.ToString();
+            }
         }
     }
 }
