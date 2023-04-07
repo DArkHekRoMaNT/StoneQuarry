@@ -1,6 +1,4 @@
-using CommonLib.Extensions;
 using CommonLib.Utils;
-using OpenTK.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +9,10 @@ using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
-using Vintagestory.GameContent;
 
 namespace StoneQuarry
 {
-    public class BlockRubbleStorage : Block, IMultiBlockColSelBoxes
+    public class BlockRubbleStorage : MultiBlockBase
     {
         private Cuboidf[] _mirroredCollisionBoxes = null!;
         private SimpleParticleProperties? _interactParticles;
@@ -255,7 +252,7 @@ namespace StoneQuarry
                             ActionLangCode = $"{Core.ModId}:wi-rubblestorage-add-one",
                             MouseButton = EnumMouseButton.Right,
                             Itemstacks = GetAvailableContent("stone"),
-                            GetMatchingStacks = WIGetMatchingStacks_StoneType
+                            GetMatchingStacks = GetMatchingStacks_StoneType
                         },
                         new WorldInteraction()
                         {
@@ -263,7 +260,7 @@ namespace StoneQuarry
                             MouseButton = EnumMouseButton.Right,
                             HotKeyCode = "sprint",
                             Itemstacks = GetAvailableContent("stone", true),
-                            GetMatchingStacks = WIGetMatchingStacks_StoneType
+                            GetMatchingStacks = GetMatchingStacks_StoneType
                         },
                         new WorldInteraction()
                         {
@@ -354,10 +351,9 @@ namespace StoneQuarry
                 return content.ToArray();
             }
 
-            ItemStack[] WIGetMatchingStacks_StoneType(WorldInteraction wi, BlockSelection blockSel, EntitySelection entitySel)
+            ItemStack[] GetMatchingStacks_StoneType(WorldInteraction wi, BlockSelection subBlockSel, EntitySelection entitySel)
             {
                 var be = api.World.BlockAccessor.GetBlockEntity(blockSel.Position) as BERubbleStorage;
-
                 if (be?.Inventory?.StoredRock != null)
                 {
                     RockData? data = _rockManager.GetValue(be.Inventory.StoredRock);
@@ -369,7 +365,6 @@ namespace StoneQuarry
                             .ToArray();
                     }
                 }
-
                 return wi.Itemstacks;
             }
         }
@@ -418,7 +413,7 @@ namespace StoneQuarry
             return base.GetSelectionBoxes(blockAccessor, pos);
         }
 
-        public Cuboidf[] MBGetCollisionBoxes(IBlockAccessor blockAccessor, BlockPos pos, Vec3i offset)
+        public override Cuboidf[] MBGetCollisionBoxes(IBlockAccessor blockAccessor, BlockPos pos, Vec3i offset)
         {
             if (blockAccessor.GetBlockEntity(pos + offset.AsBlockPos) is BERubbleStorage be)
             {
@@ -431,7 +426,7 @@ namespace StoneQuarry
             return _mirroredCollisionBoxes;
         }
 
-        public Cuboidf[] MBGetSelectionBoxes(IBlockAccessor blockAccessor, BlockPos pos, Vec3i offset)
+        public override Cuboidf[] MBGetSelectionBoxes(IBlockAccessor blockAccessor, BlockPos pos, Vec3i offset)
         {
             return new Cuboidf[] { SelectionBoxes[0].RotatedCopy(0, 180, 0, new Vec3d(0.5, 0.5, 0.5)) };
         }
