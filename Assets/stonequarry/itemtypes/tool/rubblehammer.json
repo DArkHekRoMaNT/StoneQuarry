@@ -5,6 +5,7 @@
     { "code": "material", "states": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "gold", "silver", "iron", "meteoriciron", "steel" ] }
   ],
   "tool": "14127",
+  "storageFlags": 5,
   "attributes": {
     "handbook": {
       "groupBy": [ "rubblehammer-*" ]

@@ -4,6 +4,7 @@
   "entityclass": "RubbleStorage",
   "variantgroups": [{ "code": "side", "loadFromProperties": "abstract/horizontalorientation" }],
   "creativeinventory": { "general": [ "*-north" ], "stonequarry": [ "*-north" ] },
+  "storageFlags": 5,
   "attributes": {
     "maxStorable": 512
   },

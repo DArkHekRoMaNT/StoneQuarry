@@ -6,6 +6,7 @@
     { "code": "size", "states": [ "small", "medium", "large", "huge", "giant" ] },
     { "code": "side", "loadFromProperties": "abstract/horizontalorientation" }
   ],
+  "storageFlags": 5,
   "attributes": {},
   "behaviors": [
     { "name": "HorizontalOrientable" },

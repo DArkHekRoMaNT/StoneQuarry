@@ -9,6 +9,7 @@
     { "code": "direction", "loadFromProperties": "abstract/horizontalorientation" }
   ],
   "creativeinventory": { "general": [ "*-0-down-north" ], "stonequarry": [ "*-0-down-north" ] },
+  "storageFlags": 5,
   "attributes": {
     "searchrangeByType": {
       "*-copper-*": 3,

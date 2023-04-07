@@ -9,6 +9,7 @@
     "*-roughcut-*": 14125,
     "*-wedge-*": 14126
   },
+  "storageFlags": 5,
   "attributes": {
     "handbook": { "groupBy": [ "chisel-{type}-*" ] },
     "slabtoolByType": {
