@@ -65,15 +65,22 @@ namespace StoneQuarry
                     }
                 }
 
-                if (be.Inventory != null && !be.Inventory.Empty &&
-                    activeStack?.Collectible?.Attributes?["slabtool"] is not null)
-                {
-                    return true;
-                }
-
                 if (byPlayer.Entity.Controls.Sprint)
                 {
                     be.Inventory?.NextSlot();
+                    return true;
+                }
+
+                if (be.Inventory != null && !be.Inventory.Empty &&
+                    activeStack?.Collectible?.Attributes?["slabtool"] is not null)
+                {
+                    if (byPlayer.Entity.LeftHandItemSlot?.Itemstack?.Collectible?.Tool != EnumTool.Hammer &&
+                        byPlayer?.WorldData.CurrentGameMode != EnumGameMode.Creative)
+                    {
+                        (api as ICoreClientAPI)?.TriggerIngameError(this, "nohammer", Lang.Get("Requires a hammer in the off hand"));
+                        return false;
+                }
+
                     return true;
                 }
             }
