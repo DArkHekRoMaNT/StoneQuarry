@@ -167,9 +167,9 @@ namespace StoneQuarry
                 }
                 else
                 {
-                    string stoneLangCode = $"{Core.ModId}:info-rubblestorage-stone(count={0})";
-                    string gravelLangCode = $"{Core.ModId}:info-rubblestorage-gravel(count={0})";
-                    string sandLangCode = $"{Core.ModId}:info-rubblestorage-sand(count={0})";
+                    string stoneLangCode = $"{Core.ModId}:info-rubblestorage-stone(count={{0}})";
+                    string gravelLangCode = $"{Core.ModId}:info-rubblestorage-gravel(count={{0}})";
+                    string sandLangCode = $"{Core.ModId}:info-rubblestorage-sand(count={{0}})";
 
                     string stoneText = Lang.Get(stoneLangCode, Inventory.StoneSlot.StackSize);
                     string gravelText = Lang.Get(gravelLangCode, Inventory.GravelSlot.StackSize);
@@ -191,7 +191,7 @@ namespace StoneQuarry
 
                     string rockName = Lang.Get(Inventory.StoredRock.ToString());
 
-                    dsc.AppendLine(Lang.Get($"{Core.ModId}:info-rubblestorage-type(type={0})", rockName));
+                    dsc.AppendLine(Lang.Get($"{Core.ModId}:info-rubblestorage-type(type={{0}})", rockName));
                     dsc.AppendLine(stoneText);
                     dsc.AppendLine(gravelText);
                     dsc.AppendLine(sandText);
@@ -236,13 +236,13 @@ namespace StoneQuarry
 
         public bool TryAddResource(ItemSlot fromSlot, int quantity)
         {
-            bool flag = Inventory != null && Inventory.TryAddResource(fromSlot, quantity);
-            if (flag)
+            bool added = Inventory != null && Inventory.TryAddResource(fromSlot, quantity);
+            if (added)
             {
                 UpdateDisplayedType();
                 MarkDirty(true);
             }
-            return flag;
+            return added;
         }
 
         /// <summary>

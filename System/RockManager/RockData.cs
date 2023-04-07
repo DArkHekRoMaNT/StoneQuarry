@@ -22,13 +22,23 @@ namespace StoneQuarry
             "sand"
         };
 
-        [ProtoMember(2)] private AssetLocation? _stone;
-        [ProtoMember(3)] private AssetLocation? _rockPolished;
-        [ProtoMember(4)] private AssetLocation? _stoneBrick;
-        [ProtoMember(5)] private AssetLocation? _gravel;
-        [ProtoMember(6)] private AssetLocation? _sand;
+        [ProtoMember(1), JsonProperty("stone")]
+        private AssetLocation? _stone;
 
-        [ProtoMember(1)] public AssetLocation Rock { get; set; }
+        [ProtoMember(2), JsonProperty("rockpolished")]
+        private AssetLocation? _rockPolished;
+
+        [ProtoMember(3), JsonProperty("stonebrick")]
+        private AssetLocation? _stoneBrick;
+
+        [ProtoMember(4), JsonProperty("gravel")]
+        private AssetLocation? _gravel;
+
+        [ProtoMember(5), JsonProperty("sand")]
+        private AssetLocation? _sand;
+
+        [ProtoMember(6), JsonProperty("rock"), JsonRequired]
+        public AssetLocation Rock { get; set; }
 
         public RockData()
         {

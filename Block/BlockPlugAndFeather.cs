@@ -427,7 +427,7 @@ namespace StoneQuarry
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
             dsc.AppendLineOnce();
-            dsc.Append(Lang.Get($"{Core.ModId}:info-plugandfeather-heldinfo(range={0})", Attributes["searchrange"]));
+            dsc.Append(Lang.Get($"{Core.ModId}:info-plugandfeather-heldinfo(range={{0}})", Attributes["searchrange"]));
         }
 
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)

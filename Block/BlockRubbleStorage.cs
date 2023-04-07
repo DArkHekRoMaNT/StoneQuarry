@@ -214,13 +214,13 @@ namespace StoneQuarry
             }
             else
             {
-                string stoneLangCode = $"{Core.ModId}:info-rubblestorage-stone(count={0})";
-                string gravelLangCode = $"{Core.ModId}:info-rubblestorage-gravel(count={0})";
-                string sandLangCode = $"{Core.ModId}:info-rubblestorage-sand(count={0})";
+                string stoneLangCode = $"{Core.ModId}:info-rubblestorage-stone(count={{0}})";
+                string gravelLangCode = $"{Core.ModId}:info-rubblestorage-gravel(count={{0}})";
+                string sandLangCode = $"{Core.ModId}:info-rubblestorage-sand(count={{0}})";
 
                 string rockName = Lang.Get(inv.StoredRock.ToString());
 
-                dsc.AppendLine(Lang.Get($"{Core.ModId}:info-rubblestorage-type(type={0})", rockName));
+                dsc.AppendLine(Lang.Get($"{Core.ModId}:info-rubblestorage-type(type={{0}})", rockName));
                 dsc.AppendLine(Lang.Get(stoneLangCode, inv.StoneSlot.StackSize));
                 dsc.AppendLine(Lang.Get(gravelLangCode, inv.GravelSlot.StackSize));
                 dsc.AppendLine(Lang.Get(sandLangCode, inv.SandSlot.StackSize));
@@ -238,9 +238,9 @@ namespace StoneQuarry
                 _ => throw new NotImplementedException()
             };
 
-            return ObjectCacheUtil.GetOrCreate(world.Api, $"{Core.ModId}-rubble-wi-{type}", () =>
+            return ObjectCacheUtil.GetOrCreate(world.Api, $"{Core.ModId}-rubblestorage-wi-{type}", () =>
             {
-                if (type == "inner")
+                if (type == "none")
                 {
                     return new WorldInteraction[]
                     {
@@ -285,24 +285,20 @@ namespace StoneQuarry
                     {
                         new WorldInteraction()
                         {
+                            ActionLangCode = $"{Core.ModId}:wi-rubblestorage-take-one-{type}",
+                            MouseButton = EnumMouseButton.Right
+                        },
+                        new WorldInteraction()
+                        {
+                            ActionLangCode = $"{Core.ModId}:wi-rubblestorage-take-stack-{type}",
+                            MouseButton = EnumMouseButton.Right,
+                            HotKeyCode = "sprint"
+                        },
+                        new WorldInteraction()
+                        {
                             ActionLangCode = $"{Core.ModId}:wi-rubblestorage-lock",
                             MouseButton = EnumMouseButton.Right,
                             HotKeyCode = "sneak"
-                        },
-                        new WorldInteraction()
-                        {
-                            ActionLangCode = $"{Core.ModId}:wi-rubblestorage-take-one-" + type,
-                            MouseButton = EnumMouseButton.Right,
-                            Itemstacks = GetAvailableContent(type),
-                            GetMatchingStacks = WIGetMatchingStacks_StoneType
-                        },
-                        new WorldInteraction()
-                        {
-                            ActionLangCode = $"{Core.ModId}:wi-rubblestorage-take-stack-" + type,
-                            MouseButton = EnumMouseButton.Right,
-                            HotKeyCode = "sprint",
-                            Itemstacks = GetAvailableContent(type, true),
-                            GetMatchingStacks = WIGetMatchingStacks_StoneType
                         }
                     };
                 }
