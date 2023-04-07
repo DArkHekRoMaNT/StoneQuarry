@@ -3,18 +3,8 @@
     "type": "item",
     "code": "game:ingot-*",
     "name": "metal",
-    "allowedVariants": [
-      "copper",
-      "tinbronze",
-      "bismuthbronze",
-      "blackbronze",
-      "silver",
-      "gold",
-      "iron",
-      "meteoriciron",
-      "steel"
-    ]
+    "allowedVariants": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "silver", "gold", "iron", "meteoriciron", "steel" ]
   },
   "pattern": [["######"]],
-  "output": { "type": "item", "code": "roughcutchisel-{metal}" }
+  "output": { "type": "item", "code": "chisel-roughcut-{metal}" }
 }

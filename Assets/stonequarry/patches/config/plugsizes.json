@@ -3,63 +3,42 @@
     "file": "blocktypes/plugandfeather.json",
     "op": "replace",
     "path": "/attributes/searchrangeByType/*-copper-*",
-    "condition": {
-      "when": "SQ_PlugSizes_Copper",
-      "useValue": "true"
-    }
+    "condition": { "when": "SQ_PlugSizes_Copper", "useValue": "true" }
   },
   {
     "file": "blocktypes/plugandfeather.json",
     "op": "replace",
     "path": "/attributes/searchrangeByType/*-tinbronze-*",
-    "condition": {
-      "when": "SQ_PlugSizes_TinBronze",
-      "useValue": "true"
-    }
+    "condition": { "when": "SQ_PlugSizes_TinBronze", "useValue": "true" }
   },
   {
     "file": "blocktypes/plugandfeather.json",
     "op": "replace",
     "path": "/attributes/searchrangeByType/*-bismuthbronze-*",
-    "condition": {
-      "when": "SQ_PlugSizes_BismuthBronze",
-      "useValue": "true"
-    }
+    "condition": { "when": "SQ_PlugSizes_BismuthBronze", "useValue": "true" }
   },
   {
     "file": "blocktypes/plugandfeather.json",
     "op": "replace",
     "path": "/attributes/searchrangeByType/*-blackbronze-*",
-    "condition": {
-      "when": "SQ_PlugSizes_BlackBronze",
-      "useValue": "true"
-    }
+    "condition": { "when": "SQ_PlugSizes_BlackBronze", "useValue": "true" }
   },
   {
     "file": "blocktypes/plugandfeather.json",
     "op": "replace",
     "path": "/attributes/searchrangeByType/*-iron-*",
-    "condition": {
-      "when": "SQ_PlugSizes_Iron",
-      "useValue": "true"
-    }
+    "condition": { "when": "SQ_PlugSizes_Iron", "useValue": "true" }
   },
   {
     "file": "blocktypes/plugandfeather.json",
     "op": "replace",
     "path": "/attributes/searchrangeByType/*-meteoriciron-*",
-    "condition": {
-      "when": "SQ_PlugSizes_MeteoricIron",
-      "useValue": "true"
-    }
+    "condition": { "when": "SQ_PlugSizes_MeteoricIron", "useValue": "true" }
   },
   {
     "file": "blocktypes/plugandfeather.json",
     "op": "replace",
     "path": "/attributes/searchrangeByType/*-steel-*",
-    "condition": {
-      "when": "SQ_PlugSizes_Steel",
-      "useValue": "true"
-    }
+    "condition": { "when": "SQ_PlugSizes_Steel", "useValue": "true" }
   }
 ]

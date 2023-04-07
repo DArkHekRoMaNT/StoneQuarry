@@ -6,5 +6,5 @@
   },
   "width": 1,
   "height": 2,
-  "output": { "type": "item", "code": "finishingchisel-{material}", "quantity": 1 }
+  "output": { "type": "item", "code": "chisel-finishing-{material}", "quantity": 1 }
 }

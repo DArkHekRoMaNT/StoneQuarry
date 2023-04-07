@@ -5,56 +5,26 @@
   "attributes": {
     "plugimpact": 100000,
     "toolrackTransform": {
-      "rotation": {
-        "y": 1,
-        "z": -1
-      },
-      "translation": {
-        "x": -0.2,
-        "y": 0.02
-      },
+      "rotation": { "y": 1, "z": -1 },
+      "translation": { "x": -0.2, "y": 0.02 },
       "scale": 1.5
     },
     "groundStorageTransform": {
-      "translation": {
-        "x": 0,
-        "y": -0.16,
-        "z": 0.33
-      },
-      "rotation": {
-        "x": 26,
-        "y": 88,
-        "z": -87
-      },
+      "translation": { "x": 0, "y": -0.16, "z": 0.33 },
+      "rotation": { "x": 26, "y": 88, "z": -87 },
       "scale": 1.01
     }
   },
-  "behaviors": [
-    {
+  "behaviors": [{
       "name": "GroundStorable",
       "properties": {
         "layout": "WallHalves",
         "wallOffY": 1,
         "sprintKey": true,
-        "selectionBox": {
-          "x1": 0,
-          "y1": 0,
-          "z1": 0,
-          "x2": 1,
-          "y2": 0.1,
-          "z2": 1
-        },
-        "collisionBox": {
-          "x1": 0,
-          "y1": 0,
-          "z1": 0,
-          "x2": 0,
-          "y2": 0,
-          "z2": 0
-        }
+        "selectionBox": { "x1": 0, "y1": 0, "z1": 0, "x2": 1, "y2": 0.1, "z2": 1 },
+        "collisionBox": { "x1": 0, "y1": 0, "z1": 0, "x2": 0, "y2": 0, "z2": 0 }
       }
-    }
-  ],
+  }],
   "tool": "hammer",
   "damagedby": [ "blockbreaking", "attacking" ],
   "heldTpHitAnimation": "smithing",
@@ -66,72 +36,27 @@
   "tooltier": 5,
   "durability": 100000,
   "attackpower": 1000,
-  "creativeinventory": {
-    "general": [ "*" ],
-    "items": [ "*" ],
-    "tools": [ "*" ],
-    "stonequarry": [ "*" ]
-  },
+  "creativeinventory": { "general": [ "*" ], "items": [ "*" ], "tools": [ "*" ], "stonequarry": [ "*" ] },
   "fpHandTransform": {
-    "translation": {
-      "x": 0.0468,
-      "y": -0.2,
-      "z": 0
-    },
-    "rotation": {
-      "x": -33,
-      "y": 7,
-      "z": 90
-    },
+    "translation": { "x": 0.0468, "y": -0.2, "z": 0 },
+    "rotation": { "x": -33, "y": 7, "z": 90 },
     "scale": 2.75
   },
   "guiTransform": {
-    "translation": {
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "rotation": {
-      "x": -77,
-      "y": 46,
-      "z": 8
-    },
-    "origin": {
-      "x": 0.59,
-      "y": 0.5,
-      "z": 0.49
-    },
+    "translation": { "x": 0, "y": 0, "z": 0 },
+    "rotation": { "x": -77, "y": 46, "z": 8 },
+    "origin": { "x": 0.59, "y": 0.5, "z": 0.49 },
     "scale": 2.6
   },
   "groundTransform": {
-    "translation": {
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "rotation": {
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "origin": {
-      "x": 0.5,
-      "y": 0.45,
-      "z": 0.5
-    },
+    "translation": { "x": 0, "y": 0, "z": 0 },
+    "rotation": { "x": 0, "y": 0, "z": 0 },
+    "origin": { "x": 0.5, "y": 0.45, "z": 0.5 },
     "scale": 4.5
   },
   "tpHandTransform": {
-    "translation": {
-      "x": -0.75,
-      "y": -0.48,
-      "z": -0.52
-    },
-    "rotation": {
-      "x": 90,
-      "y": 1,
-      "z": 0
-    },
+    "translation": { "x": -0.75, "y": -0.48, "z": -0.52 },
+    "rotation": { "x": 90, "y": 1, "z": 0 },
     "scale": 1
   }
 }

@@ -2,137 +2,35 @@
   "code": "stoneslab",
   "class": "BlockStoneSlab",
   "entityclass": "StoneSlab",
-
   "variantgroups": [
-    {
-      "code": "size",
-      "states": [ "small", "medium", "large", "huge", "giant" ]
-    },
-    {
-      "code": "side",
-      "loadFromProperties": "abstract/horizontalorientation"
-    }
+    { "code": "size", "states": [ "small", "medium", "large", "huge", "giant" ] },
+    { "code": "side", "loadFromProperties": "abstract/horizontalorientation" }
   ],
-
   "attributes": {},
-
   "behaviors": [
     { "name": "HorizontalOrientable" },
     {
       "name": "Multiblock",
       "propertiesByType": {
-        "*-small-*": {
-          "sizex": 1,
-          "sizey": 1,
-          "sizez": 1,
-          "cposition": {
-            "x": 0,
-            "y": 0,
-            "z": 0
-          }
-        },
-
-        "*-medium-north": {
+        "*-small-*": { "sizex": 1, "sizey": 1, "sizez": 1, "cposition": { "x": 0, "y": 0, "z": 0 } },
+        "*-medium-north": { "sizex": 2, "sizey": 1, "sizez": 1, "cposition": { "x": 0, "y": 0, "z": 0 } },
+        "*-medium-east": { "sizex": 1, "sizey": 1, "sizez": 2, "cposition": { "x": 0, "y": 0, "z": 0 } },
+        "*-medium-south": { "sizex": 2, "sizey": 1, "sizez": 1, "cposition": { "x": 1, "y": 0, "z": 0 } },
+        "*-medium-west": { "sizex": 1, "sizey": 1, "sizez": 2, "cposition": { "x": 0, "y": 0, "z": 1 } },
+        "*": {
           "sizex": 2,
-          "sizey": 1,
-          "sizez": 1,
-          "cposition": {
-            "x": 0,
-            "y": 0,
-            "z": 0
-          }
-        },
-        "*-medium-east": {
-          "sizex": 1,
-          "sizey": 1,
+          "sizeyByType": { "*-large-*": 1, "*-huge-*": 2, "*-giant-*": 3 },
           "sizez": 2,
-          "cposition": {
-            "x": 0,
-            "y": 0,
-            "z": 0
-          }
-        },
-        "*-medium-south": {
-          "sizex": 2,
-          "sizey": 1,
-          "sizez": 1,
-          "cposition": {
-            "x": 1,
-            "y": 0,
-            "z": 0
-          }
-        },
-        "*-medium-west": {
-          "sizex": 1,
-          "sizey": 1,
-          "sizez": 2,
-          "cposition": {
-            "x": 0,
-            "y": 0,
-            "z": 1
-          }
-        },
-
-        "*-north": {
-          "sizex": 2,
-          "sizeyByType": {
-            "*-large-*": 1,
-            "*-huge-*": 2,
-            "*-giant-*": 3
-          },
-          "sizez": 2,
-          "cposition": {
-            "x": 0,
-            "y": 0,
-            "z": 1
-          }
-        },
-        "*-east": {
-          "sizex": 2,
-          "sizeyByType": {
-            "*-large-*": 1,
-            "*-huge-*": 2,
-            "*-giant-*": 3
-          },
-          "sizez": 2,
-          "cposition": {
-            "x": 0,
-            "y": 0,
-            "z": 0
-          }
-        },
-        "*-south": {
-          "sizex": 2,
-          "sizeyByType": {
-            "*-large-*": 1,
-            "*-huge-*": 2,
-            "*-giant-*": 3
-          },
-          "sizez": 2,
-          "cposition": {
-            "x": 1,
-            "y": 0,
-            "z": 0
-          }
-        },
-        "*-west": {
-          "sizex": 2,
-          "sizeyByType": {
-            "*-large-*": 1,
-            "*-huge-*": 2,
-            "*-giant-*": 3
-          },
-          "sizez": 2,
-          "cposition": {
-            "x": 1,
-            "y": 0,
-            "z": 1
+          "cpositionByType": {
+            "*-north": { "x": 0, "y": 0, "z": 1 },
+            "*-east": { "x": 0, "y": 0, "z": 0 },
+            "*-south": { "x": 1, "y": 0, "z": 0 },
+            "*-west": { "x": 1, "y": 0, "z": 1 }
           }
         }
       }
     }
   ],
-
   "maxStackSizeByType": {
     "*-giant-*": 1,
     "*-huge-*": 2,
@@ -140,118 +38,106 @@
     "*-medium-*": 8,
     "*-small-*": 16
   },
-
   "creativeinventory": {},
   "creativeinventoryStacksByType": {
     "*-small-north": [
       {
         "tabs": [ "general", "stonequarry" ],
-        "stacks": [
-          {
-            "type": "block",
-            "code": "stoneslab-small-north",
-            "attributes": {
-              "preset": {
-                "size": 1,
-                "0": "game:rock-bauxite"
-              }
+        "stacks": [{
+          "type": "block",
+          "code": "stoneslab-small-north",
+          "attributes": {
+            "preset": {
+              "size": 1,
+              "0": "game:rock-bauxite"
             }
           }
-        ]
+        }]
       }
     ],
-    "*-medium-north": [
-      {
-        "tabs": [ "general", "stonequarry" ],
-        "stacks": [
-          {
-            "type": "block",
-            "code": "stoneslab-medium-north",
-            "attributes": {
-              "preset": {
-                "size": 2,
-                "0": "game:rock-bauxite",
-                "1": "game:rock-andesite"
-              }
+    "*-medium-north": [{
+      "tabs": [ "general", "stonequarry" ],
+      "stacks": [
+        {
+          "type": "block",
+          "code": "stoneslab-medium-north",
+          "attributes": {
+            "preset": {
+              "size": 2,
+              "0": "game:rock-bauxite",
+              "1": "game:rock-andesite"
             }
           }
-        ]
-      }
-    ],
-    "*-large-north": [
-      {
-        "tabs": [ "general", "stonequarry" ],
-        "stacks": [
-          {
-            "type": "block",
-            "code": "stoneslab-large-north",
-            "attributes": {
-              "preset": {
-                "size": 4,
-                "0": "game:rock-bauxite",
-                "1": "game:rock-andesite",
-                "2": "game:rock-chalk",
-                "3": "game:rock-chert"
-              }
+        }
+      ]
+    }],
+    "*-large-north": [{
+      "tabs": [ "general", "stonequarry" ],
+      "stacks": [
+        {
+          "type": "block",
+          "code": "stoneslab-large-north",
+          "attributes": {
+            "preset": {
+              "size": 4,
+              "0": "game:rock-bauxite",
+              "1": "game:rock-andesite",
+              "2": "game:rock-chalk",
+              "3": "game:rock-chert"
             }
           }
-        ]
-      }
-    ],
-    "*-huge-north": [
-      {
-        "tabs": [ "general", "stonequarry" ],
-        "stacks": [
-          {
-            "type": "block",
-            "code": "stoneslab-huge-north",
-            "attributes": {
-              "preset": {
-                "size": 8,
-                "0": "game:rock-bauxite",
-                "1": "game:rock-andesite",
-                "2": "game:rock-chalk",
-                "3": "game:rock-chert",
-                "4": "game:rock-conglomerate",
-                "5": "game:rock-limestone",
-                "6": "game:rock-claystone",
-                "7": "game:rock-granite"
-              }
+        }
+      ]
+    }],
+    "*-huge-north": [{
+      "tabs": [ "general", "stonequarry" ],
+      "stacks": [
+        {
+          "type": "block",
+          "code": "stoneslab-huge-north",
+          "attributes": {
+            "preset": {
+              "size": 8,
+              "0": "game:rock-bauxite",
+              "1": "game:rock-andesite",
+              "2": "game:rock-chalk",
+              "3": "game:rock-chert",
+              "4": "game:rock-conglomerate",
+              "5": "game:rock-limestone",
+              "6": "game:rock-claystone",
+              "7": "game:rock-granite"
             }
           }
-        ]
-      }
-    ],
-    "*-giant-north": [
-      {
-        "tabs": [ "general", "stonequarry" ],
-        "stacks": [
-          {
-            "type": "block",
-            "code": "stoneslab-giant-north",
-            "attributes": {
-              "preset": {
-                "size": 12,
-                "0": "game:rock-bauxite",
-                "1": "game:rock-andesite",
-                "2": "game:rock-chalk",
-                "3": "game:rock-chert",
-                "4": "game:rock-conglomerate",
-                "5": "game:rock-limestone",
-                "6": "game:rock-claystone",
-                "7": "game:rock-granite",
-                "8": "game:rock-sandstone",
-                "9": "game:rock-shale",
-                "10": "game:rock-basalt",
-                "11": "game:rock-peridotite"
-              }
+        }
+      ]
+    }],
+    "*-giant-north": [{
+      "tabs": [ "general", "stonequarry" ],
+      "stacks": [
+        {
+          "type": "block",
+          "code": "stoneslab-giant-north",
+          "attributes": {
+            "preset": {
+              "size": 12,
+              "0": "game:rock-bauxite",
+              "1": "game:rock-andesite",
+              "2": "game:rock-chalk",
+              "3": "game:rock-chert",
+              "4": "game:rock-conglomerate",
+              "5": "game:rock-limestone",
+              "6": "game:rock-claystone",
+              "7": "game:rock-granite",
+              "8": "game:rock-sandstone",
+              "9": "game:rock-shale",
+              "10": "game:rock-basalt",
+              "11": "game:rock-peridotite"
             }
           }
-        ]
-      }
-    ]
+        }
+      ]
+    }]
   },
-
   "textures": {
     "wood": { "base": "game:block/wood/planks/generic" },
     "filler": { "base": "game:block/transparent" }
@@ -266,7 +152,6 @@
     }
   },
   "shapeinventory": { "base": "block/stoneslab/{size}" },
-
   "drawtype": "json",
   "facecullmode": "nevercull",
   "lightAbsorption": 0,
@@ -274,29 +159,15 @@
   "sidesolid": { "all": false },
   "sideopaque": { "all": false },
   "emitSideAo": { "all": false },
-
   "materialDensity": 600,
   "material": "Stone",
-
   "heldTpIdleAnimation": "holdbothhandslarge",
   "heldTpUseAnimation": "twohandplaceblock",
   "guiTransform": {
     "originByType": {
-      "*-small-*": {
-        "x": 0.5,
-        "y": 1,
-        "z": 0.5
-      },
-      "*-medium-*": {
-        "x": 1,
-        "y": 1,
-        "z": 0.5
-      },
-      "*": {
-        "x": 1,
-        "y": 1,
-        "z": 0
-      }
+      "*-small-*": { "x": 0.5, "y": 1, "z": 0.5 },
+      "*-medium-*": { "x": 1, "y": 1, "z": 0.5 },
+      "*": { "x": 1, "y": 1, "z": 0 }
     },
     "scale": 0.6
   },
@@ -313,10 +184,6 @@
         "*": -1.45
       }
     },
-    "rotation": {
-      "x": 13,
-      "y": 15,
-      "z": -86
-    }
+    "rotation": { "x": 13, "y": 15, "z": -86 }
   }
 }

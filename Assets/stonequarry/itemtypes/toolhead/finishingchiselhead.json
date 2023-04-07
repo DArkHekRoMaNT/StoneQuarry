@@ -1,20 +1,7 @@
 {
   "code": "finishingchiselhead",
   "variantgroups": [
-    {
-      "code": "material",
-      "states": [
-        "copper",
-        "tinbronze",
-        "bismuthbronze",
-        "blackbronze",
-        "gold",
-        "silver",
-        "iron",
-        "meteoriciron",
-        "steel"
-      ]
-    }
+    { "code": "material", "states": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "gold", "silver", "iron", "meteoriciron", "steel" ] }
   ],
   "maxStackSize": 4,
   "shape": { "base": "item/tool/finishingchisel" },
@@ -22,81 +9,30 @@
     "metal": { "base": "game:block/metal/ingot/{material}" },
     "wood": { "base": "game:block/transparent" }
   },
-  "creativeinventory": {
-    "general": [ "*" ],
-    "stonequarry": [ "*" ]
-  },
+  "creativeinventory": { "general": [ "*" ], "stonequarry": [ "*" ] },
   "heldTpUseAnimation": "knap",
   "guiTransform": {
-    "translation": {
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "rotation": {
-      "x": -22,
-      "y": 114,
-      "z": -61
-    },
-    "origin": {
-      "x": 0.724,
-      "y": 0,
-      "z": 0.477
-    },
+    "translation": { "x": 0, "y": 0, "z": 0 },
+    "rotation": { "x": -22, "y": 114, "z": -61 },
+    "origin": { "x": 0.724, "y": 0, "z": 0.477 },
     "scale": 4.82
   },
   "fpHandTransform": {
-    "translation": {
-      "x": -0.1,
-      "y": 0.2,
-      "z": 0
-    },
-    "rotation": {
-      "x": 90,
-      "y": 99,
-      "z": -42
-    },
-    "origin": {
-      "x": 0.5,
-      "y": 0,
-      "z": 0.5
-    },
+    "translation": { "x": -0.1, "y": 0.2, "z": 0 },
+    "rotation": { "x": 90, "y": 99, "z": -42 },
+    "origin": { "x": 0.5, "y": 0, "z": 0.5 },
     "scale": 2.15
   },
   "groundTransform": {
-    "translation": {
-      "x": 0,
-      "y": 0.1,
-      "z": 0
-    },
-    "rotation": {
-      "x": 0,
-      "y": 0,
-      "z": -20
-    },
-    "origin": {
-      "x": 0.5,
-      "y": 0,
-      "z": 0.5
-    },
+    "translation": { "x": 0, "y": 0.1, "z": 0 },
+    "rotation": { "x": 0, "y": 0, "z": -20 },
+    "origin": { "x": 0.5, "y": 0, "z": 0.5 },
     "scale": 4.31
   },
   "tpHandTransform": {
-    "translation": {
-      "x": -0.6499,
-      "y": -0.05,
-      "z": -0.67
-    },
-    "rotation": {
-      "x": 9,
-      "y": -1,
-      "z": -16
-    },
-    "origin": {
-      "x": 0.5,
-      "y": 0,
-      "z": 0.5
-    },
+    "translation": { "x": -0.6499, "y": -0.05, "z": -0.67 },
+    "rotation": { "x": 9, "y": -1, "z": -16 },
+    "origin": { "x": 0.5, "y": 0, "z": 0.5 },
     "scale": 0.76
   }
 }

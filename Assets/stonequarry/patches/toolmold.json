@@ -20,10 +20,7 @@
       "fillHeight": 1,
       "moldrackable": true,
       "onmoldrackTransform": { "rotation": { "z": 90 } },
-      "drop": {
-        "type": "block",
-        "code": "stonequarry:plugandfeather-{metal}-0-down-north"
-      }
+      "drop": { "type": "block", "code": "stonequarry:plugandfeather-{metal}-0-down-north" }
     }
   },
   {

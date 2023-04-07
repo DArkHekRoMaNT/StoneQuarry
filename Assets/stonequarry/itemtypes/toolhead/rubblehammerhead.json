@@ -1,20 +1,7 @@
 {
   "code": "rubblehammerhead",
   "variantgroups": [
-    {
-      "code": "material",
-      "states": [
-        "copper",
-        "tinbronze",
-        "bismuthbronze",
-        "blackbronze",
-        "gold",
-        "silver",
-        "iron",
-        "meteoriciron",
-        "steel"
-      ]
-    }
+    { "code": "material", "states": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "gold", "silver", "iron", "meteoriciron", "steel" ] }
   ],
   "maxStackSize": 4,
   "shape": { "base": "item/tool/rubblehammer" },
@@ -22,80 +9,29 @@
     "metal": { "base": "game:block/metal/ingot/{material}" },
     "wood": { "base": "game:block/transparent" }
   },
-  "creativeinventory": {
-    "general": [ "*" ],
-    "stonequarry": [ "*" ]
-  },
+  "creativeinventory": { "general": [ "*" ], "stonequarry": [ "*" ] },
   "guiTransform": {
-    "translation": {
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "rotation": {
-      "x": -89,
-      "y": 45,
-      "z": 6
-    },
-    "origin": {
-      "x": 0.95,
-      "y": 0,
-      "z": 0.48
-    },
+    "translation": { "x": 0, "y": 0, "z": 0 },
+    "rotation": { "x": -89, "y": 45, "z": 6 },
+    "origin": { "x": 0.95, "y": 0, "z": 0.48 },
     "scale": 3
   },
   "fpHandTransform": {
-    "translation": {
-      "x": -0.1,
-      "y": -1.1,
-      "z": 0.6
-    },
-    "rotation": {
-      "x": -35,
-      "y": 0,
-      "z": 85
-    },
-    "origin": {
-      "x": 0.1,
-      "y": 0.5,
-      "z": 0.5
-    },
+    "translation": { "x": -0.1, "y": -1.1, "z": 0.6 },
+    "rotation": { "x": -35, "y": 0, "z": 85 },
+    "origin": { "x": 0.1, "y": 0.5, "z": 0.5 },
     "scale": 2.5
   },
   "groundTransform": {
-    "translation": {
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "rotation": {
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "origin": {
-      "x": 0.5,
-      "y": 0,
-      "z": 0.5
-    },
+    "translation": { "x": 0, "y": 0, "z": 0 },
+    "rotation": { "x": 0, "y": 0, "z": 0 },
+    "origin": { "x": 0.5, "y": 0, "z": 0.5 },
     "scale": 3.4
   },
   "tpHandTransform": {
-    "translation": {
-      "x": -0.9,
-      "y": 0.49,
-      "z": -0.45
-    },
-    "rotation": {
-      "x": -80,
-      "y": -90,
-      "z": 0
-    },
-    "origin": {
-      "x": 0.5,
-      "y": 0,
-      "z": 0.5
-    },
+    "translation": { "x": -0.9, "y": 0.49, "z": -0.45 },
+    "rotation": { "x": -80, "y": -90, "z": 0 },
+    "origin": { "x": 0.5, "y": 0, "z": 0.5 },
     "scale": 0.8
   }
 }

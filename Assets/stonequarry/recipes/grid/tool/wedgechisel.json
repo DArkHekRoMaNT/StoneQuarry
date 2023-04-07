@@ -6,5 +6,5 @@
   },
   "width": 1,
   "height": 2,
-  "output": { "type": "item", "code": "wedgechisel-{material}", "quantity": 1 }
+  "output": { "type": "item", "code": "chisel-wedge-{material}", "quantity": 1 }
 }

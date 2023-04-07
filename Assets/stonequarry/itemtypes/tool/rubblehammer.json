@@ -2,47 +2,36 @@
   "code": "rubblehammer",
   "class": "ItemRubbleHammer",
   "variantgroups": [
-    {
-      "code": "material",
-      "states": [
-        "copper",
-        "tinbronze",
-        "bismuthbronze",
-        "blackbronze",
-        "gold",
-        "silver",
-        "iron",
-        "meteoriciron",
-        "steel"
-      ]
-    }
+    { "code": "material", "states": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "gold", "silver", "iron", "meteoriciron", "steel" ] }
   ],
   "tool": "14127",
   "attributes": {
     "handbook": {
       "groupBy": [ "rubblehammer-*" ]
     },
-    "slabtool": {
-      "type": "stone",
-      "quantity": {
-        "avg": 2.5,
-        "var": 0.5
-      }
-    },
+    "slabtool": { "type": "stone", "quantity": { "avg": 2.5, "var": 0.5 } },
     "rubbleable": true,
-    "rackable": true,
     "toolrackTransform": {
-      "rotation": {
-        "y": 2.5,
-        "z": -1
-      },
-      "translation": {
-        "x": -0.1,
-        "y": 0.59
-      },
+      "rotation": { "y": 2.5, "z": -1 },
+      "translation": { "x": -0.1, "y": 0.55 },
       "scale": 1.25
+    },
+    "groundStorageTransform": {
+      "translation": { "x": 0, "y": 0.09, "z": -0.05 },
+      "rotation": { "x": 26, "y": 88, "z": -87 },
+      "scale": 0.81
     }
-  },
+  },  
+  "behaviors": [{ 
+    "name": "GroundStorable",
+    "properties": {
+      "layout": "WallHalves",
+      "wallOffY": 1,
+      "sprintKey": true,
+      "selectionBox": { "x1": 0, "y1": 0, "z1": 0, "x2": 1, "y2": 0.1, "z2": 1 },
+      "collisionBox": { "x1": 0, "y1": 0, "z1": 0, "x2": 0, "y2": 0, "z2": 0 }
+    }
+  }],
   "damagedBy": [ "attacking" ],
   "attackRange": 2,
   "durabilityByType": {
@@ -72,84 +61,31 @@
     "metal": { "base": "game:block/metal/ingot/{material}" },
     "wood": { "base": "game:item/tool/material/handle" }
   },
-  "creativeinventory": {
-    "general": [ "*" ],
-    "items": [ "*" ],
-    "tools": [ "*" ],
-    "stonequarry": [ "*" ]
-  },
+  "creativeinventory": { "general": [ "*" ], "items": [ "*" ], "tools": [ "*" ], "stonequarry": [ "*" ] },
   "heldTpUseAnimation": "axechop",
   "heldTpHitAnimation": "axechop",
   "guiTransform": {
-    "translation": {
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "rotation": {
-      "x": -89,
-      "y": 45,
-      "z": 6
-    },
-    "origin": {
-      "x": 0.61,
-      "y": 0,
-      "z": 0.47
-    },
+    "translation": { "x": 0, "y": 0, "z": 0 },
+    "rotation": { "x": -89, "y": 45, "z": 6 },
+    "origin": { "x": 0.61, "y": 0, "z": 0.47 },
     "scale": 1.7
   },
   "fpHandTransform": {
-    "translation": {
-      "x": -0.4,
-      "y": -0.5,
-      "z": 0.6
-    },
-    "rotation": {
-      "x": -35,
-      "y": 0,
-      "z": 85
-    },
-    "origin": {
-      "x": 0.1,
-      "y": 0.5,
-      "z": 0.5
-    },
+    "translation": { "x": -0.4, "y": -0.5, "z": 0.6 },
+    "rotation": { "x": -35, "y": 0, "z": 85 },
+    "origin": { "x": 0.1, "y": 0.5, "z": 0.5 },
     "scale": 2.5
   },
   "groundTransform": {
-    "translation": {
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "rotation": {
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "origin": {
-      "x": 0.5,
-      "y": 0,
-      "z": 0.5
-    },
+    "translation": { "x": 0, "y": 0, "z": 0 },
+    "rotation": { "x": 0, "y": 0, "z": 0 },
+    "origin": { "x": 0.5, "y": 0, "z": 0.5 },
     "scale": 3.4
   },
   "tpHandTransform": {
-    "translation": {
-      "x": -0.87,
-      "y": -0.01,
-      "z": -0.56
-    },
-    "rotation": {
-      "x": -81,
-      "y": 0,
-      "z": 0
-    },
-    "origin": {
-      "x": 0.5,
-      "y": 0,
-      "z": 0.5
-    },
+    "translation": { "x": -0.87, "y": -0.01, "z": -0.5 },
+    "rotation": { "x": -81, "y": 0, "z": 0 },
+    "origin": { "x": 0.5, "y": 0, "z": 0.5 },
     "scale": 0.8
   }
 }

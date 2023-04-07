@@ -6,12 +6,15 @@
     "allowedVariants": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "iron", "meteoriciron", "steel" ]
   },
   "pattern": [
-    [ "_#####", "######" ],
-    [ "_#####", "######" ]
+    [
+      "_#####",
+      "######"
+    ],
+    [
+      "_#####",
+      "######"
+    ]
   ],
   "name": "Splitter plug",
-  "output": {
-    "type": "block",
-    "code": "plugandfeather-{metal}-0-down-north"
-  }
+  "output": { "type": "block", "code": "plugandfeather-{metal}-0-down-north" }
 }
