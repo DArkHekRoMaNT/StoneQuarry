@@ -3,7 +3,7 @@
   "game:stonequarry-quarryguide-text": "<strong>Stone Splitting Guide</strong><br><i>So you want to start a quarry?</i><br><br>Just make a good <a href=\"handbook://item-hammer-copper\">hammer</a> and some <a href=\"handbook://block-stonequarry:plugandfeather-copper-0-down-north\">plugs</a> and set them so that they are at the top or bottom of the row of stone blocks on the side you want to separate the slab from. Hit them with a hammer a few times and you will have a beautiful stone slab. After you click on the first fork, you can Sneak + Click on it to toggle the work area highlight.<br><br>Depending on the material of the plug you are using, you can get more stone in one go. For example up to 3x3x3 cube for copper and 7x7x7 for steel.<br><br>The size of the slab you get depends on how much stone you cut at one time. While any type of slab can be used, be aware that larger slabs take up more space when placed.<br><br>Now go get some of this stone after you read <a href=\"handbook://stonequarry-masonguide\">Stone Cutting Guide</a>.",
 
   "game:stonequarry-masonguide-title": "StoneQuarry: Stone Cutting Guide",
-  "game:stonequarry-masonguide-text": "<strong>Stone Cutting Guide</strong><br><i>There is never too much stone</i><br><br>First, create a <a href=\"handbook://stonequarry-quarryguide\">stone slab</a>. With each piece of stone removed, you will receive a stone slab that you can use to obtain different types of stone.<br><br>There are four tools for this:<br><a href=\"handbook://item-stonequarry:finishingchisel-copper\">Finishing chisel</a> - when used on a slab will give polished stone.<br><a href=\"handbook://item-stonequarry:wedgechisel-copper\">Wedge chisel</a> - when used on a slab will give bricks.<br><a href=\"handbook://item-stonequarry:roughcutchisel-copper\">Rough cut chisel</a> - when used on a slab will give rock.<br><a href=\"handbook://item-stonequarry:rubblehammer-copper\">Rubble hammer</a> - when used on a slab will give stone.<br><br>If you want to get sand or gravel from stone, or you just need a lot of storage, then take a look at <a href=\"handbook://stonequarry-rubblestorageguide\">Rubble Storage</a>",
+  "game:stonequarry-masonguide-text": "<strong>Stone Cutting Guide</strong><br><i>There is never too much stone</i><br><br>First, create a <a href=\"handbook://stonequarry-quarryguide\">stone slab</a>. With each piece of stone removed, you will receive a stone slab that you can use to obtain different types of stone.<br><br>There are four tools for this:<br><a href=\"handbook://item-stonequarry:chisel-finishing-copper\">Finishing chisel</a> - when used on a slab will give polished stone.<br><a href=\"handbook://item-stonequarry:chisel-wedge-copper\">Wedge chisel</a> - when used on a slab will give bricks.<br><a href=\"handbook://item-stonequarry:chisel-roughcut-copper\">Rough cut chisel</a> - when used on a slab will give rock.<br><a href=\"handbook://item-stonequarry:rubblehammer-copper\">Rubble hammer</a> - when used on a slab will give stone.<br><br>If you want to get sand or gravel from stone, or you just need a lot of storage, then take a look at <a href=\"handbook://stonequarry-rubblestorageguide\">Rubble Storage</a>",
 
   "game:stonequarry-rubblestorageguide-title": "StoneQuarry: Rubble Storage Guide",
   "game:stonequarry-rubblestorageguide-text": "<strong>Rubble Storage Guide</strong><br><br><a href=\"handbook://block-stonequarry:rubblestorage-north\">Rubble storage</a> can be used to store stone, gravel and sand.<br><br>Also, if you hit stored materials a <a href=\"handbook://item-stonequarry:rubblehammer-copper\">rubble hammer</a>, the contents will crashed. By principle: two stones to one gravel, one gravel to one sand.<br><br><strong>In world interactions</strong><br>- Add items: right-click with an item in hand. You can also add all suitable inventory items by right-clicking with an empty hand.<br>- Take items: right-click on the buttons in front, according to the desired material.<br>- By holding Sprint you can add/remove a stack of materials at a time.<br>- You can lock material by holding Sneak and right-clicking the corresponding button. Locked material will not be used for crashing, and will also be prioritized.<br>- You can also create <a href=\"handbook://block-muddygravel\">muddy gravel</a> from regular gravel by right-clicking with water container (bucket).",
@@ -27,7 +27,7 @@
   "block-stoneslab-huge-*": "Huge stone slab",
   "block-stoneslab-giant-*": "Giant stone slab",
   "stonequarry:block-handbooktitle-stonequarry:stoneslab-*": "Uses",
-  "stonequarry:block-handbooktext-stonequarry:stoneslab-*": "Once placed in the world, this can be interacted by holding <a href=\"handbook://item-stonequarry:finishingchisel-copper\">finishing chisel</a>, <a href=\"handbook://item-stonequarry:roughcutchisel-copper\">rough cut chisel</a>, <a href=\"handbook://item-stonequarry:wedgechisel-copper\">wedge chisel</a> or <a href=\"handbook://item-stonequarry:rubblehammer-copper\">rubble hammer</a> to get a variety of resources. See <a href=\"handbook://stonequarry-masonguide\">Stone Cutting Guide</a> for details",
+  "stonequarry:block-handbooktext-stonequarry:stoneslab-*": "Once placed in the world, this can be interacted by holding <a href=\"handbook://item-stonequarry:chisel-finishing-copper\">finishing chisel</a>, <a href=\"handbook://item-stonequarry:chisel-roughcut-copper\">rough cut chisel</a>, <a href=\"handbook://item-stonequarry:chisel-wedge-copper\">wedge chisel</a> or <a href=\"handbook://item-stonequarry:rubblehammer-copper\">rubble hammer</a> to get a variety of resources. See <a href=\"handbook://stonequarry-masonguide\">Stone Cutting Guide</a> for details",
 
   "block-rubblestorage-*": "Rubble storage",
   "stonequarry:block-handbooktitle-stonequarry:rubblestorage-*": "Uses",
@@ -45,8 +45,8 @@
   "item-chisel-finishing-iron": "Iron finishing chisel",
   "item-chisel-finishing-meteoriciron": "Meteoric iron finishing chisel",
   "item-chisel-finishing-steel": "Steel finishing chisel",
-  "stonequarry:item-handbooktitle-stonequarry:finishingchisel-*": "Uses",
-  "stonequarry:item-handbooktext-stonequarry:finishingchisel-*": "Used on stone slabs to extract <strong>polished rock</strong> from them. See <a href=\"handbook://stonequarry-masonguide\">Stone Cutting Guide</a> for more details.",
+  "stonequarry:item-handbooktitle-stonequarry:chisel-finishing-*": "Uses",
+  "stonequarry:item-handbooktext-stonequarry:chisel-finishing-*": "Used on stone slabs to extract <strong>polished rock</strong> from them. See <a href=\"handbook://stonequarry-masonguide\">Stone Cutting Guide</a> for more details.",
 
   "item-chisel-roughcut-copper": "Copper rough cut chisel",
   "item-chisel-roughcut-tinbronze": "Tin bronze rough cut chisel",
@@ -57,8 +57,8 @@
   "item-chisel-roughcut-iron": "Iron rough cut chisel",
   "item-chisel-roughcut-meteoriciron": "Meteoric iron rough cut chisel",
   "item-chisel-roughcut-steel": "Steel rough cut chisel",
-  "stonequarry:item-handbooktitle-stonequarry:roughcutchisel-*": "Uses",
-  "stonequarry:item-handbooktext-stonequarry:roughcutchisel-*": "Used on stone slabs to extract <strong>rock</strong> from them. See <a href=\"handbook://stonequarry-masonguide\">Stone Cutting Guide</a> for more details.",
+  "stonequarry:item-handbooktitle-stonequarry:chisel-roughcut-*": "Uses",
+  "stonequarry:item-handbooktext-stonequarry:chisel-roughcut-*": "Used on stone slabs to extract <strong>rock</strong> from them. See <a href=\"handbook://stonequarry-masonguide\">Stone Cutting Guide</a> for more details.",
 
   "item-rubblehammer-copper": "Copper rubble hammer",
   "item-rubblehammer-tinbronze": "Tin bronze rubble hammer",
@@ -81,8 +81,8 @@
   "item-chisel-wedge-iron": "Iron wedge chisel",
   "item-chisel-wedge-meteoriciron": "Meteoric iron wedge chisel",
   "item-chisel-wedge-steel": "Steel wedge chisel",
-  "stonequarry:item-handbooktitle-stonequarry:wedgechisel-*": "Uses",
-  "stonequarry:item-handbooktext-stonequarry:wedgechisel-*": "Used on stone slabs to extract <strong>bricks</strong> from them. See <a href=\"handbook://stonequarry-masonguide\">Stone Cutting Guide</a> for more details.",
+  "stonequarry:item-handbooktitle-stonequarry:chisel-wedge-*": "Uses",
+  "stonequarry:item-handbooktext-stonequarry:chisel-wedge-*": "Used on stone slabs to extract <strong>bricks</strong> from them. See <a href=\"handbook://stonequarry-masonguide\">Stone Cutting Guide</a> for more details.",
 
   "item-rubblehammerhead-copper": "Copper rubble hammer head",
   "item-rubblehammerhead-tinbronze": "Tin bronze rubble hammer head",
