@@ -7,14 +7,14 @@ namespace StoneQuarry
 {
     public class RubbleStorageItemSlot : ItemSlot
     {
-        public string Type { get; }
-
         private AssetLocation? RockName => ((RubbleStorageInventory)inventory).StoredRock;
         private IRockManager RockManager => ((RubbleStorageInventory)inventory).RockManager;
 
+        public string ContentType { get; }
+
         public RubbleStorageItemSlot(int slotId, RubbleStorageInventory self) : base(self)
         {
-            Type = slotId switch
+            ContentType = slotId switch
             {
                 0 => "stone",
                 1 => "gravel",
@@ -26,25 +26,31 @@ namespace StoneQuarry
 
         public void AddIn(int quantity)
         {
-            if (RockName != null)
+            if (RockName == null)
             {
-                AssetLocation? code = RockManager.GetValue(RockName, Type);
-                if (code != null)
+                return;
+            }
+
+            AssetLocation? code = RockManager.GetValue(RockName, ContentType);
+            if (code == null)
+            {
+                return;
+            }
+
+            if (Empty)
+            {
+                CollectibleObject collObj = inventory.Api.World.GetCollectibleObject(code);
+                if (collObj != null)
                 {
-                    if (Empty)
+                    Itemstack = new ItemStack(collObj)
                     {
-                        CollectibleObject collObj = inventory.Api.World.GetCollectibleObject(code);
-                        if (collObj != null)
-                        {
-                            Itemstack = new(collObj);
-                            Itemstack.StackSize = quantity;
-                        }
-                    }
-                    else
-                    {
-                        Itemstack.StackSize += quantity;
-                    }
+                        StackSize = quantity
+                    };
                 }
+            }
+            else
+            {
+                Itemstack.StackSize += quantity;
             }
         }
 

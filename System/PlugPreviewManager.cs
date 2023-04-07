@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Vintagestory.API.Client;
 using Vintagestory.API.MathTools;
 
@@ -6,23 +6,20 @@ namespace StoneQuarry
 {
     public class PlugPreviewManager
     {
-        public const int BEPacketId = 51235;
-        public const int HighlightSlotId = 1312;
-
-        private readonly ICoreClientAPI api;
-        private readonly List<BlockPos> plugNetworkBlocks;
-        private readonly List<BlockPos> highlightBlocks;
+        private readonly ICoreClientAPI _api;
+        private readonly List<BlockPos> _plugNetworkBlocks;
+        private readonly List<BlockPos> _highlightBlocks;
 
         public PlugPreviewManager(ICoreClientAPI api)
         {
-            this.api = api;
-            plugNetworkBlocks = new List<BlockPos>();
-            highlightBlocks = new List<BlockPos>();
+            _api = api;
+            _plugNetworkBlocks = new List<BlockPos>();
+            _highlightBlocks = new List<BlockPos>();
         }
 
         public void TogglePreview(BlockPos plugPos)
         {
-            if (plugNetworkBlocks.Contains(plugPos))
+            if (_plugNetworkBlocks.Contains(plugPos))
             {
                 DisablePreview();
             }
@@ -34,28 +31,28 @@ namespace StoneQuarry
 
         public void DisablePreview(BlockPos plugPos)
         {
-            if (plugNetworkBlocks.Contains(plugPos))
+            if (_plugNetworkBlocks.Contains(plugPos))
             {
-                plugNetworkBlocks.Clear();
-                highlightBlocks.Clear();
+                _plugNetworkBlocks.Clear();
+                _highlightBlocks.Clear();
             }
 
             UpdatePreview();
         }
 
-        private void EnablePreview(BlockPos plugPos)
+        public void EnablePreview(BlockPos plugPos)
         {
             DisablePreview();
 
-            if (api.World.BlockAccessor.GetBlockEntity(plugPos) is BEPlugAndFeather be)
+            if (_api.World.BlockAccessor.GetBlockEntity(plugPos) is BEPlugAndFeather be)
             {
                 if (be.IsNetworkPart)
                 {
                     var blocks = be.GetAllBlocksInside();
                     if (blocks != null)
                     {
-                        plugNetworkBlocks.AddRange(be.Points);
-                        highlightBlocks.AddRange(blocks);
+                        _plugNetworkBlocks.AddRange(be.Points);
+                        _highlightBlocks.AddRange(blocks);
                         UpdatePreview();
                     }
                 }
@@ -64,10 +61,10 @@ namespace StoneQuarry
 
         private void DisablePreview()
         {
-            if (plugNetworkBlocks.Count > 0)
+            if (_plugNetworkBlocks.Count > 0)
             {
-                plugNetworkBlocks.Clear();
-                highlightBlocks.Clear();
+                _plugNetworkBlocks.Clear();
+                _highlightBlocks.Clear();
             }
 
             UpdatePreview();
@@ -75,7 +72,7 @@ namespace StoneQuarry
 
         private void UpdatePreview()
         {
-            api.World.HighlightBlocks(api.World.Player, HighlightSlotId, highlightBlocks);
+            _api.World.HighlightBlocks(_api.World.Player, Constants.PreviewHighlightSlotId, _highlightBlocks);
         }
     }
 }

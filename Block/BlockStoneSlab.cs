@@ -1,5 +1,5 @@
+using CommonLib.Config;
 using CommonLib.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,30 +14,27 @@ namespace StoneQuarry
 {
     public class BlockStoneSlab : MultiBlockBase
     {
-        const float HitTime = .2f;
-
-        public static AssetLocation HitSoundLocation => new("game", "sounds/block/rock-hit-pickaxe");
-        public static AssetLocation DropSoundLocation => new("game", "sounds/block/heavyice");
-
-        public WorldInteraction[]? WorldInteractions { get; private set; }
-        public WorldInteraction[]? WorldInteractionsCreativeOnly { get; private set; }
-
-        private IRockManager rockManager = null!;
-        private StoneSlabMeshCache meshCache = null!;
+        private IRockManager _rockManager = null!;
+        private StoneSlabMeshCache _meshCache = null!;
+        private Config _config = null!;
 
         public override void OnLoaded(ICoreAPI api)
         {
             base.OnLoaded(api);
 
-            meshCache = api.ModLoader.GetModSystem<StoneSlabMeshCache>();
-            rockManager = api.ModLoader.GetModSystem<RockManager>();
+            _meshCache = api.ModLoader.GetModSystem<StoneSlabMeshCache>();
+            _rockManager = api.ModLoader.GetModSystem<RockManager>();
+            _config = api.ModLoader.GetModSystem<ConfigManager>().GetConfig<Config>();
         }
 
         public override bool DoPlaceBlock(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, ItemStack byItemStack)
         {
-            if (!base.DoPlaceBlock(world, byPlayer, blockSel, byItemStack)) return false;
+            if (!base.DoPlaceBlock(world, byPlayer, blockSel, byItemStack))
+            {
+                return false;
+            }
 
-            if (byItemStack != null)
+            if (byItemStack is not null)
             {
                 if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BEStoneSlab be)
                 {
@@ -54,21 +51,22 @@ namespace StoneQuarry
 
             if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BEStoneSlab be)
             {
-                if (byPlayer.WorldData.CurrentGameMode == EnumGameMode.Creative && activeStack != null)
+                if (byPlayer.WorldData.CurrentGameMode == EnumGameMode.Creative && activeStack is not null)
                 {
                     if (byPlayer.Entity.Controls.Sprint)
                     {
                         be.Inventory?.TryRemoveStack(activeStack);
                         return true;
                     }
-                    else if (rockManager.IsSuitableRock(activeStack.Collectible.Code))
+                    else if (_rockManager.IsSuitableRock(activeStack.Collectible.Code))
                     {
                         be.Inventory?.TryAddStack(activeStack);
                         return true;
                     }
                 }
 
-                if (be.Inventory != null && !be.Inventory.Empty && activeStack?.Collectible?.Attributes?["slabtool"] != null)
+                if (be.Inventory != null && !be.Inventory.Empty &&
+                    activeStack?.Collectible?.Attributes?["slabtool"] is not null)
                 {
                     return true;
                 }
@@ -97,37 +95,47 @@ namespace StoneQuarry
                 {
                     if (activeStack.Collectible.FirstCodePart() == "rubblehammer")
                     {
-                        ModelTransform tf = ModelTransform.NoTransform;
-
-                        float tfOffset = secondsUsed / Core.Config.SlabInteractionTime;
-                        tf.Translation.Set(tfOffset * .25f, 0, tfOffset * .5f);
-
-                        byPlayer.Entity.Controls.UsingHeldItemTransformBefore = tf;
+                        RubbleHammerTransform();
                     }
-                    else if (world.BlockAccessor.GetBlockEntity(blockSel.Position + offset.AsBlockPos) is BEStoneSlab be)
+                    else
                     {
-                        ModelTransform tf = ModelTransform.NoTransform;
-                        tf.Translation.Set(secondsUsed % HitTime, 0, 0);
-                        byPlayer.Entity.Controls.UsingHeldItemTransformBefore = tf;
-
-                        int times = byPlayer.Entity.WatchedAttributes.GetInt("sq_slab_times", 1);
-
-                        if (secondsUsed > times * HitTime)
-                        {
-                            be.InteractParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
-                            world.SpawnParticles(be.InteractParticles, byPlayer);
-
-                            world.PlaySoundAt(HitSoundLocation, byPlayer, byPlayer, true, 32, .5f);
-
-                            byPlayer.Entity.WatchedAttributes.SetInt("sq_slab_times", times + 1);
-                        }
+                        ChiselsTransform();
                     }
                 }
 
-                return secondsUsed < Core.Config.SlabInteractionTime;
+                return secondsUsed < _config.SlabInteractionTime;
             }
 
             return base.OnBlockInteractStep(secondsUsed, world, byPlayer, blockSel);
+
+            void ChiselsTransform()
+            {
+                BlockPos pos = blockSel.Position + offset.AsBlockPos;
+                if (world.BlockAccessor.GetBlockEntity(pos) is BEStoneSlab be)
+                {
+                    float hitTime = 0.2f;
+                    var tf = ModelTransform.NoTransform;
+                    tf.Translation.Set(secondsUsed % hitTime, 0, 0);
+                    byPlayer.Entity.Controls.UsingHeldItemTransformBefore = tf;
+
+                    int times = byPlayer.Entity.WatchedAttributes.GetInt("sq_slab_times", 1);
+                    if (secondsUsed > times * hitTime)
+                    {
+                        be.InteractParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
+                        world.SpawnParticles(be.InteractParticles, byPlayer);
+                        world.PlaySoundAt(SQSounds.RockHit, byPlayer, byPlayer, true, 32, .5f);
+                        byPlayer.Entity.WatchedAttributes.SetInt("sq_slab_times", times + 1);
+                    }
+                }
+            }
+
+            void RubbleHammerTransform()
+            {
+                var tf = ModelTransform.NoTransform;
+                float tfOffset = secondsUsed / _config.SlabInteractionTime;
+                tf.Translation.Set(tfOffset * .25f, 0, tfOffset * .5f);
+                byPlayer.Entity.Controls.UsingHeldItemTransformBefore = tf;
+            }
         }
 
         public override void OnBlockInteractStop(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
@@ -144,23 +152,33 @@ namespace StoneQuarry
 
             ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
             JsonObject? slabtool = activeStack?.Collectible.Attributes["slabtool"];
-            if (secondsUsed < Core.Config.SlabInteractionTime || slabtool == null)
+            if (secondsUsed < _config.SlabInteractionTime || slabtool == null)
             {
                 base.OnBlockInteractStop(secondsUsed, world, byPlayer, blockSel);
                 return;
             }
 
-            if (world.BlockAccessor.GetBlockEntity(blockSel.Position + offset.AsBlockPos) is BEStoneSlab be &&
-                be.Inventory != null && !be.Inventory.Empty)
+            if (world.BlockAccessor.GetBlockEntity(blockSel.Position + offset.AsBlockPos) is BEStoneSlab be)
+            {
+                if (be.Inventory?.Empty is not true)
+                {
+                    RubbleHammerHit();
+                    DropItem();
+                }
+            }
+
+            void RubbleHammerHit()
             {
                 if (activeStack?.Collectible.FirstCodePart() == "rubblehammer")
                 {
                     be.InteractParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
                     world.SpawnParticles(be.InteractParticles, byPlayer);
-                    world.PlaySoundAt(HitSoundLocation, byPlayer, byPlayer, true, 32, .5f);
+                    world.PlaySoundAt(SQSounds.RockHit, byPlayer, byPlayer, true, 32, .5f);
                 }
+            }
 
-
+            void DropItem()
+            {
                 if (api.Side == EnumAppSide.Server)
                 {
                     string? dropType = slabtool["type"]?.AsString();
@@ -174,7 +192,7 @@ namespace StoneQuarry
                             var dropPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
                             var dropVel = new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z);
 
-                            world.PlaySoundAt(DropSoundLocation, byPlayer, byPlayer, true, 32, .05f);
+                            world.PlaySoundAt(SQSounds.Crack, byPlayer, byPlayer, true, 32, .05f);
 
                             world.SpawnItemEntity(dropStack, dropPos, dropVel);
 
@@ -215,9 +233,13 @@ namespace StoneQuarry
 
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
         {
-            if (WorldInteractions == null || WorldInteractionsCreativeOnly == null)
+            return base.GetPlacedBlockInteractionHelp(world, selection, forPlayer)
+                .Append(GetRegularInteractions())
+                .AppendIf(forPlayer.WorldData.CurrentGameMode == EnumGameMode.Creative, GetCreativeOnlyInteractions());
+
+            WorldInteraction[] GetRegularInteractions()
             {
-                WorldInteractions = new WorldInteraction[] {
+                return new WorldInteraction[] {
                     new WorldInteraction(){
                         ActionLangCode = Core.ModId + ":wi-stoneslab-rockpolished",
                         MouseButton = EnumMouseButton.Right,
@@ -245,81 +267,71 @@ namespace StoneQuarry
                         HotKeyCode = "sprint"
                     }
                 };
+            }
 
+            WorldInteraction[] GetCreativeOnlyInteractions()
+            {
+                ItemStack[] rocks = _rockManager.Data
+                .Select((data) =>
+                {
+                    Block block = api.World.GetBlock(data.Rock) ?? api.World.GetBlock(0);
+                    return new ItemStack(block);
+                })
+                .ToArray();
 
-                ItemStack[] rocks = rockManager.Data
-                    .Select((data) =>
+                return new WorldInteraction[]
                     {
-                        Block block = api.World.GetBlock(data.Rock) ?? api.World.GetBlock(0);
-                        return new ItemStack(block);
-                    })
-                    .ToArray();
-
-                WorldInteractionsCreativeOnly = new WorldInteraction[]
-                    {
-                    new WorldInteraction()
-                    {
-                        ActionLangCode = Core.ModId + ":wi-stoneslab-addrock",
-                        MouseButton = EnumMouseButton.Right,
-                        Itemstacks = rocks
-                    },
-                    new WorldInteraction()
-                    {
-                        ActionLangCode = Core.ModId + ":wi-stoneslab-removerock",
-                        MouseButton = EnumMouseButton.Right,
-                        HotKeyCode = "sprint",
-                        Itemstacks = rocks
-                    }
+                        new WorldInteraction()
+                        {
+                            ActionLangCode = Core.ModId + ":wi-stoneslab-addrock",
+                            MouseButton = EnumMouseButton.Right,
+                            Itemstacks = rocks
+                        },
+                        new WorldInteraction()
+                        {
+                            ActionLangCode = Core.ModId + ":wi-stoneslab-removerock",
+                            MouseButton = EnumMouseButton.Right,
+                            HotKeyCode = "sprint",
+                            Itemstacks = rocks
+                        }
                 };
             }
 
-            bool isCreativePlayer = forPlayer.WorldData.CurrentGameMode == EnumGameMode.Creative;
-            return WorldInteractions
-                .AppendIf(isCreativePlayer, WorldInteractionsCreativeOnly)
-                .Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
-        }
-
-        private ItemStack[] GetTools(string type)
-        {
-            List<ItemStack> tools = new();
-
-            foreach (CollectibleObject collObj in api.World.Collectibles)
+            ItemStack[] GetTools(string type)
             {
-                if (collObj?.Attributes?.KeyExists("slabtool") == true)
+                var tools = new List<ItemStack>();
+
+                foreach (CollectibleObject collObj in api.World.Collectibles)
                 {
-                    if (collObj.Attributes["slabtool"]["type"]?.AsString() == type)
+                    if (collObj?.Attributes?.KeyExists("slabtool") == true)
                     {
-                        tools.Add(new ItemStack(collObj));
+                        if (collObj.Attributes["slabtool"]["type"]?.AsString() == type)
+                        {
+                            tools.Add(new ItemStack(collObj));
+                        }
                     }
                 }
-            }
 
-            return tools.ToArray();
+                return tools.ToArray();
+            }
         }
 
         public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
         {
-            var be = world.BlockAccessor.GetBlockEntity(pos) as BEStoneSlab;
-            var drop = be?.GetSelfDrop();
-
-            if (drop == null)
-            {
-                return Array.Empty<ItemStack>();
-            }
-
-            return new[] { drop };
+            return new[] { OnPickBlock(world, pos) };
         }
 
         public override ItemStack OnPickBlock(IWorldAccessor world, BlockPos pos)
         {
-            return (world.BlockAccessor.GetBlockEntity(pos) as BEStoneSlab)?.GetSelfDrop() ?? base.OnPickBlock(world, pos);
+            var be = world.BlockAccessor.GetBlockEntity(pos) as BEStoneSlab;
+            ItemStack? stack = be?.GetSelfDrop();
+            return stack ?? base.OnPickBlock(world, pos);
         }
 
         public override void OnBeforeRender(ICoreClientAPI capi, ItemStack itemstack, EnumItemRenderTarget target, ref ItemRenderInfo renderinfo)
         {
             base.OnBeforeRender(capi, itemstack, target, ref renderinfo);
-
-            renderinfo.ModelRef = meshCache.GetInventoryMeshRef(itemstack, this);
+            renderinfo.ModelRef = _meshCache.GetInventoryMeshRef(itemstack, this);
         }
     }
 }

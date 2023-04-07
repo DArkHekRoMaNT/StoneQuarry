@@ -1,4 +1,6 @@
-﻿using System;
+using CommonLib.Config;
+using CommonLib.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Vintagestory.API.Client;
@@ -12,26 +14,12 @@ namespace StoneQuarry
 {
     public class BlockPlugAndFeather : Block
     {
-        public static AssetLocation CrackSoundLocation => new("game", "sounds/block/heavyice");
-        public static AssetLocation HammerSoundLocation => new("game", "sounds/block/meteoriciron-hit-pickaxe");
+        private SimpleParticleProperties? _quarryStartParticles;
+        private PlugPreviewManager? _previewManager;
 
-        public SimpleParticleProperties QuarryStartParticles { get; private set; }
-
-        public WorldInteraction[] CommonWorldInteractions { get; private set; }
-        public WorldInteraction[] NetworkPartWorldInteractions { get; private set; }
-
-        public int MaxSearchRange => Attributes["searchrange"].AsInt(0);
-        public string Material => Variant["metal"];
-        public string Orientation => Variant["orientation"];
-        public string Direction => Variant["direction"];
-
-
-        public readonly int MaxStage = 2;
-        public int Stage => int.Parse(Variant["stage"]);
-
-        public BlockPlugAndFeather()
+        private SimpleParticleProperties QuarryStartParticles
         {
-            QuarryStartParticles = new SimpleParticleProperties()
+            get => _quarryStartParticles ??= new()
             {
                 MinQuantity = 16,
                 AddQuantity = 16,
@@ -44,48 +32,24 @@ namespace StoneQuarry
                 MinVelocity = new Vec3f(0, -1, 0),
                 ParticleModel = EnumParticleModel.Cube
             };
-
-            CommonWorldInteractions = Array.Empty<WorldInteraction>();
-            NetworkPartWorldInteractions = Array.Empty<WorldInteraction>();
         }
 
+        public int MaxSearchRange => Attributes["searchrange"].AsInt(0);
+        public string Material => Variant["metal"];
+        public string Orientation => Variant["orientation"];
+        public string Direction => Variant["direction"];
+
+        public static int MaxStage => 2;
+        public int Stage => int.Parse(Variant["stage"]);
 
         public override void OnLoaded(ICoreAPI api)
         {
             base.OnLoaded(api);
 
-            InitWorldInteractions();
-        }
-
-        private void InitWorldInteractions()
-        {
-            var quarryImpact = new List<ItemStack>();
-            foreach (var colObj in api.World.Collectibles)
+            if (api.Side == EnumAppSide.Client)
             {
-                if (colObj.Attributes != null)
-                {
-                    if (colObj.Attributes["plugimpact"].Exists)
-                    {
-                        quarryImpact.Add(new ItemStack(colObj));
-                    }
-                }
+                _previewManager = api.ModLoader.GetModSystem<Core>().PlugPreviewManager;
             }
-
-            CommonWorldInteractions = new WorldInteraction[] {
-                new WorldInteraction(){
-                    ActionLangCode = Code.Domain + ":wi-plugandfeather-quarryimpact",
-                    MouseButton = EnumMouseButton.Right,
-                    Itemstacks = quarryImpact.ToArray()
-                }
-            };
-
-            NetworkPartWorldInteractions = new WorldInteraction[] {
-                new WorldInteraction(){
-                    ActionLangCode = Code.Domain + ":wi-plugandfeather-togglepreview",
-                    MouseButton = EnumMouseButton.Right,
-                    HotKeyCode = "sneak"
-                }
-            };
         }
 
         public override bool DoPlaceBlock(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, ItemStack byItemStack)
@@ -120,9 +84,12 @@ namespace StoneQuarry
 
         public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
         {
+            var configs = api.ModLoader.GetModSystem<ConfigManager>();
+            var config = configs.GetConfig<Config>();
+
             if (api is ICoreServerAPI sapi)
             {
-                sapi.Network.SendBlockEntityPacket<int>(byPlayer as IServerPlayer, pos, PlugPreviewManager.BEPacketId);
+                sapi.Network.SendBlockEntityPacket(byPlayer as IServerPlayer, pos.X, pos.Y, pos.Z, Constants.PreviewPacketId);
             }
 
             if (world.BlockAccessor.GetBlockEntity(pos) is BEPlugAndFeather be && be.IsNetworkPart)
@@ -131,7 +98,7 @@ namespace StoneQuarry
                 {
                     foreach (var point in be.Points.ToArray())
                     {
-                        if (world.Rand.NextDouble() >= Core.Config.BreakPlugChance)
+                        if (world.Rand.NextDouble() >= config.BreakPlugChance)
                         {
                             foreach (var dropStack in GetDrops(world, pos, byPlayer, dropQuantityMultiplier))
                             {
@@ -153,7 +120,7 @@ namespace StoneQuarry
                         }
                         if (world.BlockAccessor.GetBlock(point) is BlockPlugAndFeather pb)
                         {
-                            pb.SwitchState(0, world, pos);
+                            pb.SwitchStage(0, world, pos);
                         }
                     }
 
@@ -172,8 +139,7 @@ namespace StoneQuarry
             {
                 if (byPlayer.Entity.Controls.Sneak)
                 {
-                    PlugPreviewManager ppm = api.ModLoader.GetModSystem<Core>().PlugPreviewManager;
-                    ppm?.TogglePreview(blockSel.Position);
+                    _previewManager?.TogglePreview(blockSel.Position);
                     return true;
                 }
 
@@ -191,8 +157,8 @@ namespace StoneQuarry
                     {
                         if (Stage != MaxStage)
                         {
-                            world.PlaySoundAt(CrackSoundLocation, byPlayer, byPlayer, true, 32, .5f);
-                            SwitchState(Stage + 1, world, blockSel.Position);
+                            world.PlaySoundAt(SQSounds.Crack, byPlayer, byPlayer, true, 32, .5f);
+                            SwitchStage(Stage + 1, world, blockSel.Position);
                             activeStack.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
                         }
 
@@ -206,7 +172,7 @@ namespace StoneQuarry
                     }
 
                     (byPlayer as IClientPlayer)?.TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
-                    world.PlaySoundAt(HammerSoundLocation, byPlayer, byPlayer, true, 32, .5f);
+                    world.PlaySoundAt(SQSounds.Hit, byPlayer, byPlayer, true, 32, .5f);
 
                     return true;
                 }
@@ -214,7 +180,7 @@ namespace StoneQuarry
             return false;
         }
 
-        public void SwitchState(int newStage, IWorldAccessor world, BlockPos pos)
+        public void SwitchStage(int newStage, IWorldAccessor world, BlockPos pos)
         {
             if (0 <= newStage && newStage <= MaxStage)
             {
@@ -242,9 +208,7 @@ namespace StoneQuarry
                         if (world.BlockAccessor.GetBlockEntity(p) is BEPlugAndFeather pbe)
                         {
                             pbe.Points.AddRange(points);
-
                             QuarryStartParticles.MinPos = p.ToVec3d();
-
                             world.SpawnParticles(QuarryStartParticles, byPlayer);
                         }
                     }
@@ -255,233 +219,250 @@ namespace StoneQuarry
             }
 
             return false;
-        }
 
-        private List<BlockPos>? FindNetworkPoints(IWorldAccessor world, BlockPos pos)
-        {
-            List<BlockPos> points = new();
-
-            BlockPos? oppositePos = FindOppositePlug(world, pos);
-            if (oppositePos == null)
+            List<BlockPos>? FindNetworkPoints(IWorldAccessor world, BlockPos pos)
             {
-                return null;
-            }
+                List<BlockPos> points = new();
 
-            var oppositeBlock = world.BlockAccessor.GetBlock(oppositePos) as BlockPlugAndFeather;
-
-            points.Add(pos);
-            points.Add(oppositePos);
-
-
-            BlockPos? checkDir = null;
-            switch (Direction)
-            {
-                case "north": checkDir = BlockFacing.EAST.Normali.ToBlockPos(); break;
-                case "east": checkDir = BlockFacing.SOUTH.Normali.ToBlockPos(); break;
-                case "south": checkDir = BlockFacing.WEST.Normali.ToBlockPos(); break;
-                case "west": checkDir = BlockFacing.NORTH.Normali.ToBlockPos(); break;
-            }
-
-            bool ended1 = false, ended2 = false;
-            for (int r = 1; r <= MaxSearchRange + 1; r++)
-            {
-                if (!ended1)
+                BlockPos? oppositePos = FindOppositePlug(world, pos);
+                if (oppositePos == null)
                 {
-                    BlockPos checkPos = pos + (checkDir * r);
-                    BlockPos checkOppositePos = oppositePos + (checkDir * r);
+                    return null;
+                }
 
-                    bool isSuited = IsSuitedNetworkPart(this, checkPos, world);
-                    bool isOppositeSuited = IsSuitedNetworkPart(oppositeBlock, checkOppositePos, world);
+                var oppositeBlock = world.BlockAccessor.GetBlock(oppositePos) as BlockPlugAndFeather;
 
-                    if (isSuited && isOppositeSuited)
+                points.Add(pos);
+                points.Add(oppositePos);
+
+                BlockPos direction = Direction switch
+                {
+                    "north" => BlockFacing.EAST.Normali.ToBlockPos(),
+                    "east" => BlockFacing.SOUTH.Normali.ToBlockPos(),
+                    "south" => BlockFacing.WEST.Normali.ToBlockPos(),
+                    "west" => BlockFacing.NORTH.Normali.ToBlockPos(),
+                    _ => throw new NotImplementedException()
+                };
+                BlockPos oppositeDirection = direction * -1;
+
+                bool inRow = true;
+                bool inOppositeRow = true;
+                for (int step = 1; step <= MaxSearchRange + 1; step++)
+                {
+                    if (inRow)
                     {
-                        points.Add(checkPos);
-                        points.Add(checkOppositePos);
-
+                        inRow = HasNextPlug(direction, step);
                         if (points.Count >= MaxSearchRange * 2)
                         {
                             break;
                         }
                     }
-                    else
+
+                    if (inOppositeRow)
                     {
-                        ended1 = true;
-                    }
-                }
-
-                if (!ended2)
-                {
-                    BlockPos checkPos = pos - (checkDir * r);
-                    BlockPos checkOppositePos = oppositePos - (checkDir * r);
-
-                    bool isSuited = IsSuitedNetworkPart(this, checkPos, world);
-                    bool isOppositeSuited = IsSuitedNetworkPart(oppositeBlock, checkOppositePos, world);
-
-                    if (isSuited && isOppositeSuited)
-                    {
-                        points.Add(checkPos);
-                        points.Add(checkOppositePos);
-
+                        inOppositeRow = HasNextPlug(oppositeDirection, step);
                         if (points.Count >= MaxSearchRange * 2)
                         {
                             break;
                         }
                     }
+                }
+
+                return points;
+
+                bool HasNextPlug(BlockPos movingDirection, int step)
+                {
+                    BlockPos moving = movingDirection * step;
+                    BlockPos checkPos = pos + moving;
+                    BlockPos checkOppositePos = oppositePos + moving;
+
+                    bool isSuited = IsSuitedNetworkPart(this, checkPos);
+                    bool isOppositeSuited = IsSuitedNetworkPart(oppositeBlock, checkOppositePos);
+
+                    if (isSuited && isOppositeSuited)
+                    {
+                        points.Add(checkPos);
+                        points.Add(checkOppositePos);
+                        return true;
+                    }
                     else
                     {
-                        ended2 = true;
+                        return false;
                     }
                 }
-            }
 
-            return points;
-        }
+                bool IsSuitedNetworkPart(BlockPlugAndFeather? template, BlockPos pos)
+                {
+                    return template is not null &&
+                        world.BlockAccessor.GetBlock(pos) is BlockPlugAndFeather block &&
+                        world.BlockAccessor.GetBlockEntity(pos) is BEPlugAndFeather be &&
 
-        private BlockPos? FindOppositePlug(IWorldAccessor world, BlockPos pos)
-        {
-            BlockPos? subDir = null;
-            BlockPos? mainDir = null;
-            string[]? oppositeDirection = null;
-
-            if (Orientation == "up")
-            {
-                mainDir = BlockFacing.UP.Normali.ToBlockPos();
-                if (Direction == "north" || Direction == "south")
-                {
-                    subDir = BlockFacing.SOUTH.Normali.ToBlockPos();
-                    oppositeDirection = new string[] { "north", "south" };
-                }
-                else if (Direction == "east" || Direction == "west")
-                {
-                    subDir = BlockFacing.EAST.Normali.ToBlockPos();
-                    oppositeDirection = new string[] { "east", "west" };
-                }
-            }
-            else if (Orientation == "down")
-            {
-                mainDir = BlockFacing.DOWN.Normali.ToBlockPos();
-                if (Direction == "north" || Direction == "south")
-                {
-                    subDir = BlockFacing.SOUTH.Normali.ToBlockPos();
-                    oppositeDirection = new string[] { "north", "south" };
-                }
-                else if (Direction == "east" || Direction == "west")
-                {
-                    subDir = BlockFacing.EAST.Normali.ToBlockPos();
-                    oppositeDirection = new string[] { "east", "west" };
-                }
-            }
-            else if (Orientation == "horizontal")
-            {
-                subDir = BlockFacing.UP.Normali.ToBlockPos();
-                if (Direction == "north")
-                {
-                    mainDir = BlockFacing.NORTH.Normali.ToBlockPos();
-                    oppositeDirection = new string[] { "north", "south" };
-                }
-                else if (Direction == "east")
-                {
-                    mainDir = BlockFacing.EAST.Normali.ToBlockPos();
-                    oppositeDirection = new string[] { "east", "west" };
-                }
-                else if (Direction == "south")
-                {
-                    mainDir = BlockFacing.SOUTH.Normali.ToBlockPos();
-                    oppositeDirection = new string[] { "north", "south" };
-                }
-                else if (Direction == "west")
-                {
-                    mainDir = BlockFacing.WEST.Normali.ToBlockPos();
-                    oppositeDirection = new string[] { "east", "west" };
+                        !be.IsNetworkPart &&
+                        block.Material == template.Material &&
+                        block.Direction == template.Direction &&
+                        block.Orientation == template.Orientation;
                 }
             }
 
-            if (mainDir == null || subDir == null || oppositeDirection == null)
+            BlockPos? FindOppositePlug(IWorldAccessor world, BlockPos pos)
             {
+                BlockPos? subDir = null;
+                BlockPos? mainDir = null;
+                string[]? oppositeDirection = null;
+
+                ResolveDirections();
+
+                if (mainDir is null || subDir is null || oppositeDirection is null)
+                {
+                    return null;
+                }
+
+                for (int i = 1; i <= MaxSearchRange; i++)
+                {
+                    for (int j = 1; j <= MaxSearchRange; j++)
+                    {
+                        BlockPos pos1 = pos + mainDir * i + subDir * j;
+                        BlockPos pos2 = pos + mainDir * i - subDir * j;
+
+                        var block1 = world.BlockAccessor.GetBlock(pos1) as BlockPlugAndFeather;
+                        var block2 = world.BlockAccessor.GetBlock(pos2) as BlockPlugAndFeather;
+
+                        var be1 = (BEPlugAndFeather)world.BlockAccessor.GetBlockEntity(pos1);
+                        var be2 = (BEPlugAndFeather)world.BlockAccessor.GetBlockEntity(pos2);
+
+                        bool isSuited1 = be1 != null && !be1.IsNetworkPart &&
+                            block1?.Material == Material &&
+                            oppositeDirection.Contains(block1.Direction);
+
+                        bool isSuited2 = be2 != null && !be2.IsNetworkPart &&
+                            block2?.Material == Material &&
+                            oppositeDirection.Contains(block2.Direction);
+
+                        if (Orientation == "horizontal")
+                        {
+                            if (isSuited1 && block1?.Orientation == "down")
+                            {
+                                return pos1;
+                            }
+                            if (isSuited2 && block2?.Orientation == "up")
+                            {
+                                return pos2;
+                            }
+                        }
+                        else if (Orientation == "up" || Orientation == "down")
+                        {
+                            if (isSuited1 && block1?.Orientation == "horizontal")
+                            {
+                                return pos1;
+                            }
+                            if (isSuited2 && block2?.Orientation == "horizontal")
+                            {
+                                return pos2;
+                            }
+                        }
+                    }
+                }
+
                 return null;
-            }
 
-            for (int i = 1; i <= MaxSearchRange; i++)
-            {
-                for (int j = 1; j <= MaxSearchRange; j++)
+                void ResolveDirections()
                 {
-                    BlockPos pos1 = pos + mainDir * i + subDir * j;
-                    BlockPos pos2 = pos + mainDir * i - subDir * j;
-
-                    var block1 = world.BlockAccessor.GetBlock(pos1) as BlockPlugAndFeather;
-                    var block2 = world.BlockAccessor.GetBlock(pos2) as BlockPlugAndFeather;
-
-#pragma warning disable IDE0019 // Use pattern matching
-                    var be1 = world.BlockAccessor.GetBlockEntity(pos1) as BEPlugAndFeather;
-                    var be2 = world.BlockAccessor.GetBlockEntity(pos2) as BEPlugAndFeather;
-#pragma warning restore IDE0019 // Use pattern matching
-
-                    bool isSuited1 = be1 != null && !be1.IsNetworkPart &&
-                        block1?.Material == Material &&
-                        oppositeDirection.Contains(block1.Direction);
-
-                    bool isSuited2 = be2 != null && !be2.IsNetworkPart &&
-                        block2?.Material == Material &&
-                        oppositeDirection.Contains(block2.Direction);
-
-                    if (Orientation == "horizontal")
+                    if (Orientation == "up")
                     {
-                        if (isSuited1 && block1?.Orientation == "down")
+                        mainDir = BlockFacing.UP.Normali.ToBlockPos();
+                        if (Direction == "north" || Direction == "south")
                         {
-                            return pos1;
+                            subDir = BlockFacing.SOUTH.Normali.ToBlockPos();
+                            oppositeDirection = new string[] { "north", "south" };
                         }
-                        if (isSuited2 && block2?.Orientation == "up")
+                        else if (Direction == "east" || Direction == "west")
                         {
-                            return pos2;
+                            subDir = BlockFacing.EAST.Normali.ToBlockPos();
+                            oppositeDirection = new string[] { "east", "west" };
                         }
                     }
-                    else if (Orientation == "up" || Orientation == "down")
+                    else if (Orientation == "down")
                     {
-                        if (isSuited1 && block1?.Orientation == "horizontal")
+                        mainDir = BlockFacing.DOWN.Normali.ToBlockPos();
+                        if (Direction == "north" || Direction == "south")
                         {
-                            return pos1;
+                            subDir = BlockFacing.SOUTH.Normali.ToBlockPos();
+                            oppositeDirection = new string[] { "north", "south" };
                         }
-                        if (isSuited2 && block2?.Orientation == "horizontal")
+                        else if (Direction == "east" || Direction == "west")
                         {
-                            return pos2;
+                            subDir = BlockFacing.EAST.Normali.ToBlockPos();
+                            oppositeDirection = new string[] { "east", "west" };
+                        }
+                    }
+                    else if (Orientation == "horizontal")
+                    {
+                        subDir = BlockFacing.UP.Normali.ToBlockPos();
+                        if (Direction == "north")
+                        {
+                            mainDir = BlockFacing.NORTH.Normali.ToBlockPos();
+                            oppositeDirection = new string[] { "north", "south" };
+                        }
+                        else if (Direction == "east")
+                        {
+                            mainDir = BlockFacing.EAST.Normali.ToBlockPos();
+                            oppositeDirection = new string[] { "east", "west" };
+                        }
+                        else if (Direction == "south")
+                        {
+                            mainDir = BlockFacing.SOUTH.Normali.ToBlockPos();
+                            oppositeDirection = new string[] { "north", "south" };
+                        }
+                        else if (Direction == "west")
+                        {
+                            mainDir = BlockFacing.WEST.Normali.ToBlockPos();
+                            oppositeDirection = new string[] { "east", "west" };
                         }
                     }
                 }
             }
-
-            return null;
-        }
-
-        private static bool IsSuitedNetworkPart(BlockPlugAndFeather? template, BlockPos pos, IWorldAccessor world)
-        {
-            return template != null &&
-                world.BlockAccessor.GetBlock(pos) is BlockPlugAndFeather block &&
-                world.BlockAccessor.GetBlockEntity(pos) is BEPlugAndFeather be &&
-
-                !be.IsNetworkPart &&
-                block.Material == template.Material &&
-                block.Direction == template.Direction &&
-                block.Orientation == template.Orientation;
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
             dsc.AppendLineOnce();
-            dsc.Append(Lang.Get(Core.ModId + ":info-plugandfeather-heldinfo(range={0})", Attributes["searchrange"]));
+            dsc.Append(Lang.Get($"{Core.ModId}:info-plugandfeather-heldinfo(range={0})", Attributes["searchrange"]));
         }
 
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
         {
-            var wi = new List<WorldInteraction>(CommonWorldInteractions);
+            var be = world.BlockAccessor.GetBlockEntity(selection.Position) as BEPlugAndFeather;
+            bool isNetworkPart = be?.IsNetworkPart == true;
 
-            if (world.BlockAccessor.GetBlockEntity(selection.Position) is BEPlugAndFeather be && be.IsNetworkPart)
-            {
-                wi.AddRange(NetworkPartWorldInteractions);
-            }
-            wi.AddRange(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
-
-            return wi.ToArray();
+            return new[] {
+                new WorldInteraction()
+                {
+                    ActionLangCode = $"{Core.ModId}:wi-plugandfeather-quarryimpact",
+                    MouseButton = EnumMouseButton.Right,
+                    Itemstacks = ObjectCacheUtil.GetOrCreate(world.Api, $"{Core.ModId}-plugimpact", () =>
+                    {
+                        var list = new List<ItemStack>();
+                        foreach (var colObj in api.World.Collectibles)
+                        {
+                            if (colObj.Attributes != null)
+                            {
+                                if (colObj.Attributes["plugimpact"].Exists)
+                                {
+                                    list.Add(new ItemStack(colObj));
+                                }
+                            }
+                        }
+                        return list.ToArray();
+                    })
+                }}
+                .AppendIf(isNetworkPart, new WorldInteraction()
+                {
+                    ActionLangCode = $"{Core.ModId}:wi-plugandfeather-togglepreview",
+                    MouseButton = EnumMouseButton.Right,
+                    HotKeyCode = "sneak"
+                })
+                .Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
         }
     }
 }

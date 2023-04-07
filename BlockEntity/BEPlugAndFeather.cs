@@ -1,3 +1,4 @@
+using CommonLib.Config;
 using CommonLib.Extensions;
 using CommonLib.Utils;
 using System.Collections.Generic;
@@ -10,29 +11,13 @@ namespace StoneQuarry
 {
     public class BEPlugAndFeather : BlockEntity
     {
-        public SimpleParticleProperties BreakParticles { get; private set; }
-
-        /// <summary>
-        /// All points for own plug network (including the current plug).
-        /// Empty if the network does not exist.
-        /// </summary>
-        public List<BlockPos> Points { get; private set; } = new List<BlockPos>();
-        public bool IsNetworkPart => Points.Count > 0;
-
-        public int MaxWorkPerStage
-        {
-            get
-            {
-                int workNeeded = 5 + (Points.Count * 2);
-                return (int)(workNeeded * Core.Config.PlugWorkModifier);
-            }
-        }
-
+        private SimpleParticleProperties? _breakParticles;
         private int _currentStageWork = 0;
+        private ILogger? _modLogger;
 
-        public BEPlugAndFeather()
+        private SimpleParticleProperties BreakParticles
         {
-            BreakParticles = new SimpleParticleProperties()
+            get => _breakParticles ??= new()
             {
                 MinQuantity = 5,
                 AddQuantity = 2,
@@ -47,6 +32,72 @@ namespace StoneQuarry
                 ParticleModel = EnumParticleModel.Quad
             };
         }
+        private int MaxWorkPerStage
+        {
+            get
+            {
+                int workNeeded = 5 + (Points.Count * 2);
+                return (int)(workNeeded * Config.PlugWorkModifier);
+            }
+        }
+        private ILogger ModLogger => _modLogger ?? Api.Logger;
+        private Config Config { get; set; } = null!;
+
+        /// <summary> All points for own plug network (including the current plug). Empty if the network does not exist. </summary>
+        public List<BlockPos> Points { get; } = new();
+        public bool IsNetworkPart => Points.Count > 0;
+
+        public override void Initialize(ICoreAPI api)
+        {
+            base.Initialize(api);
+            var configs = api.ModLoader.GetModSystem<ConfigManager>();
+            Config = configs.GetConfig<Config>();
+            _modLogger = api.ModLoader.GetModSystem<Core>().Mod.Logger;
+        }
+
+        public override void OnReceivedServerPacket(int packetid, byte[] data)
+        {
+            base.OnReceivedServerPacket(packetid, data);
+
+            if (packetid == Constants.PreviewPacketId)
+            {
+                Api.ModLoader.GetModSystem<Core>()
+                    .PlugPreviewManager?
+                    .DisablePreview(Pos);
+            }
+        }
+
+        public override void ToTreeAttributes(ITreeAttribute tree)
+        {
+            tree.SetInt("work", _currentStageWork);
+
+            if (Points.Count != 0)
+            {
+                tree.SetInt("pointcount", Points.Count);
+                for (int i = 0; i < Points.Count; i++)
+                {
+                    tree.SetBlockPos("point" + i, Points[i]);
+                }
+            }
+
+            base.ToTreeAttributes(tree);
+        }
+
+        public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
+        {
+            _currentStageWork = tree.GetInt("work", _currentStageWork);
+
+            int slaveCount = tree.GetInt("pointcount", 0);
+            if (slaveCount != 0)
+            {
+                for (int i = 0; i < slaveCount; i++)
+                {
+                    Points.Add(tree.GetBlockPos("point" + i));
+                }
+            }
+
+            base.FromTreeAttributes(tree, worldAccessForResolve);
+        }
 
         public bool IsDone(IWorldAccessor world)
         {
@@ -54,7 +105,7 @@ namespace StoneQuarry
             {
                 if (world.BlockAccessor.GetBlock(point) is BlockPlugAndFeather pointBlock)
                 {
-                    if (pointBlock.Stage != pointBlock.MaxStage)
+                    if (pointBlock.Stage != BlockPlugAndFeather.MaxStage)
                     {
                         return false;
                     }
@@ -124,45 +175,45 @@ namespace StoneQuarry
                 }
                 else
                 {
-                    Core.ModLogger.Warning("Unknown drop item " + dropItemLoc);
+                    ModLogger.Warning("Unknown drop item " + dropItemLoc);
                 }
             }
 
             world.BlockAccessor.BreakBlock(Pos, byPlayer);
-        }
 
-        public Dictionary<AssetLocation, int> GetRocksInside(IWorldAccessor world, IServerPlayer byPlayer)
-        {
-            var quantitiesByRock = new Dictionary<AssetLocation, int>();
-
-            IRockManager manager = Api.ModLoader.GetModSystem<RockManager>();
-
-            foreach (var pos in GetAllBlocksInside())
+            Dictionary<AssetLocation, int> GetRocksInside(IWorldAccessor world, IServerPlayer byPlayer)
             {
-                Block block = world.BlockAccessor.GetBlock(pos);
-                if (manager.IsSuitableRock(block.Code))
+                var quantitiesByRock = new Dictionary<AssetLocation, int>();
+
+                IRockManager manager = Api.ModLoader.GetModSystem<RockManager>();
+
+                foreach (var pos in GetAllBlocksInside())
                 {
-                    if (world.IsPlayerCanBreakBlock(pos, byPlayer))
+                    Block block = world.BlockAccessor.GetBlock(pos);
+                    if (manager.IsSuitableRock(block.Code))
                     {
-                        BreakParticles.ColorByBlock = world.BlockAccessor.GetBlock(pos);
-                        BreakParticles.MinPos = pos.ToVec3d();
-
-                        world.BlockAccessor.SetBlock(0, pos);
-
-                        world.SpawnParticles(BreakParticles, byPlayer);
-
-                        if (quantitiesByRock.ContainsKey(block.Code))
+                        if (world.IsPlayerCanBreakBlock(pos, byPlayer))
                         {
-                            quantitiesByRock[block.Code] += 1;
-                        }
-                        else
-                        {
-                            quantitiesByRock.Add(block.Code, 1);
+                            BreakParticles.ColorByBlock = world.BlockAccessor.GetBlock(pos);
+                            BreakParticles.MinPos = pos.ToVec3d();
+
+                            world.BlockAccessor.SetBlock(0, pos);
+
+                            world.SpawnParticles(BreakParticles, byPlayer);
+
+                            if (quantitiesByRock.ContainsKey(block.Code))
+                            {
+                                quantitiesByRock[block.Code] += 1;
+                            }
+                            else
+                            {
+                                quantitiesByRock.Add(block.Code, 1);
+                            }
                         }
                     }
                 }
+                return quantitiesByRock;
             }
-            return quantitiesByRock;
         }
 
         public List<BlockPos> GetAllBlocksInside()
@@ -188,7 +239,7 @@ namespace StoneQuarry
             return blocks;
         }
 
-        public Cuboidi? GetInsideCube()
+        private Cuboidi? GetInsideCube()
         {
             if (IsNetworkPart)
             {
@@ -216,7 +267,6 @@ namespace StoneQuarry
                             innerPos.Add(BlockFacing.FromCode(pb.Direction).Normali);
                         }
 
-
                         if (innerPos.X < cube.X1) cube.X1 = innerPos.X;
                         if (innerPos.Y < cube.Y1) cube.Y1 = innerPos.Y;
                         if (innerPos.Z < cube.Z1) cube.Z1 = innerPos.Z;
@@ -232,50 +282,5 @@ namespace StoneQuarry
 
             return null;
         }
-
-        public override void OnReceivedServerPacket(int packetid, byte[] data)
-        {
-            base.OnReceivedServerPacket(packetid, data);
-
-            if (packetid == PlugPreviewManager.BEPacketId)
-            {
-                PlugPreviewManager ppm = Api.ModLoader.GetModSystem<Core>().PlugPreviewManager;
-                ppm?.DisablePreview(Pos);
-            }
-        }
-
-        public override void ToTreeAttributes(ITreeAttribute tree)
-        {
-            tree.SetInt("work", _currentStageWork);
-
-            if (Points.Count != 0)
-            {
-                tree.SetInt("pointcount", Points.Count);
-                for (int i = 0; i < Points.Count; i++)
-                {
-                    tree.SetBlockPos("point" + i, Points[i]);
-                }
-            }
-
-            base.ToTreeAttributes(tree);
-        }
-
-        public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
-        {
-            _currentStageWork = tree.GetInt("work", _currentStageWork);
-
-            int slaveCount = tree.GetInt("pointcount", 0);
-            if (slaveCount != 0)
-            {
-                for (int i = 0; i < slaveCount; i++)
-                {
-                    Points.Add(tree.GetBlockPos("point" + i));
-                }
-            }
-
-            base.FromTreeAttributes(tree, worldAccessForResolve);
-        }
     }
-
-
 }

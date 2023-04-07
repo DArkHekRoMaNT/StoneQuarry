@@ -12,9 +12,11 @@ namespace StoneQuarry
 {
     public class StoneSlabInventory : InventoryGeneric
     {
-        public IRockManager RockManager { get; }
-
         private int _currentSlotId = -1;
+
+        public IRockManager RockManager { get; }
+        public StoneSlabRenderPreset? RenderPreset { get; private set; }
+
         public int CurrentSlotId
         {
             get => _currentSlotId;
@@ -42,13 +44,34 @@ namespace StoneQuarry
             }
         }
 
-        public StoneSlabRenderPreset? RenderPreset { get; private set; }
-
         public StoneSlabInventory(ICoreAPI api, BlockPos? pos, int quantitySlots)
             : base(quantitySlots, "SQ_StoneSlab", pos?.ToString() ?? "-fake", api, OnNewSlot)
         {
             Pos = pos;
             RockManager = api.ModLoader.GetModSystem<RockManager>();
+        }
+
+        public override void ToTreeAttributes(ITreeAttribute tree)
+        {
+            base.ToTreeAttributes(tree);
+            tree.SetInt("currentslotid", CurrentSlotId);
+
+            // Hack for prevent ItemStack compare without stacksize in ItemstackAttribute.Equal -> ItemStack.Equal
+            ITreeAttribute hackTree = tree.GetOrAddTreeAttribute("itemstackequalhack");
+            for (int i = 0; i < slots?.Length; i++)
+            {
+                ItemSlot slot = slots[i];
+                if (!slot.Empty)
+                {
+                    hackTree.SetInt("slotsize" + i, slot.StackSize);
+                }
+            }
+        }
+
+        public override void FromTreeAttributes(ITreeAttribute tree)
+        {
+            base.FromTreeAttributes(tree);
+            CurrentSlotId = tree.GetInt("currentslotid", -1);
         }
 
         public void NextSlot()
@@ -96,7 +119,6 @@ namespace StoneQuarry
                 }
 
                 rock = CurrentRock;
-
                 if (rock == null)
                 {
                     return null;
@@ -105,7 +127,7 @@ namespace StoneQuarry
 
             if (!RockData.types.Contains(type))
             {
-                string errorCode = Core.ModId + ":ingameerror-stoneslab-unknown-tool";
+                string errorCode = $"{Core.ModId}:ingameerror-stoneslab-unknown-tool";
                 (byPlayer as IServerPlayer)?.SendIngameError("", Lang.Get(errorCode));
                 return null;
             }
@@ -129,7 +151,7 @@ namespace StoneQuarry
                     }
                     else
                     {
-                        string errorCode = Core.ModId + ":ingameerror-stoneslab-unknown-drop";
+                        string errorCode = $"{Core.ModId}:ingameerror-stoneslab-unknown-drop";
                         (byPlayer as IServerPlayer)?.SendIngameError("", Lang.Get(errorCode));
                         return null;
                     }
@@ -137,39 +159,30 @@ namespace StoneQuarry
             }
 
             return null;
-        }
 
-        private void MarkBEDirty()
-        {
-            if (Pos != null && Api.World.BlockAccessor.GetBlockEntity(Pos) is BEStoneSlab be)
+            bool TryGetNextTypedStack(string type, AssetLocation rock, NatFloat quantity,
+            [NotNullWhen(true)] out ItemStack? stack)
             {
-                be?.RenderPreset?.Update(this, be.Block);
-                be?.MarkDirty(true);
+                AssetLocation? dropCode = RockManager.GetValue(rock, type);
+                if (dropCode == null)
+                {
+                    stack = null;
+                    return false;
+                }
+
+                var dropCollectible = Api.World.GetCollectibleObject(dropCode);
+                if (dropCollectible == null)
+                {
+                    stack = null;
+                    return false;
+                }
+
+                ItemStack dropStack = new(dropCollectible);
+                BlockDropItemStack blockDrop = new(dropStack) { Quantity = quantity };
+
+                stack = blockDrop.GetNextItemStack();
+                return true;
             }
-        }
-
-        private bool TryGetNextTypedStack(string type, AssetLocation rock, NatFloat quantity,
-            [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out ItemStack? stack)
-        {
-            AssetLocation? dropCode = RockManager.GetValue(rock, type);
-            if (dropCode == null)
-            {
-                stack = null;
-                return false;
-            }
-
-            var dropCollectible = Api.World.GetCollectibleObject(dropCode);
-            if (dropCollectible == null)
-            {
-                stack = null;
-                return false;
-            }
-
-            ItemStack dropStack = new(dropCollectible);
-            BlockDropItemStack blockDrop = new(dropStack) { Quantity = quantity };
-
-            stack = blockDrop.GetNextItemStack();
-            return true;
         }
 
         public bool TryAddStack(ItemStack byStack)
@@ -245,27 +258,13 @@ namespace StoneQuarry
             return false;
         }
 
-        public override void ToTreeAttributes(ITreeAttribute tree)
+        private void MarkBEDirty()
         {
-            base.ToTreeAttributes(tree);
-            tree.SetInt("currentslotid", CurrentSlotId);
-
-            // Hack for prevent ItemStack compare without stacksize in ItemstackAttribute.Equal -> ItemStack.Equal
-            ITreeAttribute hackTree = tree.GetOrAddTreeAttribute("itemstackequalhack");
-            for (int i = 0; i < slots?.Length; i++)
+            if (Pos != null && Api.World.BlockAccessor.GetBlockEntity(Pos) is BEStoneSlab be)
             {
-                ItemSlot slot = slots[i];
-                if (!slot.Empty)
-                {
-                    hackTree.SetInt("slotsize" + i, slot.StackSize);
-                }
+                be?.RenderPreset?.Update(this, be.Block);
+                be?.MarkDirty(true);
             }
-        }
-
-        public override void FromTreeAttributes(ITreeAttribute tree)
-        {
-            base.FromTreeAttributes(tree);
-            CurrentSlotId = tree.GetInt("currentslotid", -1);
         }
 
         public static StoneSlabInventory StacksToTreeAttributes(List<ItemStack> stacks, ITreeAttribute tree, ICoreAPI api)

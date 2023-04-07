@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
@@ -9,20 +10,20 @@ namespace StoneQuarry
     {
         public Block?[] Blocks { get; private set; }
 
-        public StoneSlabRenderPreset(Block[] blocks)
+        private StoneSlabRenderPreset(Block[] blocks)
         {
             Blocks = blocks;
+        }
+
+        private StoneSlabRenderPreset(Block block)
+        {
+            string size = block.Variant["size"];
+            Blocks = new Block[SizeToBlockCount(size)];
         }
 
         public StoneSlabRenderPreset(StoneSlabInventory inventory, Block block) : this(block)
         {
             Update(inventory, block);
-        }
-
-        public StoneSlabRenderPreset(Block block)
-        {
-            string size = block.Variant["size"];
-            Blocks = new Block[SizeToBlockCount(size) ?? 0];
         }
 
         public void Update(StoneSlabInventory inv, Block block)
@@ -31,7 +32,7 @@ namespace StoneQuarry
             var quantities = new List<double>();
             var storedBlocks = new List<Block>();
 
-            int maxBlockCount = SizeToBlockCount(block.Variant["size"]) ?? 0;
+            int maxBlockCount = SizeToBlockCount(block.Variant["size"]);
             Blocks = new Block[maxBlockCount];
 
             foreach (var slot in inv)
@@ -73,15 +74,34 @@ namespace StoneQuarry
             }
         }
 
-        public static int? SizeToBlockCount(string size) => size switch
+        private static int SizeToBlockCount(string size)
         {
-            "giant" => 12,
-            "huge" => 8,
-            "large" => 4,
-            "medium" => 2,
-            "small" => 1,
-            _ => null,
-        };
+            return size switch
+            {
+                "giant" => 12,
+                "huge" => 8,
+                "large" => 4,
+                "medium" => 2,
+                "small" => 1,
+                _ => throw new NotImplementedException($"Unknown size {size}"),
+            };
+        }
+
+        public void ToAttributes(ITreeAttribute tree)
+        {
+            ITreeAttribute subtree = tree.GetOrAddTreeAttribute("preset");
+
+            subtree.SetInt("size", Blocks.Length);
+            for (int i = 0; i < Blocks.Length; i++)
+            {
+                subtree.SetString(i + "", Blocks[i]?.Code + "");
+            }
+        }
+
+        public override string ToString()
+        {
+            return string.Join("-", Blocks.Select((b) => b?.Code));
+        }
 
         public static StoneSlabRenderPreset? FromAttributes(ITreeAttribute tree, IWorldAccessor worldForResolve, Block? block = null)
         {
@@ -112,22 +132,6 @@ namespace StoneQuarry
             }
 
             return null;
-        }
-
-        public void ToAttributes(ITreeAttribute tree)
-        {
-            ITreeAttribute subtree = tree.GetOrAddTreeAttribute("preset");
-
-            subtree.SetInt("size", Blocks.Length);
-            for (int i = 0; i < Blocks.Length; i++)
-            {
-                subtree.SetString(i + "", Blocks[i]?.Code + "");
-            }
-        }
-
-        public override string ToString()
-        {
-            return string.Join("-", Blocks.Select((b) => b?.Code));
         }
     }
 }

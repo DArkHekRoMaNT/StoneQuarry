@@ -7,22 +7,37 @@ using Vintagestory.API.MathTools;
 
 namespace StoneQuarry
 {
-
     public class BEStoneSlab : BlockEntity
     {
+        private SimpleParticleProperties? _interactParticles;
+        private StoneSlabMeshCache? _meshCache;
+
         public StoneSlabRenderPreset? RenderPreset { get; private set; }
         public StoneSlabInventory? Inventory { get; private set; }
-
-
-        private SimpleParticleProperties? _interactParticles;
         public SimpleParticleProperties InteractParticles
         {
             get
             {
-                if (_interactParticles != null && Inventory?.CurrentRock != null)
+                _interactParticles ??= new()
+                {
+                    MinPos = new Vec3d(),
+                    AddPos = new Vec3d(.5, .5, .5),
+                    MinQuantity = 5,
+                    AddQuantity = 20,
+                    GravityEffect = .9f,
+                    WithTerrainCollision = true,
+                    ParticleModel = EnumParticleModel.Quad,
+                    LifeLength = 0.5f,
+                    MinVelocity = new Vec3f(-0.4f, -0.4f, -0.4f),
+                    AddVelocity = new Vec3f(0.8f, 1.2f, 0.8f),
+                    MinSize = 0.1f,
+                    MaxSize = 0.4f,
+                    DieOnRainHeightmap = false
+                };
+
+                if (Inventory?.CurrentRock != null)
                 {
                     Block rock = Api.World.GetBlock(Inventory.CurrentRock);
-
                     if (rock != null)
                     {
                         _interactParticles.ColorByBlock = rock;
@@ -33,48 +48,23 @@ namespace StoneQuarry
                     }
                 }
 
-                return _interactParticles ?? new SimpleParticleProperties();
+                return _interactParticles;
             }
         }
-
-
-        private StoneSlabMeshCache? meshCache;
 
         public override void Initialize(ICoreAPI api)
         {
             base.Initialize(api);
-
-            _interactParticles = new SimpleParticleProperties()
-            {
-                MinPos = new Vec3d(),
-                AddPos = new Vec3d(.5, .5, .5),
-                MinQuantity = 5,
-                AddQuantity = 20,
-                GravityEffect = .9f,
-                WithTerrainCollision = true,
-                ParticleModel = EnumParticleModel.Quad,
-                LifeLength = 0.5f,
-                MinVelocity = new Vec3f(-0.4f, -0.4f, -0.4f),
-                AddVelocity = new Vec3f(0.8f, 1.2f, 0.8f),
-                MinSize = 0.1f,
-                MaxSize = 0.4f,
-                DieOnRainHeightmap = false
-            };
-
-            if (Inventory == null)
-            {
-                Inventory = new StoneSlabInventory(api, Pos, 0);
-            }
-
+            Inventory ??= new StoneSlabInventory(api, Pos, 0);
             if (api is ICoreClientAPI)
             {
-                meshCache = api.ModLoader.GetModSystem<StoneSlabMeshCache>();
+                _meshCache = api.ModLoader.GetModSystem<StoneSlabMeshCache>();
             }
         }
 
         public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tessThreadTesselator)
         {
-            MeshData? mesh = meshCache?.GetMesh(this, tessThreadTesselator);
+            MeshData? mesh = _meshCache?.GetMesh(this, tessThreadTesselator);
 
             if (mesh != null)
             {
@@ -83,24 +73,6 @@ namespace StoneQuarry
             }
 
             return base.OnTesselation(mesher, tessThreadTesselator);
-        }
-
-        public void ContentToAttributes(ITreeAttribute tree)
-        {
-            Inventory?.ToTreeAttributes(tree);
-            RenderPreset?.ToAttributes(tree);
-        }
-
-        public void ContentFromAttributes(ITreeAttribute tree, IWorldAccessor world)
-        {
-            Inventory = new StoneSlabInventory(world.Api, Pos, tree.GetInt("qslots"));
-            Inventory.FromTreeAttributes(tree);
-
-            RenderPreset = StoneSlabRenderPreset.FromAttributes(tree, world);
-            if (RenderPreset == null)
-            {
-                RenderPreset = new StoneSlabRenderPreset(Inventory, Block);
-            }
         }
 
         public override void ToTreeAttributes(ITreeAttribute tree)
@@ -139,6 +111,21 @@ namespace StoneQuarry
                     dsc.AppendLine(text);
                 }
             }
+        }
+
+        public void ContentToAttributes(ITreeAttribute tree)
+        {
+            Inventory?.ToTreeAttributes(tree);
+            RenderPreset?.ToAttributes(tree);
+        }
+
+        public void ContentFromAttributes(ITreeAttribute tree, IWorldAccessor world)
+        {
+            Inventory = new StoneSlabInventory(world.Api, Pos, tree.GetInt("qslots"));
+            Inventory.FromTreeAttributes(tree);
+
+            RenderPreset = StoneSlabRenderPreset.FromAttributes(tree, world);
+            RenderPreset ??= new StoneSlabRenderPreset(Inventory, Block);
         }
 
         public ItemStack? GetSelfDrop()

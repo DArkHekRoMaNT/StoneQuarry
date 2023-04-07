@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -11,165 +11,153 @@ namespace StoneQuarry
 {
     public class RockManager : ModSystem, IRockManager
     {
-        private readonly Dictionary<AssetLocation, RockData> _data;
+        private readonly Dictionary<AssetLocation, RockData> _data = new();
+
         public IReadOnlyList<RockData> Data => _data.Values.ToList();
 
-#nullable disable
-        private ICoreServerAPI api;
-#nullable restore
-
-        public RockManager()
-        {
-            _data = new Dictionary<AssetLocation, RockData>();
-        }
-
-        // Requires Block and Item Loader: 0.2
-        public override double ExecuteOrder() => 0.21;
+        public override double ExecuteOrder() => 0.21; // Requires Block and Item Loader: 0.2
 
         public override void StartClientSide(ICoreClientAPI api)
         {
             api.Network
-                .RegisterChannel(Core.ModId + "-rockmanager")
+                .RegisterChannel(Constants.RockManagerChannelId)
                 .RegisterMessageType<List<RockData>>()
                 .SetMessageHandler<List<RockData>>((list) =>
                 {
                     _data.Clear();
-                    AddDataFromList(list);
+                    foreach (RockData rockData in list)
+                    {
+                        _data.Add(rockData.Rock, rockData);
+                    }
                 });
         }
 
         public override void StartServerSide(ICoreServerAPI api)
         {
-            this.api = api;
-
             LoadRockData();
 
-            IServerNetworkChannel serverChannel = api.Network
-                .RegisterChannel(Core.ModId + "-rockmanager")
+            var serverChannel = api.Network
+                .RegisterChannel(Constants.RockManagerChannelId)
                 .RegisterMessageType<List<RockData>>();
 
             api.Event.PlayerJoin += (player) =>
             {
                 serverChannel.SendPacket(_data.Values.ToList(), player);
             };
-        }
 
-        private void LoadRockData()
-        {
-            try
+            void LoadRockData()
             {
-                var dataLoc = new AssetLocation(Core.ModId, "config/rockdata.json");
-                AddDataFromList(api.Assets.Get<List<RockData>>(dataLoc));
-            }
-            catch (Exception e)
-            {
-                Mod.Logger.Error("Rock data not loaded, error: {0}", e.Message);
-            }
-
-            ResolveWildcards();
-            CheckAllExist();
-        }
-
-        private void AddDataFromList(List<RockData> list)
-        {
-            foreach (RockData rockData in list)
-            {
-                _data.Add(rockData.Rock, rockData);
-            }
-        }
-
-        private void ResolveWildcards()
-        {
-            List<RockData> resolvedWildcards = new();
-            List<AssetLocation> toRemove = new();
-            foreach (RockData rockData in _data.Values)
-            {
-                AssetLocation rockCode = rockData.Rock;
-
-                if (rockCode.IsWildCard)
+                try
                 {
-                    foreach (Block block in api.World.Blocks)
+                    var dataLoc = new AssetLocation($"{Mod.Info.ModID}:config/rockdata.json");
+                    foreach (RockData rockData in api.Assets.Get<List<RockData>>(dataLoc))
                     {
-                        if (block.Code != null)
+                        _data.Add(rockData.Rock, rockData);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Mod.Logger.Error("Rock data not loaded, error: {0}", e.Message);
+                }
+
+                ResolveWildcards();
+                CheckAllExist();
+            }
+
+            void ResolveWildcards()
+            {
+                List<RockData> resolvedWildcards = new();
+                List<AssetLocation> toRemove = new();
+                foreach (RockData rockData in _data.Values)
+                {
+                    AssetLocation rockCode = rockData.Rock;
+                    if (rockCode.IsWildCard)
+                    {
+                        foreach (Block block in api.World.Blocks)
                         {
-                            if (WildcardUtil.Match(rockCode, block.Code))
+                            if (block.Code != null)
                             {
-                                string wildcardValue = WildcardUtil.GetWildcardValue(rockCode, block.Code);
-                                RockData resolved = (RockData)rockData.Clone();
-                                resolved.SetWildcardValue(wildcardValue, api);
-                                resolvedWildcards.Add(resolved);
+                                if (WildcardUtil.Match(rockCode, block.Code))
+                                {
+                                    string wildcardValue = WildcardUtil
+                                        .GetWildcardValue(rockCode, block.Code);
+
+                                    RockData resolved = (RockData)rockData.Clone();
+                                    resolved.SetWildcardValue(wildcardValue, api);
+                                    resolvedWildcards.Add(resolved);
+                                }
                             }
                         }
+                        toRemove.Add(rockData.Rock);
                     }
-                    toRemove.Add(rockData.Rock);
+                }
+
+                foreach (RockData rockData in resolvedWildcards)
+                {
+                    _data.Add(rockData.Rock, rockData);
+                }
+
+                foreach (AssetLocation code in toRemove)
+                {
+                    _data.Remove(code);
                 }
             }
 
-            AddDataFromList(resolvedWildcards);
-
-            foreach (AssetLocation code in toRemove)
+            void CheckAllExist()
             {
-                _data.Remove(code);
-            }
-        }
-
-        private void CheckAllExist()
-        {
-            List<RockData> unknownRocks = new();
-            foreach (RockData rockData in _data.Values)
-            {
-                foreach (AssetLocation? code in rockData)
+                List<RockData> unknownRocks = new();
+                foreach (RockData rockData in _data.Values)
                 {
-                    if (code == null) continue;
-
-                    bool found = false;
-
-                    foreach (Block block in api.World.Blocks)
+                    foreach (AssetLocation? code in rockData)
                     {
-                        if (code.Equals(block.Code))
+                        if (code == null)
                         {
-                            found = true;
-                            break;
+                            continue;
                         }
-                    }
 
-                    if (!found)
-                    {
-                        foreach (Item item in api.World.Items)
+                        bool found = false;
+                        foreach (Block block in api.World.Blocks)
                         {
-                            if (code.Equals(item.Code))
+                            if (code.Equals(block.Code))
                             {
                                 found = true;
                                 break;
                             }
                         }
-                    }
 
-                    if (!found)
-                    {
-                        string? type = rockData[code];
-                        if (type != null)
+                        if (!found)
                         {
-                            if (type == "rock")
+                            foreach (Item item in api.World.Items)
                             {
-                                Mod.Logger.Warning("Unknown rock {0}", rockData.Rock);
-                                unknownRocks.Add(rockData);
-                                continue;
+                                if (code.Equals(item.Code))
+                                {
+                                    found = true;
+                                    break;
+                                }
                             }
-                            else
+                        }
+
+                        if (!found)
+                        {
+                            string? type = rockData[code];
+                            if (type != null)
                             {
-                                Mod.Logger.Warning("Unknown {0} code {1} in rock {2}", type, code, rockData.Rock);
-                                rockData[type] = null;
+                                if (type == "rock")
+                                {
+                                    Mod.Logger.Warning("Unknown rock {0}", rockData.Rock);
+                                    unknownRocks.Add(rockData);
+                                    continue;
+                                }
+                                else
+                                {
+                                    Mod.Logger.Warning("Unknown {0} code {1} in rock {2}", type, code, rockData.Rock);
+                                    rockData[type] = null;
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-
-        public bool IsSuitableRock(AssetLocation rock)
-        {
-            return IsSuitable(rock, "rock");
         }
 
         public AssetLocation? GetValue(AssetLocation rock, string type)
@@ -184,11 +172,16 @@ namespace StoneQuarry
 
         public RockData? GetValue(AssetLocation rock)
         {
-            if (_data.ContainsKey(rock))
+            if (_data.TryGetValue(rock, out RockData value))
             {
-                return _data[rock];
+                return value;
             }
             return null;
+        }
+
+        public bool IsSuitableRock(AssetLocation rock)
+        {
+            return IsSuitable(rock, "rock");
         }
 
         public bool IsSuitable(AssetLocation code, string? type = null)
@@ -198,7 +191,6 @@ namespace StoneQuarry
                 if (type != null)
                 {
                     AssetLocation? loc = rockData[type];
-
                     if (code.Equals(rockData[type]))
                     {
                         return true;

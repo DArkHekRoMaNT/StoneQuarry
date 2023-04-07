@@ -12,10 +12,10 @@ namespace StoneQuarry
 {
     public class BERubbleStorage : BlockEntity, ITexPositionSource
     {
-        public int MaxStorable => Block.Attributes["maxStorable"].AsInt(0);
-
-        private string? _currentDisplayedTop = null;
+        private string? _currentDisplayedType = null;
         private int _lastContentLevel = 0;
+
+        public int MaxStorable => Block.Attributes["maxStorable"].AsInt(0);
         public int CurrentContentLevel
         {
             get
@@ -26,7 +26,7 @@ namespace StoneQuarry
             }
         }
 
-        public EnumStorageLock StorageLock { get; set; } = EnumStorageLock.None;
+        public RubbleStorageSelectType LockedType { get; set; } = RubbleStorageSelectType.None;
         public RubbleStorageInventory? Inventory { get; private set; }
 
         public Size2i AtlasSize => ((ICoreClientAPI)Api).BlockTextureAtlas.Size;
@@ -34,7 +34,7 @@ namespace StoneQuarry
         {
             get
             {
-                ICoreClientAPI capi = (ICoreClientAPI)Api;
+                var capi = (ICoreClientAPI)Api;
 
                 if (Inventory != null)
                 {
@@ -57,7 +57,7 @@ namespace StoneQuarry
                             Block? block = Api.World.GetBlock(blockCode);
                             if (block != null)
                             {
-                                ITexPositionSource tex = capi.Tesselator.GetTexSource(block);
+                                ITexPositionSource tex = capi.Tesselator.GetTextureSource(block);
                                 string otherCode = block.Textures.FirstOrDefault().Key;
                                 return tex[otherCode];
                             }
@@ -65,33 +65,28 @@ namespace StoneQuarry
                     }
                 }
 
-                return capi.Tesselator.GetTexSource(Block)[textureCode];
+                return capi.Tesselator.GetTextureSource(Block)[textureCode];
             }
         }
 
         public override void Initialize(ICoreAPI api)
         {
             base.Initialize(api);
-
-            if (Inventory == null)
-            {
-                Inventory = new RubbleStorageInventory(Api, Pos, MaxStorable);
-            }
-
-            UpdateDisplayedTop();
+            Inventory ??= new RubbleStorageInventory(Api, Pos, MaxStorable);
+            UpdateDisplayedType();
         }
 
         public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tessThreadTesselator)
         {
             if (Inventory?.StoredRock != null)
             {
-                if (_currentDisplayedTop != null)
+                if (_currentDisplayedType != null)
                 {
-                    string topName = "top-" + _currentDisplayedTop + "-" + Inventory.StoredRock;
-                    string topPath = Core.ModId + ":shapes/block/rubblestorage/top-" + _currentDisplayedTop + ".json";
+                    string topName = "top-" + _currentDisplayedType + "-" + Inventory.StoredRock;
+                    string topPath = Core.ModId + ":shapes/block/rubblestorage/top-" + _currentDisplayedType + ".json";
 
                     Vec3f? offset = null;
-                    if (_currentDisplayedTop != "plate")
+                    if (_currentDisplayedType != "plate")
                     {
                         topName += "-" + CurrentContentLevel;
                         offset = new Vec3f(0, -0.06f * CurrentContentLevel, 0);
@@ -109,52 +104,112 @@ namespace StoneQuarry
             }
 
             return base.OnTesselation(mesher, tessThreadTesselator);
+
+            MeshData GetOrCreateMesh(string meshName, string shapePath, ITesselatorAPI tesselator, Vec3f? offset = null)
+            {
+                string key = $"{Core.ModId}-rubblestorage-{meshName}-{Block.Variant["side"]}";
+                return ObjectCacheUtil.GetOrCreate(Api, key, () =>
+                {
+                    Shape shape = Api.Assets.Get<Shape>(new AssetLocation(shapePath));
+                    tesselator.TesselateShape(nameof(BERubbleStorage), shape, out MeshData mesh, this);
+
+                    if (offset != null)
+                    {
+                        mesh.Translate(offset);
+                    }
+
+                    float radY = 0;
+                    switch (Block.LastCodePart())
+                    {
+                        case "north":
+                            radY = 0;
+                            break;
+                        case "east":
+                            radY = (float)(1.5 * Math.PI); //270
+                            break;
+                        case "south":
+                            radY = (float)Math.PI; //180
+                            break;
+                        case "west":
+                            radY = (float)(0.5 * Math.PI); //90
+                            break;
+                    }
+
+                    return mesh.Rotate(new Vec3f(.5f, .5f, .5f), 0, radY, 0);
+                });
+            }
         }
 
-        private MeshData GetOrCreateMesh(string meshName, string shapePath, ITesselatorAPI tesselator, Vec3f? offset = null)
+        public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
         {
-            string key = $"{Core.ModId}-rubblestorage-{meshName}-{Block.Variant["side"]}";
-            return ObjectCacheUtil.GetOrCreate(Api, key, () =>
+            base.FromTreeAttributes(tree, worldAccessForResolve);
+            LockedType = (RubbleStorageSelectType)tree.GetInt("storageLock", 0);
+            Inventory = new RubbleStorageInventory(worldAccessForResolve.Api, Pos, MaxStorable);
+            Inventory.FromTreeAttributes(tree);
+        }
+
+        public override void ToTreeAttributes(ITreeAttribute tree)
+        {
+            base.ToTreeAttributes(tree);
+            tree.SetInt("storageLock", (int)LockedType);
+            Inventory?.ToTreeAttributes(tree);
+        }
+
+        public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
+        {
+            base.GetBlockInfo(forPlayer, dsc);
+
+            if (Inventory != null)
             {
-                Shape shape = Api.Assets.Get<Shape>(new AssetLocation(shapePath));
-                tesselator.TesselateShape(nameof(BERubbleStorage), shape, out MeshData mesh, this);
-
-                if (offset != null)
+                if (Inventory.StoredRock == null)
                 {
-                    mesh.Translate(offset);
+                    dsc.AppendLine(Lang.Get($"{Core.ModId}:info-rubblestorage-empty"));
                 }
-
-                float radY = 0;
-                switch (Block.LastCodePart())
+                else
                 {
-                    case "north":
-                        radY = 0;
-                        break;
-                    case "east":
-                        radY = (float)(1.5 * Math.PI); //270
-                        break;
-                    case "south":
-                        radY = (float)Math.PI; //180
-                        break;
-                    case "west":
-                        radY = (float)(0.5 * Math.PI); //90
-                        break;
+                    string stoneLangCode = $"{Core.ModId}:info-rubblestorage-stone(count={0})";
+                    string gravelLangCode = $"{Core.ModId}:info-rubblestorage-gravel(count={0})";
+                    string sandLangCode = $"{Core.ModId}:info-rubblestorage-sand(count={0})";
+
+                    string stoneText = Lang.Get(stoneLangCode, Inventory.StoneSlot.StackSize);
+                    string gravelText = Lang.Get(gravelLangCode, Inventory.GravelSlot.StackSize);
+                    string sandText = Lang.Get(sandLangCode, Inventory.SandSlot.StackSize);
+
+                    string locked = Lang.Get($"{Core.ModId}:info-rubblestorage-locked");
+                    switch (LockedType)
+                    {
+                        case RubbleStorageSelectType.Stone:
+                            stoneText += locked;
+                            break;
+                        case RubbleStorageSelectType.Gravel:
+                            gravelText += locked;
+                            break;
+                        case RubbleStorageSelectType.Sand:
+                            sandText += locked;
+                            break;
+                    }
+
+                    string rockName = Lang.Get(Inventory.StoredRock.ToString());
+
+                    dsc.AppendLine(Lang.Get($"{Core.ModId}:info-rubblestorage-type(type={0})", rockName));
+                    dsc.AppendLine(stoneText);
+                    dsc.AppendLine(gravelText);
+                    dsc.AppendLine(sandText);
                 }
-                return mesh.Rotate(new Vec3f(.5f, .5f, .5f), 0, radY, 0);
-            });
+            }
         }
 
         /// <summary>
-        /// Set's the displayed block to the type that has the largest amount of stored material.
+        /// Set the displayed content texture to the most stored material type
         /// </summary>
-        public void UpdateDisplayedTop()
+        public void UpdateDisplayedType()
         {
             int maxSize = Inventory.Max((s) => s.StackSize);
             RubbleStorageItemSlot slot = (RubbleStorageItemSlot)Inventory.First((s) => s.StackSize == maxSize);
-            string? newTop = slot.Type;
-            if (newTop != _currentDisplayedTop || CurrentContentLevel != _lastContentLevel)
+            string? newTop = slot.ContentType;
+            if (newTop != _currentDisplayedType || CurrentContentLevel != _lastContentLevel)
             {
-                _currentDisplayedTop = newTop;
+                _currentDisplayedType = newTop;
                 _lastContentLevel = CurrentContentLevel;
                 MarkDirty(true);
             }
@@ -171,10 +226,8 @@ namespace StoneQuarry
                     + blockSel.Position.ToVec3d();
 
                 world.SpawnItemEntity(stack, dropPos, blockSel.HitPosition.Normalize() * .05);
-
-                UpdateDisplayedTop();
+                UpdateDisplayedType();
                 MarkDirty(true);
-
                 return true;
             }
 
@@ -184,16 +237,16 @@ namespace StoneQuarry
         public bool TryAddResource(ItemSlot fromSlot, int quantity)
         {
             bool flag = Inventory != null && Inventory.TryAddResource(fromSlot, quantity);
-            if(flag)
+            if (flag)
             {
-                UpdateDisplayedTop();
+                UpdateDisplayedType();
                 MarkDirty(true);
             }
             return flag;
         }
 
         /// <summary>
-        /// Will attempt to add all eligible items from the player's inventory.
+        /// Will attempt to add all suitable items from the player's inventory
         /// </summary>
         public bool TryAddAll(IPlayer byPlayer)
         {
@@ -228,18 +281,18 @@ namespace StoneQuarry
         }
 
         /// <summary>
-        /// Turns stone into gravel and gravel into sand.
+        /// Turns stone into gravel and gravel into sand
         /// </summary>
-        public bool TryDegrade() => Inventory != null && StorageLock switch
+        public bool TryDegrade() => Inventory != null && LockedType switch
         {
-            EnumStorageLock.Stone => Inventory.TryDegrade("gravel", "sand"),
-            EnumStorageLock.Gravel => Inventory.TryDegrade("stone", "gravel"),
-            EnumStorageLock.Sand => Inventory.TryDegrade("gravel", "sand") || Inventory.TryDegrade("stone", "sand", false),
+            RubbleStorageSelectType.Stone => Inventory.TryDegrade("gravel", "sand"),
+            RubbleStorageSelectType.Gravel => Inventory.TryDegrade("stone", "gravel"),
+            RubbleStorageSelectType.Sand => Inventory.TryDegrade("gravel", "sand") || Inventory.TryDegrade("stone", "sand", false),
             _ => Inventory.TryDegrade("stone", "sand", true) || Inventory.TryDegrade("gravel", "sand"),
         };
 
         /// <summary>
-        /// Try to create a muddy gravel.
+        /// Try to create a muddy gravel
         /// </summary>
         public bool TryDrench(IWorldAccessor world, BlockSelection blockSel, IPlayer byPlayer)
         {
@@ -257,11 +310,11 @@ namespace StoneQuarry
                 ItemStack? portionStack = portion.GetItemstack("0");
                 AssetLocation portionCode = portionStack.Collectible.Code;
 
-                if (gravelQuantity > 0 && portionCode.Equals(new AssetLocation("game", "waterportion")))
+                if (gravelQuantity > 0 && portionCode.Equals(new AssetLocation("game:waterportion")))
                 {
-                    Block muddyGravelBlock = world.GetBlock(new AssetLocation("game", "muddygravel"));
+                    Block muddyGravelBlock = world.GetBlock(new AssetLocation("game:muddygravel"));
 
-                    // Deviding max stack drop by four because not doing so created a mess.
+                    // Dividing max stack drop by four because not doing so created a mess.
                     int quantity = Math.Min(muddyGravelBlock.MaxStackSize / 4, gravelQuantity);
                     ItemStack muddyGravelStack = new(muddyGravelBlock, quantity);
                     Inventory.GravelSlot.TakeOut(quantity);
@@ -284,21 +337,6 @@ namespace StoneQuarry
             return false;
         }
 
-        public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
-        {
-            base.FromTreeAttributes(tree, worldAccessForResolve);
-            StorageLock = (EnumStorageLock)tree.GetInt("storageLock", 0);
-            Inventory = new RubbleStorageInventory(worldAccessForResolve.Api, Pos, MaxStorable);
-            Inventory.FromTreeAttributes(tree);
-        }
-
-        public override void ToTreeAttributes(ITreeAttribute tree)
-        {
-            base.ToTreeAttributes(tree);
-            tree.SetInt("storageLock", (int)StorageLock);
-            Inventory?.ToTreeAttributes(tree);
-        }
-
         public ItemStack GetSelfStack()
         {
             ItemStack stack = new(Block);
@@ -311,57 +349,5 @@ namespace StoneQuarry
             Inventory = new RubbleStorageInventory(Api, Pos, MaxStorable);
             Inventory.FromTreeAttributes(stack.Attributes);
         }
-
-        public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
-        {
-            base.GetBlockInfo(forPlayer, dsc);
-
-            if (Inventory != null)
-            {
-                if (Inventory.StoredRock == null)
-                {
-                    dsc.AppendLine(Lang.Get(Core.ModId + ":info-rubblestorage-empty"));
-                }
-                else
-                {
-                    string stoneLangCode = Core.ModId + ":info-rubblestorage-stone(count={0})";
-                    string gravelLangCode = Core.ModId + ":info-rubblestorage-gravel(count={0})";
-                    string sandLangCode = Core.ModId + ":info-rubblestorage-sand(count={0})";
-
-                    string stoneText = Lang.Get(stoneLangCode, Inventory.StoneSlot.StackSize);
-                    string gravelText = Lang.Get(gravelLangCode, Inventory.GravelSlot.StackSize);
-                    string sandText = Lang.Get(sandLangCode, Inventory.SandSlot.StackSize);
-
-                    string locked = Lang.Get(Core.ModId + ":info-rubblestorage-locked");
-                    switch (StorageLock)
-                    {
-                        case EnumStorageLock.Stone:
-                            stoneText += locked;
-                            break;
-                        case EnumStorageLock.Gravel:
-                            gravelText += locked;
-                            break;
-                        case EnumStorageLock.Sand:
-                            sandText += locked;
-                            break;
-                    }
-
-                    string rockName = Lang.Get(Inventory.StoredRock.ToString());
-
-                    dsc.AppendLine(Lang.Get(Core.ModId + ":info-rubblestorage-type(type={0})", rockName));
-                    dsc.AppendLine(stoneText);
-                    dsc.AppendLine(gravelText);
-                    dsc.AppendLine(sandText);
-                }
-            }
-        }
-    }
-
-    public enum EnumStorageLock : int
-    {
-        None = 0,
-        Sand = 1,
-        Gravel = 2,
-        Stone = 3
     }
 }

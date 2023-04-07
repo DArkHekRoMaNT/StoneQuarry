@@ -1,6 +1,4 @@
-using CommonLib.Utils;
 using Vintagestory.API.Common;
-using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 
 namespace StoneQuarry
@@ -26,14 +24,11 @@ namespace StoneQuarry
             }
         }
 
+        public int MaxStorable { get; }
         public RubbleStorageItemSlot StoneSlot => (RubbleStorageItemSlot)slots[0];
         public RubbleStorageItemSlot GravelSlot => (RubbleStorageItemSlot)slots[1];
         public RubbleStorageItemSlot SandSlot => (RubbleStorageItemSlot)slots[2];
-
         public int CurrentQuantity => StoneSlot.StackSize + GravelSlot.StackSize + SandSlot.StackSize;
-
-        public int MaxStorable { get; }
-
         public float Filling => (float)CurrentQuantity / MaxStorable;
 
         public RubbleStorageInventory(ICoreAPI api, BlockPos? pos = null, int maxStorable = 0)
@@ -44,13 +39,16 @@ namespace StoneQuarry
             RockManager = api.ModLoader.GetModSystem<RockManager>();
         }
 
-        public RubbleStorageItemSlot? GetSlotByType(string? type) => type switch
+        public RubbleStorageItemSlot? GetSlotByType(string? type)
         {
-            "stone" => StoneSlot,
-            "gravel" => GravelSlot,
-            "sand" => SandSlot,
-            _ => null
-        };
+            return type switch
+            {
+                "stone" => StoneSlot,
+                "gravel" => GravelSlot,
+                "sand" => SandSlot,
+                _ => null
+            };
+        }
 
         public ItemStack? GetResource(string? type, int quantity)
         {
@@ -130,45 +128,6 @@ namespace StoneQuarry
             }
 
             return false;
-        }
-
-        public override void MarkSlotDirty(int slotId)
-        {
-            base.MarkSlotDirty(slotId);
-        }
-
-        public override void FromTreeAttributes(ITreeAttribute treeAttribute)
-        {
-            base.FromTreeAttributes(treeAttribute);
-
-            // Legacy v2.0.0-pre.5
-            if (Empty)
-            {
-                string storedType = treeAttribute.GetString("storedType", null);
-                if (storedType != null)
-                {
-                    AssetLocation rock = new(storedType);
-                    IRockManager manager = Api.ModLoader.GetModSystem<RockManager>();
-
-                    foreach (string type in new string[] { "stone", "gravel", "sand" })
-                    {
-                        int quantity = treeAttribute.GetInt(type, 0);
-                        if (quantity > 0)
-                        {
-                            AssetLocation? code = manager.GetValue(rock, type);
-                            if (code != null)
-                            {
-                                CollectibleObject? obj = Api.World.GetCollectibleObject(code);
-                                if (obj != null)
-                                {
-                                    StoneSlot.Itemstack = new ItemStack(obj, quantity);
-                                    StoneSlot.MarkDirty();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         private static ItemSlot OnNewSlot(int slotId, InventoryGeneric self)
