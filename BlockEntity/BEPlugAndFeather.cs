@@ -203,7 +203,7 @@ namespace StoneQuarry
                             AddQuantity = 0,
                             ColorByBlock = world.GetBlock(rock.Key),
                             MinPos = cube.Start.ToVec3d(),
-                            AddPos = (cube.End - cube.Start).ToVec3d(),
+                            AddPos = (cube.End - cube.Start).ToVec3d().Add(1, 1, 1),
                             MinVelocity = new Vec3f(-0.05f, -0.4f, -0.05f),
                             AddVelocity = new Vec3f(0.1f, 0.2f, 0.1f),
                             LifeLength = 1f,
