@@ -1,6 +1,7 @@
 using CommonLib.Config;
 using CommonLib.Extensions;
-using CommonLib.Utils;
+using Jint.Expressions;
+using System;
 using System.Collections.Generic;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
@@ -11,27 +12,9 @@ namespace StoneQuarry
 {
     public class BEPlugAndFeather : BlockEntity
     {
-        private SimpleParticleProperties? _breakParticles;
         private int _currentStageWork = 0;
         private ILogger? _modLogger;
 
-        private SimpleParticleProperties BreakParticles
-        {
-            get => _breakParticles ??= new()
-            {
-                MinQuantity = 5,
-                AddQuantity = 2,
-                MinSize = 1f,
-                MaxSize = 3f,
-                MinPos = new Vec3d(),
-                AddPos = new Vec3d(1, 1, 1),
-                MinVelocity = new Vec3f(0, -0.1f, 0),
-                AddVelocity = new Vec3f(.2f, -0.2f, .2f),
-                ColorByBlock = Block,
-                LifeLength = .5f,
-                ParticleModel = EnumParticleModel.Quad
-            };
-        }
         private int MaxWorkPerStage
         {
             get
@@ -186,22 +169,17 @@ namespace StoneQuarry
             Dictionary<AssetLocation, int> GetRocksInside(IWorldAccessor world, IServerPlayer byPlayer)
             {
                 var quantitiesByRock = new Dictionary<AssetLocation, int>();
-
                 IRockManager manager = Api.ModLoader.GetModSystem<RockManager>();
-
-                foreach (var pos in GetAllBlocksInside())
+                int maxQuantity = 0;
+                foreach (BlockPos pos in GetAllBlocksInside())
                 {
                     Block block = world.BlockAccessor.GetBlock(pos);
                     if (manager.IsSuitableRock(block.Code))
                     {
-                        if (world.IsPlayerCanBreakBlock(pos, byPlayer))
+                        if (world.Claims.TryAccess(byPlayer, pos, EnumBlockAccessFlags.BuildOrBreak))
                         {
-                            BreakParticles.ColorByBlock = world.BlockAccessor.GetBlock(pos);
-                            BreakParticles.MinPos = pos.ToVec3d();
-
                             world.BlockAccessor.SetBlock(0, pos);
-
-                            world.SpawnParticles(BreakParticles, byPlayer);
+                            world.BlockAccessor.TriggerNeighbourBlockUpdate(pos);
 
                             if (quantitiesByRock.ContainsKey(block.Code))
                             {
@@ -211,9 +189,42 @@ namespace StoneQuarry
                             {
                                 quantitiesByRock.Add(block.Code, 1);
                             }
+
+                            maxQuantity++;
                         }
                     }
                 }
+
+                Cuboidi? cube = GetInsideCube();
+                if (cube != null)
+                {
+                    Vec3i center = cube.Center;
+                    world.PlaySoundAt(SQSounds.Crack, center.X, center.Y, center.Z);
+
+                    foreach (KeyValuePair<AssetLocation, int> rock in quantitiesByRock)
+                    {
+                        float modifier = rock.Value / (float)maxQuantity;
+                        world.SpawnParticles(new SimpleParticleProperties()
+                        {
+                            MinQuantity = (float)Math.Log(1 + maxQuantity * modifier) * 10f,
+                            AddQuantity = 0,
+                            ColorByBlock = world.GetBlock(rock.Key),
+                            MinPos = cube.Start.ToVec3d(),
+                            AddPos = (cube.End - cube.Start).ToVec3d(),
+                            MinVelocity = new Vec3f(-0.05f, -0.4f, -0.05f),
+                            AddVelocity = new Vec3f(0.1f, 0.2f, 0.1f),
+                            LifeLength = 1f,
+                            GravityEffect = 0.3f,
+                            MinSize = 1.5f,
+                            MaxSize = 2.3f,
+                            ParticleModel = EnumParticleModel.Cube,
+                            WithTerrainCollision = true,
+                            SelfPropelled = true,
+                            Async = true
+                        });
+                    }
+                }
+
                 return quantitiesByRock;
             }
         }
