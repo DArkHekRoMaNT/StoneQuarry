@@ -192,7 +192,7 @@ namespace StoneQuarry
                 if (cube != null)
                 {
                     Vec3i center = cube.Center;
-                    world.PlaySoundAt(SQSounds.Crack, center.X, center.Y, center.Z);
+                    world.PlaySoundAt(SQSounds.QuarryCrack, center.X, center.Y, center.Z);
 
                     foreach (KeyValuePair<AssetLocation, int> rock in quantitiesByRock)
                     {

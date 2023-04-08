@@ -177,7 +177,6 @@ namespace StoneQuarry
                     {
                         if (Stage != MaxStage)
                         {
-                            world.PlaySoundAt(SQSounds.Crack, byPlayer, byPlayer, true, 32, .5f);
                             SwitchStage(Stage + 1, world, blockSel.Position);
                             activeStack.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
                         }
@@ -192,7 +191,7 @@ namespace StoneQuarry
                     }
 
                     (byPlayer as IClientPlayer)?.TriggerFpAnimation(EnumHandInteract.HeldItemAttack);
-                    world.PlaySoundAt(SQSounds.Hit, byPlayer, byPlayer, true, 32, .5f);
+                    world.PlaySoundAt(SQSounds.MetalHit, byPlayer, byPlayer, true, 32, .5f);
 
                     return true;
                 }
