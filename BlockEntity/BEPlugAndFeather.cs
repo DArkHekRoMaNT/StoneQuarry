@@ -148,10 +148,10 @@ namespace StoneQuarry
 
             string? slabSize = rockQuantity switch
             {
-                >= 196 => "giant",
-                >= 128 => "huge",
-                >= 64 => "large",
-                >= 32 => "medium",
+                >= 150 => "giant",
+                >= 100 => "huge",
+                >= 50 => "large",
+                >= 25 => "medium",
                 >= 1 => "small",
                 _ => null
             };
