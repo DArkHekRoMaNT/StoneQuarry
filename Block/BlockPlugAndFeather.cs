@@ -17,23 +17,6 @@ namespace StoneQuarry
         private SimpleParticleProperties? _quarryStartParticles;
         private PlugPreviewManager? _previewManager;
 
-        private SimpleParticleProperties QuarryStartParticles
-        {
-            get => _quarryStartParticles ??= new()
-            {
-                MinQuantity = 16,
-                AddQuantity = 16,
-                MinSize = .5f,
-                MaxSize = 2f,
-                MinPos = new Vec3d(),
-                AddPos = new Vec3d(1, 1, 1),
-                ColorByBlock = this,
-                LifeLength = .5f,
-                MinVelocity = new Vec3f(0, -1, 0),
-                ParticleModel = EnumParticleModel.Cube
-            };
-        }
-
         public int MaxSearchRange => Attributes["searchrange"].AsInt(0);
         public string Material => Variant["metal"];
         public string Orientation => Variant["orientation"];
@@ -227,8 +210,6 @@ namespace StoneQuarry
                         if (world.BlockAccessor.GetBlockEntity(p) is BEPlugAndFeather pbe)
                         {
                             pbe.Points.AddRange(points);
-                            QuarryStartParticles.MinPos = p.ToVec3d();
-                            world.SpawnParticles(QuarryStartParticles, byPlayer);
                         }
                     }
 
