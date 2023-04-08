@@ -146,13 +146,15 @@ namespace StoneQuarry
                 contentStacks.Add(new ItemStack(world.GetBlock(rock.Key), rock.Value));
             }
 
-            string? slabSize = null;
-
-            if (rockQuantity >= 168) slabSize = "giant";
-            else if (rockQuantity >= 126) slabSize = "huge";
-            else if (rockQuantity >= 84) slabSize = "large";
-            else if (rockQuantity >= 42) slabSize = "medium";
-            else if (rockQuantity > 0) slabSize = "small";
+            string? slabSize = rockQuantity switch
+            {
+                >= 196 => "giant",
+                >= 128 => "huge",
+                >= 64 => "large",
+                >= 32 => "medium",
+                >= 1 => "small",
+                _ => null
+            };
 
             if (slabSize != null)
             {
