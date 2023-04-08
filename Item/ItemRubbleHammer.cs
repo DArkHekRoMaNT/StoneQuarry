@@ -35,7 +35,7 @@ namespace StoneQuarry
                         {
                             if (((EntityPlayer)byEntity)?.Player is IServerPlayer player)
                             {
-                                if (api.World.IsPlayerCanBreakBlock(blockSel.Position, player))
+                                if (api.World.Claims.TryAccess(player, blockSel.Position, EnumBlockAccessFlags.BuildOrBreak))
                                 {
                                     api.World.BlockAccessor.SetBlock(block.BlockId, blockSel.Position);
                                     api.World.BlockAccessor.MarkBlockModified(blockSel.Position);
