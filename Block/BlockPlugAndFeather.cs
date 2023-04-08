@@ -81,13 +81,14 @@ namespace StoneQuarry
             {
                 if (be.IsDone(world))
                 {
+                    Vec3d dropPos = be.GetDropPos();
                     foreach (var point in be.Points.ToArray())
                     {
                         if (world.Rand.NextDouble() >= config.BreakPlugChance)
                         {
                             foreach (var dropStack in GetDrops(world, pos, byPlayer, dropQuantityMultiplier))
                             {
-                                world.SpawnItemEntity(dropStack.Clone(), point.ToVec3d().Add(.5, .5, .5));
+                                world.SpawnItemEntity(dropStack.Clone(), dropPos);
                             }
                         }
 
@@ -103,6 +104,7 @@ namespace StoneQuarry
                         {
                             pbe.Points.Clear();
                         }
+
                         if (world.BlockAccessor.GetBlock(point) is BlockPlugAndFeather pb)
                         {
                             pb.SwitchStage(0, world, pos);

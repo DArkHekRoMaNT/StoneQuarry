@@ -1,6 +1,5 @@
 using CommonLib.Config;
 using CommonLib.Extensions;
-using Jint.Expressions;
 using System;
 using System.Collections.Generic;
 using Vintagestory.API.Common;
@@ -147,16 +146,10 @@ namespace StoneQuarry
                 if (world.GetBlock(dropItemLoc) is BlockStoneSlab dropItem)
                 {
                     ItemStack dropItemStack = new(dropItem, 1);
-
                     var inv = StoneSlabInventory.StacksToTreeAttributes(contentStacks, dropItemStack.Attributes, Api);
                     var preset = new StoneSlabRenderPreset(inv, dropItem);
                     preset.ToAttributes(dropItemStack.Attributes);
-
-                    Cuboidi? insideCube = GetInsideCube();
-                    if (insideCube != null)
-                    {
-                        world.SpawnItemEntity(dropItemStack, insideCube.Center.ToVec3d().Add(.5, .5, .5));
-                    }
+                    world.SpawnItemEntity(dropItemStack, GetDropPos());
                 }
                 else
                 {
@@ -294,6 +287,12 @@ namespace StoneQuarry
             }
 
             return null;
+        }
+
+        public Vec3d GetDropPos()
+        {
+            return GetInsideCube()?.Center.ToVec3d().Add(.5, .5, .5)
+                ?? Pos.ToVec3d().Add(.5, .5, .5);
         }
     }
 }
