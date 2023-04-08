@@ -345,14 +345,14 @@ namespace StoneQuarry
                         var block1 = world.BlockAccessor.GetBlock(pos1) as BlockPlugAndFeather;
                         var block2 = world.BlockAccessor.GetBlock(pos2) as BlockPlugAndFeather;
 
-                        var be1 = (BEPlugAndFeather)world.BlockAccessor.GetBlockEntity(pos1);
-                        var be2 = (BEPlugAndFeather)world.BlockAccessor.GetBlockEntity(pos2);
 
-                        bool isSuited1 = be1 != null && !be1.IsNetworkPart &&
+                        bool isSuited1 = world.BlockAccessor.GetBlockEntity(pos1) is BEPlugAndFeather be1 &&
+                            !be1.IsNetworkPart &&
                             block1?.Material == Material &&
                             oppositeDirection.Contains(block1.Direction);
 
-                        bool isSuited2 = be2 != null && !be2.IsNetworkPart &&
+                        bool isSuited2 = world.BlockAccessor.GetBlockEntity(pos2) is BEPlugAndFeather be2 &&
+                            !be2.IsNetworkPart &&
                             block2?.Material == Material &&
                             oppositeDirection.Contains(block2.Direction);
 
