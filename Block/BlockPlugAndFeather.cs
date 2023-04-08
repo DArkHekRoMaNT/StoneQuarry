@@ -147,6 +147,12 @@ namespace StoneQuarry
 
         public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
         {
+            if (!world.Claims.TryAccess(byPlayer, blockSel.Position, EnumBlockAccessFlags.BuildOrBreak))
+            {
+                world.BlockAccessor.MarkBlockDirty(blockSel.Position);
+                return false;
+            }
+
             if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BEPlugAndFeather be)
             {
                 if (byPlayer.Entity.Controls.Sneak)
