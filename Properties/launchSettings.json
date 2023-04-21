@@ -3,19 +3,19 @@
     "Launch Client": {
       "commandName": "Executable",
       "executablePath": "%VINTAGE_STORY%\\$(RunGameVersion)\\Vintagestory.exe",
-      "commandLineArgs": "--addModPath $(ProjectDir)mods --addOrigin $(ProjectDir)assets --tracelog",
+      "commandLineArgs": "--addModPath $(ProjectDir)mods --addOrigin $(ProjectDir)assets --tracelog --dataPath \"%VINTAGE_STORY%\\$(RunGameVersion)Data\"",
       "workingDirectory": "%VINTAGE_STORY%\\$(RunGameVersion)"
     },
     "Launch Client with Test World": {
       "commandName": "Executable",
       "executablePath": "%VINTAGE_STORY%\\$(RunGameVersion)\\Vintagestory.exe",
-      "commandLineArgs": "--playStyle \"preset-surviveandbuild\" --openWorld \"$(ProjectName) Test World\" --addModPath $(ProjectDir)mods --addOrigin $(ProjectDir)assets --tracelog",
+      "commandLineArgs": "--playStyle \"preset-surviveandbuild\" --openWorld \"$(ProjectName) Test World\" --addModPath $(ProjectDir)mods --addOrigin $(ProjectDir)assets --tracelog --dataPath \"%VINTAGE_STORY%\\$(RunGameVersion)Data\"",
       "workingDirectory": "%VINTAGE_STORY%\\$(RunGameVersion)"
     },
     "Launch Server": {
       "commandName": "Executable",
       "executablePath": "%VINTAGE_STORY%\\$(RunGameVersion)\\VintagestoryServer.exe",
-      "commandLineArgs": "--addModPath $(ProjectDir)mods --addOrigin $(ProjectDir)assets --tracelog",
+      "commandLineArgs": "--addModPath $(ProjectDir)mods --addOrigin $(ProjectDir)assets --tracelog --dataPath \"%VINTAGE_STORY%\\$(RunGameVersion)Data\"",
       "workingDirectory": "%VINTAGE_STORY%\\$(RunGameVersion)"
     }
   }

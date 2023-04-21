@@ -28,8 +28,8 @@
 	</Choose>
 
 	<PropertyGroup>
-		<MinGameVersion>1.17.0</MinGameVersion>
-		<RunGameVersion>1.17.4</RunGameVersion>
+		<MinGameVersion>1.18</MinGameVersion>
+		<RunGameVersion>1.18</RunGameVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

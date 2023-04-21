@@ -10,7 +10,7 @@ using Vintagestory.GameContent;
 
 namespace StoneQuarry
 {
-    public class BlockRubbleStorage : Block, IMultiBlockMonolithicSmall
+    public class BlockRubbleStorage : Block, IMultiBlockColSelBoxes
     {
         public static AssetLocation InteractSoundLocation => new("game", "sounds/block/heavyice");
         public static AssetLocation StoneCrushSoundLocation => new("game", "sounds/effect/stonecrush");

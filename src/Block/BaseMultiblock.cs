@@ -10,7 +10,7 @@ namespace StoneQuarry
     /// Basic implementation of IMultiBlockModular
     /// </summary>
 
-    public class BaseMultiblock : Block, IMultiBlockModular
+    public class BaseMultiblock : Block, IMultiBlockColSelBoxes
     {
         public virtual Cuboidf[] MBGetCollisionBoxes(IBlockAccessor blockAccessor, BlockPos pos, Vec3i offset)
         {
