@@ -1,5 +1,6 @@
 using CommonLib.Config;
 using CommonLib.Extensions;
+using CommonLib.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,9 +48,13 @@ namespace StoneQuarry
 
         public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
         {
-            ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
+            return MBOnBlockInteractStart(world, byPlayer, blockSel, Vec3i.Zero);
+        }
 
-            if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BEStoneSlab be)
+        public override bool MBOnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, Vec3i offset)
+        {
+            ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
+            if (world.BlockAccessor.GetBlockEntity(blockSel.Position + offset.AsBlockPos) is BEStoneSlab be)
             {
                 if (byPlayer.WorldData.CurrentGameMode == EnumGameMode.Creative && activeStack is not null)
                 {
@@ -79,7 +84,7 @@ namespace StoneQuarry
                     {
                         (api as ICoreClientAPI)?.TriggerIngameError(this, "nohammer", Lang.Get("Requires a hammer in the off hand"));
                         return false;
-                }
+                    }
 
                     return true;
                 }
@@ -110,7 +115,15 @@ namespace StoneQuarry
                     }
                 }
 
-                return secondsUsed < _config.SlabInteractionTime;
+                if (secondsUsed < _config.SlabInteractionTime)
+                {
+                    return true;
+                }
+                else
+                {
+                    base.MBOnBlockInteractStop(secondsUsed, world, byPlayer, blockSel, offset);
+                    return false;
+                }
             }
 
             return base.OnBlockInteractStep(secondsUsed, world, byPlayer, blockSel);
