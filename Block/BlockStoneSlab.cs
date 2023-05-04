@@ -1,6 +1,5 @@
 using CommonLib.Config;
 using CommonLib.Extensions;
-using CommonLib.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -115,15 +114,7 @@ namespace StoneQuarry
                     }
                 }
 
-                if (secondsUsed < _config.SlabInteractionTime)
-                {
-                    return true;
-                }
-                else
-                {
-                    base.MBOnBlockInteractStop(secondsUsed, world, byPlayer, blockSel, offset);
-                    return false;
-                }
+                return secondsUsed < _config.SlabInteractionTime;
             }
 
             return base.OnBlockInteractStep(secondsUsed, world, byPlayer, blockSel);
