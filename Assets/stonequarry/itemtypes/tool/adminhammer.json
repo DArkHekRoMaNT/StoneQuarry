@@ -3,7 +3,7 @@
   "class": "ItemHammer",
   "storageFlags": 257,
   "attributes": {
-    "plugimpact": 100000,
+    "plugimpact": 99999,
     "toolrackTransform": {
       "rotation": { "y": 1, "z": -1 },
       "translation": { "x": -0.2, "y": 0.02 },
@@ -28,14 +28,15 @@
   "tool": "hammer",
   "damagedby": [ "blockbreaking", "attacking" ],
   "heldTpHitAnimation": "smithing",
-  "shape": { "base": "game:item/tool/hammer" },
+  "shape": { "base": "item/tool/adminhammer" },
   "textures": {
     "metal": { "base": "game:block/fire-pink" },
     "wood": { "base": "game:item/tool/material/wood" }
   },
   "tooltier": 5,
-  "durability": 100000,
+  "durability": 99999,
   "attackpower": 1000,
+  "attackRange": 10,
   "creativeinventory": { "general": [ "*" ], "items": [ "*" ], "tools": [ "*" ], "stonequarry": [ "*" ] },
   "fpHandTransform": {
     "translation": { "x": 0.0468, "y": -0.2, "z": 0 },
