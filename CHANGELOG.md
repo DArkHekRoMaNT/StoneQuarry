@@ -376,7 +376,7 @@ Changes from Quarry Works! for 1.14:
 [Changes][v1.0.0]
 
 
-[unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v3.0.0...HEAD
+[unreleased]: https://github.com/DArkHekRoMaNT/StoneQuarry/compare/v3.0.0...HEAD
 [v3.0.0]: https://github.com/DArkHekRoMaNT/StoneQuarry/compare/v3.0.0-pre.1...v3.0.0
 [v3.0.0-pre.1]: https://github.com/DArkHekRoMaNT/StoneQuarry/compare/v2.0.0-rc.4...v3.0.0-pre.1
 [v2.0.0-rc.4]: https://github.com/DArkHekRoMaNT/StoneQuarry/compare/v2.0.0-rc.3...v2.0.0-rc.4
