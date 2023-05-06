@@ -116,7 +116,8 @@
   "item-wedgechiselhead-meteoriciron": "Оголовье клинового зубила (метеоритное железо)",
   "item-wedgechiselhead-steel": "Оголовье клинового зубила (сталь)",
 
-  "item-adminhammer": "Молоток Администратора",
+  "item-adminhammer": "Молоток Модератора",
+  "itemdesc-adminhammer": "Легенды о пиратах, которые осмелились противиться его силе, разносятся также быстро, как и кусочки этих смельчаков.\n",
 
   "ingameerror-stoneslab-unknown-drop": "Такой тип для этого камня не существует",
   "ingameerror-stoneslab-unknown-tool": "Неизвестный инструмент",

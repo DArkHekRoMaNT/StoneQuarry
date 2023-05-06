@@ -112,7 +112,8 @@
   "item-wedgechiselhead-meteoriciron": "Meteoric iron wedge chisel head",
   "item-wedgechiselhead-steel": "Steel wedge chisel head",
 
-  "item-adminhammer": "Admin hammer",
+  "item-adminhammer": "Moderator hammer",
+  "itemdesc-adminhammer": "Legends of the pirates who dared to oppose its power spread as quickly as the pieces of these daredevils.\n",
 
   "ingameerror-stoneslab-unknown-drop": "This type does not exist for this stone",
   "ingameerror-stoneslab-unknown-tool": "Unknown tool",
