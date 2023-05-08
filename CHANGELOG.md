@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added descriptions and value checkers for config
 - Updated admin hammer
+- Fixed empty stone slab drop
 
 ### Lang
 - Renamed Admin hammer to Moderator hammer (key: `item-adminhammer`)
