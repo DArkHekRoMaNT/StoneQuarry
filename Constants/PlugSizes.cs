@@ -1,5 +1,3 @@
-using System;
-
 namespace StoneQuarry
 {
     public static class PlugSizes
