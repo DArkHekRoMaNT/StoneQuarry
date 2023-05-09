@@ -1,0 +1,14 @@
+[
+  {
+    "file": "game:itemtypes/tool/hammer",
+    "op": "replace",
+    "path": "/storageFlags",
+    "value": 261
+  },
+  {
+    "file": "game:itemtypes/tool/chisel",
+    "op": "add",
+    "path": "/storageFlags",
+    "value": 5
+  }
+]

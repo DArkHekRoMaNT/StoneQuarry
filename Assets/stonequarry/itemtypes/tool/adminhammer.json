@@ -1,7 +1,7 @@
 {
   "code": "adminhammer",
   "class": "ItemHammer",
-  "storageFlags": 257,
+  "storageFlags": 261,
   "attributes": {
     "plugimpact": 99999,
     "toolrackTransform": {
