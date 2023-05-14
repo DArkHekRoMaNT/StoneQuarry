@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file.<br>
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+
+## [v3.0.1](https://github.com/DArkHekRoMaNT/StoneQuarry/releases/tag/v3.0.1) - 15 May 2023
 
 - Added descriptions and value checkers for config
 - Updated admin hammer
@@ -14,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Lang
 - Renamed Admin hammer to Moderator hammer (key: `item-adminhammer`)
 - Added `itemdesc-adminhammer`
+
+[Changes][v3.0.1]
 
 
 ## [v3.0.0](https://github.com/DArkHekRoMaNT/StoneQuarry/releases/tag/v3.0.0) - 04 May 2023
@@ -378,8 +381,8 @@ Changes from Quarry Works! for 1.14:
 [Changes][v1.0.0]
 
 
-[unreleased]: https://github.com/DArkHekRoMaNT/StoneQuarry/compare/v3.0.0...HEAD
-[v3.0.0]: https://github.com/DArkHekRoMaNT/StoneQuarry/compare/v3.0.0-pre.1...v3.0.0
+[v3.0.1]: https://github.com/DArkHekRoMaNT/StoneQuarry/compare/v3.0.0...v3.0.1
+[v3.0.0]: https://github.com/DArkHekRoMaNT/StoneQuarry/compare/v2.0.0-rc.4...v3.0.0
 [v3.0.0-pre.1]: https://github.com/DArkHekRoMaNT/StoneQuarry/compare/v2.0.0-rc.4...v3.0.0-pre.1
 [v2.0.0-rc.4]: https://github.com/DArkHekRoMaNT/StoneQuarry/compare/v2.0.0-rc.3...v2.0.0-rc.4
 [v2.0.0-rc.3]: https://github.com/DArkHekRoMaNT/StoneQuarry/compare/v2.0.0-rc.2...v2.0.0-rc.3

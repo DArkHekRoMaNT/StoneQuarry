@@ -2,9 +2,10 @@
 	<PropertyGroup>
 		<Name>Stone Quarry</Name>
 		<ModId>stonequarry</ModId>
-		<Version>3.0.0</Version>
+		<Version>3.0.1</Version>
 		<Authors>DArkHekRoMaNT</Authors>
-		<GameVersion>1.18.2-rc.1</GameVersion>
+		<MinimalGameVersion>1.18.2</MinimalGameVersion>
+		<GameVersion>1.18.3</GameVersion>
 		<Website>https://github.com/DArkHekRoMaNT/StoneQuarry</Website>
 	</PropertyGroup>
 	<ItemGroup>
@@ -15,5 +16,6 @@
 		<IncludeFiles Include="modicon.png" />
 		<IncludeFiles Include="LICENSE" />
 		<IncludeFiles Include="README.md" />
+		<IncludeFiles Include="CHANGELOG.md" />
 	</ItemGroup>
 </Project>
