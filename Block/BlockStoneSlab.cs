@@ -1,5 +1,6 @@
 using CommonLib.Config;
 using CommonLib.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -323,7 +324,9 @@ namespace StoneQuarry
 
         public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
         {
-            return new[] { OnPickBlock(world, pos) };
+            var be = world.BlockAccessor.GetBlockEntity(pos) as BEStoneSlab;
+            ItemStack? stack = be?.GetSelfDrop();
+            return stack == null ? Array.Empty<ItemStack>() : new ItemStack[] { stack };
         }
 
         public override ItemStack OnPickBlock(IWorldAccessor world, BlockPos pos)
