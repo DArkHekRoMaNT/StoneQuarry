@@ -40,7 +40,7 @@ namespace StoneQuarry
             GetDirectionAndOrientation(world, byPlayer, blockSel,
                 out string orientation, out string direction);
 
-            Block orientedBlock = world.GetBlock(CodeWithVariants(new Dictionary<string, string>() {
+            Block orientedBlock = world.GetBlock(CodeWithVariants(new Dictionary<string, string> {
                 { "orientation", orientation },
                 { "direction", direction }
             }));
@@ -114,7 +114,6 @@ namespace StoneQuarry
                 "down" => BlockFacing.DOWN,
                 "horizontal" => BlockFacing.FromCode(direction),
                 _ => throw new NotImplementedException()
-
             };
 
             Block block = world.BlockAccessor.GetBlock(blockSel.Position + facing.Normali.ToBlockPos());
@@ -187,7 +186,7 @@ namespace StoneQuarry
         {
             if (0 <= newStage && newStage <= MaxStage)
             {
-                AssetLocation newCode = CodeWithVariant("stage", newStage + "");
+                AssetLocation newCode = CodeWithVariant("stage", $"{newStage}");
                 int? blockId = world.GetBlock(newCode)?.Id;
                 world.BlockAccessor.ExchangeBlock(blockId ?? 0, pos);
             }
@@ -216,7 +215,6 @@ namespace StoneQuarry
 
                     return true;
                 }
-
             }
 
             return false;
@@ -437,7 +435,7 @@ namespace StoneQuarry
             bool isNetworkPart = be?.IsNetworkPart == true;
 
             return new[] {
-                new WorldInteraction()
+                new WorldInteraction
                 {
                     ActionLangCode = $"{Core.ModId}:wi-plugandfeather-quarryimpact",
                     MouseButton = EnumMouseButton.Right,
@@ -456,8 +454,8 @@ namespace StoneQuarry
                         }
                         return list.ToArray();
                     })
-                }}
-                .AppendIf(isNetworkPart, new WorldInteraction()
+                } }
+                .AppendIf(isNetworkPart, new WorldInteraction
                 {
                     ActionLangCode = $"{Core.ModId}:wi-plugandfeather-togglepreview",
                     MouseButton = EnumMouseButton.Right,

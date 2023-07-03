@@ -106,7 +106,7 @@ namespace StoneQuarry
 
         public object Clone()
         {
-            return new RockData()
+            return new RockData
             {
                 Rock = Rock.Clone(),
                 _stone = _stone?.Clone(),

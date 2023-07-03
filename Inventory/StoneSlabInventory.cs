@@ -63,7 +63,7 @@ namespace StoneQuarry
                 ItemSlot slot = slots[i];
                 if (!slot.Empty)
                 {
-                    hackTree.SetInt("slotsize" + i, slot.StackSize);
+                    hackTree.SetInt($"slotsize{i}", slot.StackSize);
                 }
             }
         }
@@ -99,7 +99,6 @@ namespace StoneQuarry
                     {
                         return;
                     }
-
                 } while (prevSlotId != CurrentSlotId);
                 CurrentSlotId = -1; // If all slots are empty
             }

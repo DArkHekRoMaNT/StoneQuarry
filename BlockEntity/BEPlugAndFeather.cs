@@ -58,7 +58,7 @@ namespace StoneQuarry
                 tree.SetInt("pointcount", Points.Count);
                 for (int i = 0; i < Points.Count; i++)
                 {
-                    tree.SetBlockPos("point" + i, Points[i]);
+                    tree.SetBlockPos($"point{i}", Points[i]);
                 }
             }
 
@@ -74,7 +74,7 @@ namespace StoneQuarry
             {
                 for (int i = 0; i < slaveCount; i++)
                 {
-                    Points.Add(tree.GetBlockPos("point" + i));
+                    Points.Add(tree.GetBlockPos($"point{i}"));
                 }
             }
 
@@ -140,7 +140,7 @@ namespace StoneQuarry
 
             if (slabSize != null)
             {
-                string dropItemString = "stoneslab-" + slabSize + "-north";
+                string dropItemString = $"stoneslab-{slabSize}-north";
 
                 AssetLocation dropItemLoc = new(Core.ModId, dropItemString);
                 if (world.GetBlock(dropItemLoc) is BlockStoneSlab dropItem)
@@ -153,7 +153,7 @@ namespace StoneQuarry
                 }
                 else
                 {
-                    ModLogger.Warning("Unknown drop item " + dropItemLoc);
+                    ModLogger.Warning($"Unknown drop item {dropItemLoc}");
                 }
             }
 
@@ -197,7 +197,7 @@ namespace StoneQuarry
                     foreach (KeyValuePair<AssetLocation, int> rock in quantitiesByRock)
                     {
                         float modifier = rock.Value / (float)maxQuantity;
-                        world.SpawnParticles(new SimpleParticleProperties()
+                        world.SpawnParticles(new SimpleParticleProperties
                         {
                             MinQuantity = (float)Math.Log(1 + maxQuantity * modifier) * 10f,
                             AddQuantity = 0,

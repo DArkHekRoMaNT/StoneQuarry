@@ -91,7 +91,7 @@ namespace StoneQuarry
         {
             base.GetBlockInfo(forPlayer, dsc);
 
-            string langKey = Core.ModId + ":info-stoneslab-heldinfo(count={0},stone={1})";
+            string langKey = $"{Core.ModId}:info-stoneslab-heldinfo(count={{0}},stone={{1}})";
 
             for (int i = 0; i < Inventory?.Count; i++)
             {
@@ -105,7 +105,7 @@ namespace StoneQuarry
 
                     if (i == Inventory.CurrentSlotId)
                     {
-                        text = "(+) " + text;
+                        text = $"(+) {text}";
                     }
 
                     dsc.AppendLine(text);

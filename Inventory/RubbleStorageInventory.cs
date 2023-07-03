@@ -82,7 +82,7 @@ namespace StoneQuarry
                     RubbleStorageItemSlot? slot = GetSlotByType(contentType);
                     if (slot != null)
                     {
-                        return slot.TryGetFrom(fromSlot, quantity); ;
+                        return slot.TryGetFrom(fromSlot, quantity);
                     }
                 }
             }

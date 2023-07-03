@@ -97,7 +97,7 @@ namespace StoneQuarry
 
         private Shape GetBaseShape(CompositeShape shape)
         {
-            string path = shape.Base.Domain + ":shapes/" + shape.Base.Path + ".json";
+            string path = $"{shape.Base.Domain}:shapes/{shape.Base.Path}.json";
             return _capi.Assets.Get<Shape>(new AssetLocation(path));
         }
     }

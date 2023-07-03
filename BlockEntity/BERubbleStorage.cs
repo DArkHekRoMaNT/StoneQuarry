@@ -82,13 +82,13 @@ namespace StoneQuarry
             {
                 if (_currentDisplayedType != null)
                 {
-                    string topName = "top-" + _currentDisplayedType + "-" + Inventory.StoredRock;
-                    string topPath = Core.ModId + ":shapes/block/rubblestorage/top-" + _currentDisplayedType + ".json";
+                    string topName = $"top-{_currentDisplayedType}-{Inventory.StoredRock}";
+                    string topPath = $"{Core.ModId}:shapes/block/rubblestorage/top-{_currentDisplayedType}.json";
 
                     Vec3f? offset = null;
                     if (_currentDisplayedType != "plate")
                     {
-                        topName += "-" + CurrentContentLevel;
+                        topName += $"-{CurrentContentLevel}";
                         offset = new Vec3f(0, -0.06f * CurrentContentLevel, 0);
                     }
 
@@ -97,8 +97,8 @@ namespace StoneQuarry
                     mesher.AddMeshData(topMesh);
                 }
 
-                string buttonsName = "buttons-" + Inventory.StoredRock;
-                string buttonsPath = Core.ModId + ":shapes/block/rubblestorage/buttons.json";
+                string buttonsName = $"buttons-{Inventory.StoredRock}";
+                string buttonsPath = $"{Core.ModId}:shapes/block/rubblestorage/buttons.json";
                 MeshData buttonsMesh = GetOrCreateMesh(buttonsName, buttonsPath, tessThreadTesselator);
                 mesher.AddMeshData(buttonsMesh);
             }

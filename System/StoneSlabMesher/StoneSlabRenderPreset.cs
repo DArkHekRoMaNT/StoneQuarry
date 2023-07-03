@@ -37,7 +37,10 @@ namespace StoneQuarry
 
             foreach (var slot in inv)
             {
-                if (slot.Empty) continue;
+                if (slot.Empty)
+                {
+                    continue;
+                }
 
                 all += slot.StackSize;
                 quantities.Add(slot.StackSize);
@@ -94,7 +97,7 @@ namespace StoneQuarry
             subtree.SetInt("size", Blocks.Length);
             for (int i = 0; i < Blocks.Length; i++)
             {
-                subtree.SetString(i + "", Blocks[i]?.Code + "");
+                subtree.SetString($"{i}", $"{Blocks[i]?.Code}");
             }
         }
 
@@ -118,7 +121,7 @@ namespace StoneQuarry
                 Block[] blocks = new Block[size];
                 for (int i = 0; i < size; i++)
                 {
-                    string code = subtree.GetString(i + "", null);
+                    string code = subtree.GetString($"{i}", null);
                     if (worldForResolve != null)
                     {
                         blocks[i] = worldForResolve.GetBlock(new AssetLocation(code));
