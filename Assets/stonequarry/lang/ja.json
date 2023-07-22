@@ -1,8 +1,8 @@
 {
-  // Japanese localization file for 'Stone Quarry'.
-  // Mod Version: v3.0.0
-  // Translated By: Macoto Hino
-  // Machine translation using PCOT and DeepL.
+    "comment_description": "Japanese localization file for 'Stone Quarry'.",
+    "comment_version": "Mod Version: v3.1.2",
+    "comment_author": "Translated By: Macoto Hino",
+    "comment_technical_details": "Machine translation using PCOT and DeepL.",
 
   "game:stonequarry-quarryguide-title": "Stone Quarry(石切り場): 石割りガイド",
   "game:stonequarry-quarryguide-text": "<strong>石割りガイド</strong><br><i>石切り場を始めるんですか？</i><br><br>良い<a href=\"handbook://item-hammer-copper\">ハンマー</a>と<a href=\"handbook://block-stonequarry:plugandfeather-copper-0-down-north\">セリ矢</a>を作って、切り離したい石ブロックの一番上か一番下になるように設置すれば良いのです。ハンマーで数回叩けば、美しい石板の出来上りです。先程の石板をクリックした後、スニーク＋クリックで作業領域のハイライトが切り替わります。<br><br>使用するセリ矢の素材にもよりますが、一度に多くの石を手に入れることが出来ます。例えば、銅の場合は3×3×3の立方体まで、鋼の場合は7×7×7までです。<br><br>一度に切り出す石の量によって、出来上がる石板の大きさは変わります。石板の種類は問わないが、大きな石板は設置場所をとるので注意が必要です。<br><br>あとは、<a href=\"handbook://stonequarry-masonguide\">石の切り出しガイド</a>を読んでから、この石を取りに行って下さい。",
@@ -117,7 +117,8 @@
   "item-wedgechiselhead-meteoriciron": "隕鉄の鉄の楔ノミの頭",
   "item-wedgechiselhead-steel": "鋼の楔ノミの頭",
 
-  "item-adminhammer": "管理者用ハンマー",
+  "item-adminhammer": "モデレーター・ハンマー",
+  "itemdesc-adminhammer": "その力に敢然と対抗した海賊たちの伝説は、命知らずの海賊たちの破片と同じように瞬く間に広まった。\n",
 
   "ingameerror-stoneslab-unknown-drop": "この石には、この種類は存在しません。",
   "ingameerror-stoneslab-unknown-tool": "不明な道具",
