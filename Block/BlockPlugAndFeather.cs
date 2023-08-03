@@ -17,6 +17,8 @@ namespace StoneQuarry
         private SimpleParticleProperties? _quarryStartParticles;
         private PlugPreviewManager? _previewManager;
 
+        private Config Config { get; set; } = null!;
+
         public int MaxSearchRange => Attributes["searchrange"].AsInt(0);
         public string Material => Variant["metal"];
         public string Orientation => Variant["orientation"];
@@ -33,12 +35,19 @@ namespace StoneQuarry
             {
                 _previewManager = api.ModLoader.GetModSystem<Core>().PlugPreviewManager;
             }
+
+            var configs = api.ModLoader.GetModSystem<ConfigManager>();
+            Config = configs.GetConfig<Config>();
+        }
+
+        public override int GetMaxDurability(ItemStack itemstack)
+        {
+            return Config.PlugDurability;
         }
 
         public override bool DoPlaceBlock(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, ItemStack byItemStack)
         {
-            GetDirectionAndOrientation(world, byPlayer, blockSel,
-                out string orientation, out string direction);
+            GetDirectionAndOrientation(world, byPlayer, blockSel, out string orientation, out string direction);
 
             Block orientedBlock = world.GetBlock(CodeWithVariants(new Dictionary<string, string> {
                 { "orientation", orientation },
@@ -47,14 +56,16 @@ namespace StoneQuarry
 
             world.BlockAccessor.SetBlock(orientedBlock.Id, blockSel.Position, byItemStack);
 
+            if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BEPlugAndFeather be)
+            {
+                be.Durability = byItemStack.Attributes.GetAsInt("durability", Config.PlugDurability);
+            }
+
             return true;
         }
 
         public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
         {
-            var configs = api.ModLoader.GetModSystem<ConfigManager>();
-            var config = configs.GetConfig<Config>();
-
             if (api is ICoreServerAPI sapi)
             {
                 sapi.Network.SendBlockEntityPacket(byPlayer as IServerPlayer, pos.X, pos.Y, pos.Z, Constants.PreviewPacketId);
@@ -67,12 +78,30 @@ namespace StoneQuarry
                     Vec3d dropPos = be.GetDropPos();
                     foreach (var point in be.Points.ToArray())
                     {
-                        if (world.Rand.NextDouble() >= config.BreakPlugChance)
+                        ItemStack dropStack = GetDrops(world, pos, byPlayer, dropQuantityMultiplier)[0].Clone();
+
+                        if (Config.PlugDurability > 0)
                         {
-                            foreach (var dropStack in GetDrops(world, pos, byPlayer, dropQuantityMultiplier))
+                            int durability;
+
+                            if (be.Durability == -1)
                             {
-                                world.SpawnItemEntity(dropStack.Clone(), dropPos);
+                                durability = Config.PlugDurability - 1;
                             }
+                            else
+                            {
+                                durability = be.Durability - 1;
+                            }
+
+                            if (durability > 0)
+                            {
+                                dropStack.Attributes.SetInt("durability", durability);
+                                world.SpawnItemEntity(dropStack, dropPos);
+                            }
+                        }
+                        else if (world.Rand.NextDouble() >= Config.BreakPlugChance)
+                        {
+                            world.SpawnItemEntity(dropStack, dropPos);
                         }
 
                         world.BlockAccessor.SetBlock(0, point);

@@ -22,12 +22,14 @@ namespace StoneQuarry
                 return (int)(workNeeded * Config.PlugWorkModifier);
             }
         }
+
         private ILogger ModLogger => _modLogger ?? Api.Logger;
         private Config Config { get; set; } = null!;
 
         /// <summary> All points for own plug network (including the current plug). Empty if the network does not exist. </summary>
         public List<BlockPos> Points { get; } = new();
         public bool IsNetworkPart => Points.Count > 0;
+        public int Durability { get; set; } = -1;
 
         public override void Initialize(ICoreAPI api)
         {
@@ -60,6 +62,7 @@ namespace StoneQuarry
                 {
                     tree.SetBlockPos($"point{i}", Points[i]);
                 }
+                tree.SetInt("durability", Durability);
             }
 
             base.ToTreeAttributes(tree);
@@ -77,6 +80,7 @@ namespace StoneQuarry
                     Points.Add(tree.GetBlockPos($"point{i}"));
                 }
             }
+            Durability = tree.GetInt("durability", -1);
 
             base.FromTreeAttributes(tree, worldAccessForResolve);
         }

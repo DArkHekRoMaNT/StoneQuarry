@@ -21,8 +21,15 @@ namespace StoneQuarry
         [Range(0f, 100f)]
         public float PlugSizeModifier { get; set; } = 1;
 
-        [Description("Chance for break plug after use")]
+        [Description($"Chance for break plug after use. " +
+            $"Will be ignored if {nameof(PlugDurability)} is not 0")]
         [Range(0f, 1f)]
         public float BreakPlugChance { get; set; } = 0;
+
+        [Description($"How many times can the plug be used before it breaks. " +
+            $"Plugs with different durability do not stack. " +
+            $"Ignores {nameof(BreakPlugChance)} if not 0")]
+        [Range(0, int.MaxValue)]
+        public int PlugDurability { get; set; } = 0;
     }
 }
