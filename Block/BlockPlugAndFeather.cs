@@ -14,7 +14,6 @@ namespace StoneQuarry
 {
     public class BlockPlugAndFeather : Block
     {
-        private SimpleParticleProperties? _quarryStartParticles;
         private PlugPreviewManager? _previewManager;
 
         private Config Config { get; set; } = null!;
