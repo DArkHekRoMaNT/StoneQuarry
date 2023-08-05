@@ -22,14 +22,29 @@ namespace StoneQuarry
         public float PlugSizeModifier { get; set; } = 1;
 
         [Description($"Chance for break plug after use. " +
-            $"Will be ignored if {nameof(PlugDurability)} is not 0")]
+            $"Will be ignored if {nameof(EnablePlugDurability)} is true")]
         [Range(0f, 1f)]
         public float BreakPlugChance { get; set; } = 0;
 
-        [Description($"How many times can the plug be used before it breaks. " +
+        [Description($"Enables durability for plugs. " +
             $"Plugs with different durability do not stack. " +
-            $"Ignores {nameof(BreakPlugChance)} if not 0")]
+            $"Ignores {nameof(BreakPlugChance)} if true")]
+        public bool EnablePlugDurability { get; set; } = false;
+
+        [Description("0 - unlimited")]
         [Range(0, int.MaxValue)]
-        public int PlugDurability { get; set; } = 0;
+        public int CopperPlugDurability { get; set; } = 5;
+
+        [Description("0 - unlimited. Any bronze")]
+        [Range(0, int.MaxValue)]
+        public int BronzePlugDurability { get; set; } = 10;
+
+        [Description("0 - unlimited. Iron, meteoric iron")]
+        [Range(0, int.MaxValue)]
+        public int IronPlugDurability { get; set; } = 15;
+
+        [Description("0 - unlimited")]
+        [Range(0, int.MaxValue)]
+        public int SteelPlugDurability { get; set; } = 20;
     }
 }

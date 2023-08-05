@@ -42,7 +42,25 @@ namespace StoneQuarry
 
         public override int GetMaxDurability(ItemStack itemstack)
         {
-            return Config.PlugDurability;
+            return GetPlugMaxDurability();
+        }
+
+        private int GetPlugMaxDurability()
+        {
+            int durability = Material switch
+            {
+                "copper" => Config.CopperPlugDurability,
+                "tinbronze" => Config.BronzePlugDurability,
+                "bismuthbronze" => Config.BronzePlugDurability,
+                "blackbronze" => Config.BronzePlugDurability,
+                "iron" => Config.IronPlugDurability,
+                "meteoriciron" => Config.IronPlugDurability,
+                "steel" => Config.SteelPlugDurability,
+                "admin" => 0,
+                _ => 0
+            };
+
+            return Config.EnablePlugDurability ? durability : 0;
         }
 
         public override bool DoPlaceBlock(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, ItemStack byItemStack)
@@ -58,7 +76,7 @@ namespace StoneQuarry
 
             if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BEPlugAndFeather be)
             {
-                be.Durability = byItemStack.Attributes.GetAsInt("durability", Config.PlugDurability);
+                be.Durability = byItemStack.Attributes.GetAsInt("durability", GetPlugMaxDurability());
             }
 
             return true;
@@ -80,13 +98,13 @@ namespace StoneQuarry
                     {
                         ItemStack dropStack = GetDrops(world, pos, byPlayer, dropQuantityMultiplier)[0].Clone();
 
-                        if (Config.PlugDurability > 0)
+                        if (Config.EnablePlugDurability)
                         {
                             int durability;
 
                             if (be.Durability == -1)
                             {
-                                durability = Config.PlugDurability - 1;
+                                durability = GetPlugMaxDurability() - 1;
                             }
                             else
                             {
@@ -130,6 +148,21 @@ namespace StoneQuarry
             {
                 base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
             }
+        }
+
+        public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
+        {
+            var drop = new ItemStack(this);
+
+            if (world.BlockAccessor.GetBlockEntity(pos) is BEPlugAndFeather be)
+            {
+                if (be.Durability > 0)
+                {
+                    drop.Attributes.SetInt("durability", be.Durability);
+                }
+            }
+
+            return new ItemStack[] { drop };
         }
 
         public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
