@@ -151,7 +151,7 @@ namespace StoneQuarry
 
         public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
         {
-            var drop = new ItemStack(this);
+            ItemStack drop = base.GetDrops(world, pos, byPlayer, dropQuantityMultiplier)[0];
 
             if (world.BlockAccessor.GetBlockEntity(pos) is BEPlugAndFeather be)
             {
