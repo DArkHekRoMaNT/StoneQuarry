@@ -93,29 +93,33 @@ namespace StoneQuarry
                 if (be.IsDone(world))
                 {
                     Vec3d dropPos = be.GetDropPos();
-                    foreach (var point in be.Points.ToArray())
+                    foreach (BlockPos point in be.Points.ToArray())
                     {
                         ItemStack dropStack = GetDrops(world, pos, byPlayer, dropQuantityMultiplier)[0].Clone();
 
                         if (Config.EnablePlugDurability)
                         {
-                            int durability;
+                            if (world.BlockAccessor.GetBlockEntity(point) is BEPlugAndFeather pointBE)
+                            {
+                                int durability;
 
-                            if (be.Durability == -1)
-                            {
-                                durability = GetPlugMaxDurability() - 1;
-                            }
-                            else
-                            {
-                                durability = be.Durability - 1;
-                            }
+                                if (pointBE.Durability == -1)
+                                {
+                                    durability = GetPlugMaxDurability() - 1;
+                                }
+                                else
+                                {
+                                    durability = pointBE.Durability - 1;
+                                }
 
-                            if (durability > 0)
-                            {
-                                dropStack.Attributes.SetInt("durability", durability);
-                                world.SpawnItemEntity(dropStack, dropPos);
+                                if (durability > 0)
+                                {
+                                    dropStack.Attributes.SetInt("durability", durability);
+                                    world.SpawnItemEntity(dropStack, dropPos);
+                                }
                             }
                         }
+
                         else if (world.Rand.NextDouble() >= Config.BreakPlugChance)
                         {
                             world.SpawnItemEntity(dropStack, dropPos);
