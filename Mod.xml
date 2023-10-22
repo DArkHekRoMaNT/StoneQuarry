@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<Name>Stone Quarry</Name>
 		<ModId>stonequarry</ModId>
-		<Version>3.1.6</Version>
+		<Version>3.1.7</Version>
 		<Authors>DArkHekRoMaNT</Authors>
 		<MinimalGameVersion>1.18.8</MinimalGameVersion>
 		<GameVersion>1.18.15</GameVersion>
