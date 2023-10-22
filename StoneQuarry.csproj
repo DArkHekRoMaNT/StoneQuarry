@@ -1,13 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net461</TargetFramework>
+		<TargetFramework>net7</TargetFramework>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
-	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(Configuration)' != 'Debug'">
-		<TargetFramework>netstandard2.0</TargetFramework>
 	</PropertyGroup>
 
 	<!-- Warning settings -->
@@ -19,10 +15,5 @@
 
 	<ItemGroup>
 		<PackageReference Include="Nullable" Version="1.3.1" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Assets\" />
-		<Folder Include="Mods\" />
 	</ItemGroup>
 </Project>
