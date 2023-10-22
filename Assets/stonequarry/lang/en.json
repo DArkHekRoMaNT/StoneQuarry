@@ -8,8 +8,6 @@
   "game:stonequarry-rubblestorageguide-title": "StoneQuarry: Rubble Storage Guide",
   "game:stonequarry-rubblestorageguide-text": "<strong>Rubble Storage Guide</strong><br><br><a href=\"handbook://block-stonequarry:rubblestorage-north\">Rubble storage</a> can be used to store stone, gravel and sand.<br><br>Also, if you hit stored materials a <a href=\"handbook://item-stonequarry:rubblehammer-copper\">rubble hammer</a>, the contents will crashed. By principle: two stones to one gravel, one gravel to one sand.<br><br><strong>In world interactions</strong><br>- Add items: right-click with an item in hand. You can also add all suitable inventory items by right-clicking with an empty hand.<br>- Take items: right-click on the buttons in front, according to the desired material.<br>- By holding Sprint you can add/remove a stack of materials at a time.<br>- You can lock material by holding Sneak and right-clicking the corresponding button. Locked material will not be used for crashing, and will also be prioritized.<br>- You can also create <a href=\"handbook://block-muddygravel\">muddy gravel</a> from regular gravel by right-clicking with water container (bucket).",
 
-  "game:tabname-stonequarry": "Stone Quarry",
-
   "block-plugandfeather-copper-*": "Copper splitter plug",
   "block-plugandfeather-tinbronze-*": "Tin bronze splitter plug",
   "block-plugandfeather-bismuthbronze-*": "Bismuth bronze splitter plug",

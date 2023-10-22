@@ -1,20 +1,11 @@
 {
-    "comment_description": "Japanese localization file for 'Stone Quarry'.",
-    "comment_version": "Mod Version: v3.1.2",
-    "comment_author": "Translated By: Macoto Hino",
-    "comment_technical_details": "Machine translation using PCOT and DeepL.",
-
   "game:stonequarry-quarryguide-title": "Stone Quarry(石切り場): 石割りガイド",
   "game:stonequarry-quarryguide-text": "<strong>石割りガイド</strong><br><i>石切り場を始めるんですか？</i><br><br>良い<a href=\"handbook://item-hammer-copper\">ハンマー</a>と<a href=\"handbook://block-stonequarry:plugandfeather-copper-0-down-north\">セリ矢</a>を作って、切り離したい石ブロックの一番上か一番下になるように設置すれば良いのです。ハンマーで数回叩けば、美しい石板の出来上りです。先程の石板をクリックした後、スニーク＋クリックで作業領域のハイライトが切り替わります。<br><br>使用するセリ矢の素材にもよりますが、一度に多くの石を手に入れることが出来ます。例えば、銅の場合は3×3×3の立方体まで、鋼の場合は7×7×7までです。<br><br>一度に切り出す石の量によって、出来上がる石板の大きさは変わります。石板の種類は問わないが、大きな石板は設置場所をとるので注意が必要です。<br><br>あとは、<a href=\"handbook://stonequarry-masonguide\">石の切り出しガイド</a>を読んでから、この石を取りに行って下さい。",
-
   "game:stonequarry-masonguide-title": "Stone Quarry(石切り場): 石の切り出しガイド",
   "game:stonequarry-masonguide-text": "<strong>石の切り出しガイド</strong><br><i>石は多いに越したことはない。</i><br><br>まず、<a href=\"handbook://stonequarry-quarryguide\">石板</a>を作ろう。石を1つ取り除くごとに、様々な種類の石を手に入れることが出来る石板が入手出来ます。<br><br>その為の道具は以下の4つです。:<br><a href=\"handbook://item-stonequarry:chisel-finishing-copper\">仕上げノミ</a> - 石板に使用すると、磨かれた石になります。<br><a href=\"handbook://item-stonequarry:chisel-wedge-copper\">楔ノミ</a> - 石板に使用すると、レンガになります。<br><a href=\"handbook://item-stonequarry:chisel-roughcut-copper\">荒削りノミ</a> - 石板に使用すると、岩になります。<br><a href=\"handbook://item-stonequarry:rubblehammer-copper\">瓦礫ハンマー</a> - 石板に使用すると、石になります。<br><br>石から砂や砂利を取りたい、あるいは沢山の収納が必要な場合は、<a href=\"handbook://stonequarry-rubblestorageguide\">瓦礫入れ</a>をご覧下さい。",
-
   "game:stonequarry-rubblestorageguide-title": "Stone Quarry(石切り場): 瓦礫入れガイド",
   "game:stonequarry-rubblestorageguide-text": "<strong>瓦礫入れガイド</strong><br><br><a href=\"handbook://block-stonequarry:rubblestorage-north\">瓦礫入れ</a>は、石、砂利、砂を保管する為に使用することが出来ます。<br><br>また、<a href=\"handbook://item-stonequarry:rubblehammer-copper\">瓦礫ハンマー</a>で保存された素材を叩くと、中身は粉々になります。 原則的に: 石2個で砂利1個、砂利1個で砂1個。<br><br><strong>世界での相互作用</strong><br>- アイテムを追加する: アイテムを手にした状態で右クリックします。また、素手で右クリックすることで、適切なインベントリーアイテムをすべて追加することが出来ます。<br>- アイテムを取る: 目的の素材に応じて、前面のボタンを右クリックします。<br>- スプリントキーを押しながら操作することで、素材のスタックを一度に追加/削除することが出来ます。<br>- スニークを押しながら、対応するボタンを右クリックすると、素材をロック出来ます。 ロックされた素材は破砕に使われず、また優先的に処理されます。<br>- また、水入れ（バケツ）で右クリックすると、通常の砂利から<a href=\"handbook://block-muddygravel\">泥の砂利</a>を作成することが出来ます。",
-
   "game:tabname-stonequarry": "Stone Quarry(石切り場)",
-
   "block-plugandfeather-copper-*": "銅のセリ矢",
   "block-plugandfeather-tinbronze-*": "スズ青銅のセリ矢",
   "block-plugandfeather-bismuthbronze-*": "ビスマス青銅のセリ矢",
@@ -25,7 +16,6 @@
   "block-plugandfeather-admin-*": "管理者用セリ矢",
   "stonequarry:block-handbooktitle-stonequarry:plugandfeather-*": "使い方",
   "stonequarry:block-handbooktext-stonequarry:plugandfeather-*": "石を石板として割るのに使用します。上位ティアのセリ矢は一度に多くの分割が可能です。詳細は<a href=\"handbook://stonequarry-quarryguide\">石割りガイド</a>をご覧下さい。",
-
   "block-stoneslab-small-*": "小さな石板",
   "block-stoneslab-medium-*": "中くらいの石板",
   "block-stoneslab-large-*": "大きな石板",
@@ -33,14 +23,11 @@
   "block-stoneslab-giant-*": "超巨大な石板",
   "stonequarry:block-handbooktitle-stonequarry:stoneslab-*": "使い方",
   "stonequarry:block-handbooktext-stonequarry:stoneslab-*": "地面に配置すると、<a href=\"handbook://item-stonequarry:chisel-finishing-copper\">仕上げノミ</a>、<a href=\"handbook://item-stonequarry:chisel-roughcut-copper\">荒削りノミ</a>、<a href=\"handbook://item-stonequarry:chisel-wedge-copper\">楔ノミ</a>、<a href=\"handbook://item-stonequarry:rubblehammer-copper\">瓦礫ハンマー</a>を持つことで相互作用し、様々な資源を得ることが出来ます。詳細は<a href=\"handbook://stonequarry-masonguide\">石の切り出しガイド</a>をご覧下さい。",
-
   "block-rubblestorage-*": "瓦礫入れ",
   "stonequarry:block-handbooktitle-stonequarry:rubblestorage-*": "使い方",
   "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "地面に配置すると、石や砂利、砂を保管することが出来ます。また、<a href=\"handbook://item-stonequarry:rubblehammer-copper\">瓦礫ハンマー</a>で中身を砕くことが出来ます。詳細は<a href=\"handbook://stonequarry-quarryguide\">瓦礫入れガイド</a>をご覧下さい。",
-
   "game:block-toolmold-raw-sq_plugandfeather": "セリ矢の鋳型(未焼成)",
   "game:block-toolmold-burned-sq_plugandfeather": "セリ矢の鋳型",
-
   "item-chisel-finishing-copper": "銅の仕上げノミ",
   "item-chisel-finishing-tinbronze": "スズ青銅の仕上げノミ",
   "item-chisel-finishing-bismuthbronze": "ビスマス青銅の仕上げノミ",
@@ -52,7 +39,6 @@
   "item-chisel-finishing-steel": "鋼の仕上げノミ",
   "stonequarry:item-handbooktitle-stonequarry:chisel-finishing-*": "使い方",
   "stonequarry:item-handbooktext-stonequarry:chisel-finishing-*": "石板から<strong>磨かれた石</strong>を切り出すのに使用します。詳細は<a href=\"handbook://stonequarry-masonguide\">石の切り出しガイド</a>をご覧下さい。",
-
   "item-chisel-roughcut-copper": "銅の荒削りノミ",
   "item-chisel-roughcut-tinbronze": "スズ青銅の荒削りノミ",
   "item-chisel-roughcut-bismuthbronze": "ビスマス青銅の荒削りノミ",
@@ -64,7 +50,6 @@
   "item-chisel-roughcut-steel": "鋼の荒削りノミ",
   "stonequarry:item-handbooktitle-stonequarry:chisel-roughcut-*": "使い方",
   "stonequarry:item-handbooktext-stonequarry:chisel-roughcut-*": "石板から<strong>岩</strong>を切り出すのに使用します。詳細は<a href=\"handbook://stonequarry-masonguide\">石の切り出しガイド</a>をご覧下さい。",
-
   "item-rubblehammer-copper": "銅の瓦礫ハンマー",
   "item-rubblehammer-tinbronze": "スズ青銅の瓦礫ハンマー",
   "item-rubblehammer-bismuthbronze": "ビスマス青銅の瓦礫ハンマー",
@@ -76,7 +61,6 @@
   "item-rubblehammer-steel": "鋼の瓦礫ハンマー",
   "stonequarry:item-handbooktitle-stonequarry:rubblehammer-*": "使い方",
   "stonequarry:item-handbooktext-stonequarry:rubblehammer-*": "石板から<strong>石</strong>を切り出すのに使用します。詳細は<a href=\"handbook://stonequarry-masonguide\">石の切り出しガイド</a>をご覧下さい。<br><br>ワールド内で岩を砂利に、砂利を砂に変えることが出来ます（ブロックの上で左クリック）。",
-
   "item-chisel-wedge-copper": "銅の楔ノミ",
   "item-chisel-wedge-tinbronze": "スズ青銅の楔ノミ",
   "item-chisel-wedge-bismuthbronze": "ビスマス青銅の楔ノミ",
@@ -88,7 +72,6 @@
   "item-chisel-wedge-steel": "鋼の楔ノミ",
   "stonequarry:item-handbooktitle-stonequarry:chisel-wedge-*": "使い方",
   "stonequarry:item-handbooktext-stonequarry:chisel-wedge-*": "石板から<strong>レンガ</strong>を切り出すのに使用します。詳細は<a href=\"handbook://stonequarry-masonguide\">石の切り出しガイド</a>をご覧下さい。",
-
   "item-rubblehammerhead-copper": "銅の瓦礫ハンマーの頭",
   "item-rubblehammerhead-tinbronze": "スズ青銅の瓦礫ハンマーの頭",
   "item-rubblehammerhead-bismuthbronze": "ビスマス青銅の瓦礫ハンマーの頭",
@@ -116,16 +99,12 @@
   "item-wedgechiselhead-iron": "鉄の楔ノミの頭",
   "item-wedgechiselhead-meteoriciron": "隕鉄の鉄の楔ノミの頭",
   "item-wedgechiselhead-steel": "鋼の楔ノミの頭",
-
   "item-adminhammer": "モデレーター・ハンマー",
   "itemdesc-adminhammer": "その力に敢然と対抗した海賊たちの伝説は、命知らずの海賊たちの破片と同じように瞬く間に広まった。\n",
-
   "ingameerror-stoneslab-unknown-drop": "この石には、この種類は存在しません。",
   "ingameerror-stoneslab-unknown-tool": "不明な道具",
-
   "info-stoneslab-heldinfo(count={0},stone={1})": "x{0} {1}",
   "info-plugandfeather-heldinfo(range={0})": "範囲: {0}x{0}x{0}",
-
   "info-rubblestorage-type(type={0})": "岩: {0}",
   "info-rubblestorage-stone(count={0})": "石: {0}",
   "info-rubblestorage-gravel(count={0})": "砂利: {0}",
@@ -133,7 +112,6 @@
   "info-rubblestorage-locked": " (ロック済)",
   "info-rubblestorage-none": "なし",
   "info-rubblestorage-empty": "空っぽ",
-
   "wi-rubblestorage-hammer": "砕く",
   "wi-rubblestorage-add-one": "1つ追加",
   "wi-rubblestorage-add-stack": "スタックを追加",
@@ -146,7 +124,6 @@
   "wi-rubblestorage-take-stack-sand": "砂のスタックを取る",
   "wi-rubblestorage-take-one-gravel": "砂利を取る",
   "wi-rubblestorage-take-stack-gravel": "砂利のスタックを取る",
-
   "wi-stoneslab-rockpolished": "磨かれた岩を切り出す",
   "wi-stoneslab-rock": "岩を切り出す",
   "wi-stoneslab-stone": "石を切り出す",
@@ -154,7 +131,6 @@
   "wi-stoneslab-changerock": "岩を選択",
   "wi-stoneslab-addrock": "岩を追加",
   "wi-stoneslab-removerock": "岩を取り除く",
-
   "wi-plugandfeather-quarryimpact": "ハンマー",
   "wi-plugandfeather-togglepreview": "プレビューを切り替える"
 }

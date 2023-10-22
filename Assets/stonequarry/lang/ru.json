@@ -1,13 +1,10 @@
 {
   "game:stonequarry-quarryguide-title": "StoneQuarry: Ваш гид по каменоломне",
   "game:stonequarry-quarryguide-text": "<strong>Руководство по раскалыванию камней</strong><br><i>Итак, вы хотите разработать карьер?</i><br><br>Просто сделай хороший <a href=\"handbook://item-hammer-copper\">молот</a> и немного <a href=\"handbook://block-stonequarry:plugandfeather-copper-0-down-north\">клиньев</a> и установите их так, чтобы они находились вверху или внизу ряда каменных блоков на той стороне, от которой вы хотите отделить плиту. Ударьте по ним молотком несколько раз, и у вас получится красивая каменная плита. После того, как вы ударите по первому клину, вы можете Подкрасться + Щелкнуть по ней, чтобы переключить подсветку рабочей области.<br><br>В зависимости от материала клиньев, которую вы используете, вы можете получить больше камней за один раз. Например, куб 3х3х3 для меди и 7х7х7 для стали.<br><br>Размер плиты, которую вы получите, зависит от того, сколько камня вы разрезаете за один раз. Хотя можно использовать любой тип плиты, имейте в виду, что большие плиты занимают больше места при размещении.<br><br>Теперь иди и возьми немного этого камня после того, как прочитаешь <a href=\"handbook://stonequarry-masonguide\">Руководство по резке камня</a>.",
-  
   "game:stonequarry-masonguide-title": "StoneQuarry: Руководство по резке камня",
   "game:stonequarry-masonguide-text": "<strong>Руководство по резке камня</strong><br><i>Камня много не бывает</i><br><br>Сначала создайте <a href=\"handbook://stonequarry-quarryguide\">каменную глыбу</a>. С каждым удаленным куском камня вы получите каменную плиту, которую можно использовать для получения различных типов камня.<br><br>Для этого есть четыре инструмента:<br><a href=\"handbook://item-stonequarry:chisel-finishing-copper\">Чистовое зубило</a> - при использовании на плите даст полированный камень.<br><a href=\"handbook://item-stonequarry:chisel-wedge-copper\">Клиновое зубило</a> - при использовании на плите даст кирпичи.<br><a href=\"handbook://item-stonequarry:chisel-roughcut-copper\">Грубое зубило</a> - при использовании на плите даст камень.<br><a href=\"handbook://item-stonequarry:rubblehammer-copper\">Молот для щебня</a> - при использовании на плите даст камешки.<br><br>Если вы хотите получить песок или гравий из камня, или вам просто нужно много места для хранения, то взгляните на <a href=\"handbook://stonequarry-rubblestorageguide\">Руководство по хранению щебня</a>",
-  
   "game:stonequarry-rubblestorageguide-title": "StoneQuarry: руководство по хранению щебня",
   "game:stonequarry-rubblestorageguide-text": "<strong>Руководство по хранению щебня</strong><br><br><a href=\"handbook://block-stonequarry:rubblestorage-north\">Ящик для щебня</a> может использоваться для хранения камня, гравия и песка.<br><br>Кроме того, если вы ударите <a href=\"handbook://item-stonequarry:rubblehammer-copper\">молотком</a> по хранящимся материалам, содержимое разобьется. По принципу: два камня к одному гравию, один гравий к одному песку.<br><br><strong>Взаимодействие в игре</strong><br>- Добавить предметы: щелкните правой кнопкой мыши предмет в руке. Вы также можете добавить все подходящие предметы инвентаря, щелкнув правой кнопкой мыши пустой рукой.<br>- Взять предметы: щелкнуть правой кнопкой мыши по кнопкам впереди, в соответствии с нужным материалом.<br>- Удерживая клавишу бега, вы можете добавлять/удалять стопку материалов за раз.<br>- Вы можете заблокировать материал, удерживая клавину Присесть и щелкнув правой кнопкой мыши соответствующую кнопку. Заблокированный материал не будет использоваться для сбоя, а также будет иметь приоритет.<br>- Вы также можете создать <a href=\"handbook://block-muddygravel\">илистый гравий</a> из обычного гравия, щелкнув правой кнопкой мыши емкость с водой (ведро).",
-
   "block-plugandfeather-copper-*": "Клин (медь)",
   "block-plugandfeather-tinbronze-*": "Клин (оловянная бронза)",
   "block-plugandfeather-bismuthbronze-*": "Клин (висмутовая бронза)",
@@ -16,26 +13,14 @@
   "block-plugandfeather-meteoriciron-*": "Клин (метеоритное железо)",
   "block-plugandfeather-steel-*": "Клин (сталь)",
   "block-plugandfeather-admin-*": "Клин (администратор)",
-  "block-handbooktitle-*-plugandfeather-*": "Использование",
-  "block-handbooktext-*-plugandfeather-*": "Используется, чтобы отделить каменный массив от скалы. Чем выше уровень металла клиньев, там больший массив можно отделить.\n\n-Медь: 3x3\n-Оловянная бронза: 4x4\n-Висмутовая бронза: 4x4\n-Черная бронза: 5x5\n-Железо: 6x6 \n\n<strong>Создается:</strong> \n<a href=\"handbook://craftinginfo-smelting\">Отливка</a>",
-
   "block-stoneslab-small-*": "Малая каменная глыба",
   "block-stoneslab-medium-*": "Средняя каменная глыба",
   "block-stoneslab-large-*": "Большая каменная глыба",
   "block-stoneslab-huge-*": "Огромная каменная глыба",
   "block-stoneslab-giant-*": "Гигантская каменная глыба",
-
-  "block-handbooktitle-*-stoneslab*": "Использование",
-  "block-handbooktext-*-stoneslab*": "Установите глыбу в мир и используйте <a href=\"handbook://item-stonequarry:chisel-finishing-copper\">Чистовое зубило</a>, <a href=\"handbook://item-stonequarry:chisel-roughcut-copper\">Грубое зубило</a>, <a href=\"handbook://item-stonequarry:chisel-wedge-copper\">Клиновое зубило</a>, или <a href=\"handbook://item-stonequarry:rubblehammer-copper\">Молот</a> чтобы получить различные ресурсы.",
-
   "block-rubblestorage-*": "Ящик для щебня",
-
-  "block-handbooktitle-*-rubblestorage-*": "Использование",
-  "block-handbooktext-*-rubblestorage-*": "Эти ящики могут использоваться для хранения всех видов камня и каменных продуктов, например: гравия и песка! Более того, если по этому ящику ударить молотом, содержимое будет разбито. Например, два камня превратятся в гравий, а гравий превратится в песок.\n\n <strong>Взаимодействие с миром:</strong> \n -Чтобы поместить предметы в ящик, сделайте правый клик предметом по ящику. Если сделать правый клик пустой рукой, то в ящик поместятся все предметы из инвентаря, которые совпадают с последним помещенным предметом.\n -Чтобы изъять предметы, сделайте правый клик по кнопкам спереди/сзади.\n -Зажав кнопку бега (по-умолчанию ctrl), можно помещать/извлекать предметы по стакам.\n -Вы можете обозначить финальный результат, который хотите получить в ящике, используя кнопку приседания (Shift) и сделав правый клик по соответствующей кнопке.\n\n P.S: Попробуйте залить ведром воду в ящик, в котором находится гравий.",
-
   "game:block-toolmold-raw-sq_plugandfeather": "Форма для клиньев (необож.)",
   "game:block-toolmold-burned-sq_plugandfeather": "Форма для клиньев",
-
   "item-chisel-finishing-copper": "Чистовое зубило (медь)",
   "item-chisel-finishing-tinbronze": "Чистовое зубило (оловянная бронза)",
   "item-chisel-finishing-bismuthbronze": "Чистовое зубило (висмутовая бронза)",
@@ -45,10 +30,6 @@
   "item-chisel-finishing-iron": "Чистовое зубило (железо)",
   "item-chisel-finishing-meteoriciron": "Чистовое зубило (метеоритное железо)",
   "item-chisel-finishing-steel": "Чистовое зубило (сталь)",
-  "itemcraftdesc-chisel-finishing-*": "Отполируйте свои каменные массивы!",
-  "item-handbooktitle-*-chisel-finishing-*": "Использование:",
-  "item-handbooktext-*-chisel-finishing-*": "Используется на каменных глыбах, чтобы получить ресурсы. Прочтите <a href=\"handbook://sw-mason\">Обработка камня</a> чтобы узнать подробнее.",
-
   "item-chisel-roughcut-copper": "Грубое зубило (медь)",
   "item-chisel-roughcut-tinbronze": "Грубое зубило (оловянная бронза)",
   "item-chisel-roughcut-bismuthbronze": "Грубое зубило (висмутовая бронза)",
@@ -58,10 +39,6 @@
   "item-chisel-roughcut-iron": "Грубое зубило (железо)",
   "item-chisel-roughcut-meteoriciron": "Грубое зубило (метеоритное железо)",
   "item-chisel-roughcut-steel": "Грубое зубило (сталь)",
-  "itemcraftdesc-chisel-roughcut-*": "Использовать в случае острой нехватки камня.",
-  "item-handbooktitle-*-chisel-roughcut-*": "Использование:",
-  "item-handbooktext-*-chisel-roughcut-*": "Используется на каменных глыбах, чтобы получить ресурсы. Прочтите <a href=\"handbook://sw-mason\">Masonry Guide</a> чтобы узнать подробнее.",
-
   "item-rubblehammer-copper": "Молот для щебня (медь)",
   "item-rubblehammer-tinbronze": "Молот для щебня (оловянная бронза)",
   "item-rubblehammer-bismuthbronze": "Молот для щебня (висмутовая бронза)",
@@ -71,10 +48,6 @@
   "item-rubblehammer-iron": "Молот для щебня (железо)",
   "item-rubblehammer-meteoriciron": "Молот для щебня (метеоритное железо)",
   "item-rubblehammer-steel": "Молот для щебня (сталь)",
-  "itemcraftdesc-rubblehammer-*": "Рубить, крушить, измельчать!",
-  "item-handbooktitle-*-rubblehammer-*": "Использование:",
-  "item-handbooktext-*-rubblehammer-*": "Используется на каменных глыбах, чтобы получить ресурсы. Прочтите <a href=\"handbook://sw-mason\">Masonry Guide</a> чтобы узнать подробнее.",
-
   "item-chisel-wedge-copper": "Клиновое зубило (медь)",
   "item-chisel-wedge-tinbronze": "Клиновое зубило (оловянная бронза)",
   "item-chisel-wedge-bismuthbronze": "Клиновое зубило (висмутовая бронза)",
@@ -84,10 +57,6 @@
   "item-chisel-wedge-iron": "Клиновое зубило (железо)",
   "item-chisel-wedge-meteoriciron": "Клиновое зубило (метеоритное железо)",
   "item-chisel-wedge-steel": "Клиновое зубило (сталь)",
-  "itemcraftdesc-chisel-wedge-*": "Когда понадобилось чуть больше кирпича",
-  "item-handbooktitle-*-chisel-wedge-*": "Использование:",
-  "item-handbooktext-*-chisel-wedge-*": "Используется на каменных глыбах, чтобы получить ресурсы. Прочтите <a href=\"handbook://sw-mason\">Masonry Guide</a> чтобы узнать подробнее.",
-
   "item-rubblehammerhead-copper": "Оголовье молота для щебня (медь)",
   "item-rubblehammerhead-tinbronze": "Оголовье молота для щебня (оловянная бронза)",
   "item-rubblehammerhead-bismuthbronze": "Оголовье молота для щебня (висмутовая бронза)",
@@ -115,21 +84,12 @@
   "item-wedgechiselhead-iron": "Оголовье клинового зубила (железо)",
   "item-wedgechiselhead-meteoriciron": "Оголовье клинового зубила (метеоритное железо)",
   "item-wedgechiselhead-steel": "Оголовье клинового зубила (сталь)",
-
   "item-adminhammer": "Молоток Модератора",
   "itemdesc-adminhammer": "Легенды о пиратах, которые осмелились противиться его силе, разносятся также быстро, как и кусочки этих смельчаков.\n",
-
   "ingameerror-stoneslab-unknown-drop": "Такой тип для этого камня не существует",
   "ingameerror-stoneslab-unknown-tool": "Неизвестный инструмент",
-
   "info-stoneslab-heldinfo(count={0},stone={1})": "x{0} {1}",
   "info-plugandfeather-heldinfo(range={0})": "Дальность: {0}x{0}x{0}",
-  "info-slabtool-heldinfo(result={0})": "Результат: {0}",
-  "info-slabtool-type-rockpolished": "полированный камень",
-  "info-slabtool-type-rock": "камень",
-  "info-slabtool-type-stone": "камешки",
-  "info-slabtool-type-stonebrick": "кирпичи",
-
   "info-rubblestorage-type(type={0})": "Тип камня: {0}",
   "info-rubblestorage-stone(count={0})": "Камни: {0}",
   "info-rubblestorage-gravel(count={0})": "Гравий: {0}",
@@ -137,7 +97,6 @@
   "info-rubblestorage-locked": " (заблокировано)",
   "info-rubblestorage-none": "Нет",
   "info-rubblestorage-empty": "Пустое",
-
   "wi-rubblestorage-hammer": "Измельчать",
   "wi-rubblestorage-add-one": "Добавить один",
   "wi-rubblestorage-add-stack": "Добавить стак",
@@ -150,7 +109,6 @@
   "wi-rubblestorage-take-stack-sand": "Забрать стак песка",
   "wi-rubblestorage-take-one-gravel": "Забрать гравий",
   "wi-rubblestorage-take-stack-gravel": "Забрать стак гравия",
-
   "wi-stoneslab-rockpolished": "Отрезать полированный камень",
   "wi-stoneslab-rock": "Отрезать камень",
   "wi-stoneslab-stone": "Отрезать камешки",
@@ -158,7 +116,6 @@
   "wi-stoneslab-changerock": "Выбрать камень",
   "wi-stoneslab-addrock": "Добавить камень",
   "wi-stoneslab-removerock": "Удалить камень",
-
   "wi-plugandfeather-quarryimpact": "Ударить",
   "wi-plugandfeather-togglepreview": "Переключить превью"
 }
