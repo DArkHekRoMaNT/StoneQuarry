@@ -172,7 +172,7 @@ namespace StoneQuarry
 
         public RockData? GetValue(AssetLocation rock)
         {
-            if (_data.TryGetValue(rock, out RockData value))
+            if (_data.TryGetValue(rock, out RockData? value))
             {
                 return value;
             }
@@ -190,8 +190,13 @@ namespace StoneQuarry
             {
                 if (type != null)
                 {
-                    AssetLocation? loc = rockData[type];
                     if (code.Equals(rockData[type]))
+                    {
+                        return true;
+                    }
+
+                    // Collect cracked rock as rock
+                    if (type == "rock" && code.Equals(rockData["crackedrock"]))
                     {
                         return true;
                     }

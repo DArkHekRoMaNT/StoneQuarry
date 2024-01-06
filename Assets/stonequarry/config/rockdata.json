@@ -1,6 +1,7 @@
 [
   {
     "rock": "game:rock-*",
+    "crackedrock": "game:crackedrock-*",
     "stone": "game:stone-*",
     "rockpolished": "game:rockpolished-*",
     "stonebrick": "game:stonebrick-*",

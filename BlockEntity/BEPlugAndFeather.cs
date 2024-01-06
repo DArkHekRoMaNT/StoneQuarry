@@ -6,6 +6,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
+using Vintagestory.API.Util;
 
 namespace StoneQuarry
 {
@@ -170,21 +171,22 @@ namespace StoneQuarry
                 int maxQuantity = 0;
                 foreach (BlockPos pos in GetAllBlocksInside())
                 {
-                    Block block = world.BlockAccessor.GetBlock(pos);
-                    if (manager.IsSuitableRock(block.Code))
+                    var blockCode = world.BlockAccessor.GetBlock(pos).Code;
+                    blockCode = blockCode.WildCardReplace(new AssetLocation("crackedrock-*"), new AssetLocation("rock-*")) ?? blockCode;
+                    if (manager.IsSuitableRock(blockCode))
                     {
                         if (world.Claims.TryAccess(byPlayer, pos, EnumBlockAccessFlags.BuildOrBreak))
                         {
                             world.BlockAccessor.SetBlock(0, pos);
                             world.BlockAccessor.TriggerNeighbourBlockUpdate(pos);
 
-                            if (quantitiesByRock.ContainsKey(block.Code))
+                            if (quantitiesByRock.ContainsKey(blockCode))
                             {
-                                quantitiesByRock[block.Code] += 1;
+                                quantitiesByRock[blockCode] += 1;
                             }
                             else
                             {
-                                quantitiesByRock.Add(block.Code, 1);
+                                quantitiesByRock.Add(blockCode, 1);
                             }
 
                             maxQuantity++;
@@ -240,7 +242,7 @@ namespace StoneQuarry
                     {
                         for (int z = cube.MinZ; z <= cube.MaxZ; z++)
                         {
-                            blocks.Add(new BlockPos(x, y, z));
+                            blocks.Add(new BlockPos(x, y, z, Points[0].dimension));
                         }
                     }
                 }

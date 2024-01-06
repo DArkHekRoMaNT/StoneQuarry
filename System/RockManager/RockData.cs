@@ -15,6 +15,7 @@ namespace StoneQuarry
         public static readonly string[] types =
         {
             "rock",
+            "crackedrock",
             "stone",
             "rockpolished",
             "stonebrick",
@@ -37,6 +38,9 @@ namespace StoneQuarry
         [ProtoMember(5), JsonProperty("sand")]
         private AssetLocation? _sand;
 
+        [ProtoMember(7), JsonProperty("crackedrock")]
+        private AssetLocation? _crackedRock;
+
         [ProtoMember(6), JsonProperty("rock"), JsonRequired]
         public AssetLocation Rock { get; set; }
 
@@ -50,6 +54,7 @@ namespace StoneQuarry
             get => type switch
             {
                 "rock" => Rock,
+                "crackedrock" => _crackedRock,
                 "stone" => _stone,
                 "rockpolished" => _rockPolished,
                 "stonebrick" => _stoneBrick,
@@ -63,6 +68,7 @@ namespace StoneQuarry
                 switch (type)
                 {
                     case "rock": Rock = value ?? UndefinedRock; break;
+                    case "crackedrock": _crackedRock = value; break;
                     case "stone": _stone = value; break;
                     case "rockpolished": _rockPolished = value; break;
                     case "stonebrick": _stoneBrick = value; break;
@@ -78,6 +84,7 @@ namespace StoneQuarry
             {
                 if (code.Equals(Rock)) return "rock";
                 if (code.Equals(_stone)) return "stone";
+                if (code.Equals(_crackedRock)) return "crackedrock";
                 if (code.Equals(_rockPolished)) return "rockpolished";
                 if (code.Equals(_stoneBrick)) return "stonebrick";
                 if (code.Equals(_gravel)) return "gravel";
@@ -110,6 +117,7 @@ namespace StoneQuarry
             {
                 Rock = Rock.Clone(),
                 _stone = _stone?.Clone(),
+                _crackedRock = _crackedRock?.Clone(),
                 _rockPolished = _rockPolished?.Clone(),
                 _stoneBrick = _stoneBrick?.Clone(),
                 _gravel = _gravel?.Clone(),

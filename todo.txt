@@ -1,0 +1,2 @@
+- Add new tool for cracked rock?
+- Fix animations
