@@ -9,7 +9,7 @@ namespace StoneQuarry
 {
     public class StoneSlabMeshCache : ModSystem, ITexPositionSource
     {
-        private readonly Dictionary<int, string> _cacheKeysByItemStackId = new();
+        private readonly Dictionary<int, string> _cacheKeysByItemStackId = [];
         private ICoreClientAPI _capi = null!;
 
         private StoneSlabRenderPreset? _currPreset;
@@ -57,7 +57,7 @@ namespace StoneQuarry
             }
         }
 
-        public MeshRef GetInventoryMeshRef(ItemStack itemstack, BlockStoneSlab block)
+        public MultiTextureMeshRef GetInventoryMeshRef(ItemStack itemstack, BlockStoneSlab block)
         {
             string key = itemstack.TempAttributes.GetString("cachedMeshKey", null);
 
@@ -75,7 +75,7 @@ namespace StoneQuarry
                 Shape shape = GetBaseShape(_currBlock.Shape);
                 _capi.Tesselator.TesselateShape(nameof(StoneSlabMeshCache), shape,
                     out MeshData mesh, this, rotation);
-                return _capi.Render.UploadMesh(mesh);
+                return _capi.Render.UploadMultiTextureMesh(mesh);
             });
         }
 
