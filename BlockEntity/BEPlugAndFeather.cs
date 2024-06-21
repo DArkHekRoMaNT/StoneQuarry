@@ -55,6 +55,7 @@ namespace StoneQuarry
         public override void ToTreeAttributes(ITreeAttribute tree)
         {
             tree.SetInt("work", _currentStageWork);
+            tree.SetInt("durability", Durability);
 
             if (Points.Count != 0)
             {
@@ -63,7 +64,6 @@ namespace StoneQuarry
                 {
                     tree.SetBlockPos($"point{i}", Points[i]);
                 }
-                tree.SetInt("durability", Durability);
             }
 
             base.ToTreeAttributes(tree);
