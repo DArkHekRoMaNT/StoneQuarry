@@ -1,4 +1,6 @@
+using CommonLib.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Vintagestory.API.Client;
@@ -348,6 +350,12 @@ namespace StoneQuarry
         {
             Inventory = new RubbleStorageInventory(Api, Pos, MaxStorable);
             Inventory.FromTreeAttributes(stack.Attributes);
+        }
+
+        public override void OnLoadCollectibleMappings(IWorldAccessor worldForNewMappings, Dictionary<int, AssetLocation> oldBlockIdMapping, Dictionary<int, AssetLocation> oldItemIdMapping, int schematicSeed, bool resolveImports)
+        {
+            Inventory!.FixMappings(worldForNewMappings, oldBlockIdMapping, oldItemIdMapping, schematicSeed, resolveImports);
+            base.OnLoadCollectibleMappings(worldForNewMappings, oldBlockIdMapping, oldItemIdMapping, schematicSeed, resolveImports);
         }
     }
 }
