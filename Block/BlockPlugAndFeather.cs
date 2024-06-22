@@ -18,7 +18,8 @@ namespace StoneQuarry
 
         private Config Config { get; set; } = null!;
 
-        public int MaxSearchRange => Attributes["searchrange"].AsInt(0);
+        public int MaxSearchRange => (int)(Math.Min(1024, Math.Round(Attributes["searchrange"].AsInt(0) * Config.PlugSizeModifier)));
+
         public string Material => Variant["metal"];
         public string Orientation => Variant["orientation"];
         public string Direction => Variant["direction"];
@@ -437,12 +438,12 @@ namespace StoneQuarry
                         if (Direction == "north" || Direction == "south")
                         {
                             subDir = BlockFacing.SOUTH.Normali.ToBlockPos();
-                            oppositeDirection = new string[] { "north", "south" };
+                            oppositeDirection = ["north", "south"];
                         }
                         else if (Direction == "east" || Direction == "west")
                         {
                             subDir = BlockFacing.EAST.Normali.ToBlockPos();
-                            oppositeDirection = new string[] { "east", "west" };
+                            oppositeDirection = ["east", "west"];
                         }
                     }
                     else if (Orientation == "down")
@@ -451,12 +452,12 @@ namespace StoneQuarry
                         if (Direction == "north" || Direction == "south")
                         {
                             subDir = BlockFacing.SOUTH.Normali.ToBlockPos();
-                            oppositeDirection = new string[] { "north", "south" };
+                            oppositeDirection = ["north", "south"];
                         }
                         else if (Direction == "east" || Direction == "west")
                         {
                             subDir = BlockFacing.EAST.Normali.ToBlockPos();
-                            oppositeDirection = new string[] { "east", "west" };
+                            oppositeDirection = ["east", "west"];
                         }
                     }
                     else if (Orientation == "horizontal")
@@ -465,22 +466,22 @@ namespace StoneQuarry
                         if (Direction == "north")
                         {
                             mainDir = BlockFacing.NORTH.Normali.ToBlockPos();
-                            oppositeDirection = new string[] { "north", "south" };
+                            oppositeDirection = ["north", "south"];
                         }
                         else if (Direction == "east")
                         {
                             mainDir = BlockFacing.EAST.Normali.ToBlockPos();
-                            oppositeDirection = new string[] { "east", "west" };
+                            oppositeDirection = ["east", "west"];
                         }
                         else if (Direction == "south")
                         {
                             mainDir = BlockFacing.SOUTH.Normali.ToBlockPos();
-                            oppositeDirection = new string[] { "north", "south" };
+                            oppositeDirection = ["north", "south"];
                         }
                         else if (Direction == "west")
                         {
                             mainDir = BlockFacing.WEST.Normali.ToBlockPos();
-                            oppositeDirection = new string[] { "east", "west" };
+                            oppositeDirection = ["east", "west"];
                         }
                     }
                 }
@@ -491,7 +492,7 @@ namespace StoneQuarry
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
             dsc.AppendLineOnce();
-            dsc.Append(Lang.Get($"{Core.ModId}:info-plugandfeather-heldinfo(range={{0}})", Attributes["searchrange"]));
+            dsc.Append(Lang.Get($"{Core.ModId}:info-plugandfeather-heldinfo(range={{0}})", MaxSearchRange));
         }
 
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
