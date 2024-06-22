@@ -1,6 +1,4 @@
 using CommonLib.Config;
-using CommonLib.Extensions;
-using System;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 

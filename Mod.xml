@@ -2,15 +2,15 @@
 	<PropertyGroup>
 		<Name>Stone Quarry</Name>
 		<ModId>stonequarry</ModId>
-		<Version>3.2.1</Version>
+		<Version>3.3.0</Version>
 		<Authors>DArkHekRoMaNT</Authors>
-		<MinimalGameVersion>1.19.0-rc.5</MinimalGameVersion>
-		<GameVersion>1.19.0-rc.5</GameVersion>
+		<MinimalGameVersion>1.19.0</MinimalGameVersion>
+		<GameVersion>1.19.8</GameVersion>
 		<Website>https://github.com/DArkHekRoMaNT/StoneQuarry</Website>
 	</PropertyGroup>
 	<ItemGroup>
 		<Dependencies Include="commonlib">
-			<Version>2.3.0</Version>
+			<Version>2.4.0</Version>
 		</Dependencies>
 
 		<IncludeFiles Include="modicon.png" />
