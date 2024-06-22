@@ -24,7 +24,7 @@
   "stonequarry:block-handbooktext-stonequarry:stoneslab-*": "Appena posiziona nel mondo, puoi interagirci mantenendo premuto <a href=\"handbook://item-stonequarry:finishingchisel-copper\">scalpello rifinitura</a>, <a href=\"handbook://item-stonequarry:roughcutchisel-copper\">scalpello taglio grezzo</a>, <a href=\"handbook://item-stonequarry:wedgechisel-copper\">salcepplo cuneo</a> oppure <a href=\"handbook://item-stonequarry:rubblehammer-copper\">martello macerie</a> per prendere varietà di risorse. Vedi per i dettagli <a href=\"handbook://stonequarry-masonguide\">Guida Divisione Pietra</a>",
   "block-rubblestorage-*": "Deposito macerie",
   "stonequarry:block-handbooktitle-stonequarry:rubblestorage-*": "Usi",
-  "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "Appena posiziona nel mondo, può essere usato per immagazzinare pietre, ghiaia e sabbia. Puoi anche schiacciare il contenutocon un <a href=\"handbook://item-stonequarry:rubblehammer-copper\">martello da macerie</a>. Per i dettagli vedi <a href=\"handbook://stonequarry-quarryguide\">Guida Deposito Macerie</a>",
+  "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "Appena posiziona nel mondo, può essere usato per immagazzinare pietre, ghiaia e sabbia. Puoi anche schiacciare il contenutocon un <a href=\"handbook://item-stonequarry:rubblehammer-copper\">martello da macerie</a>. Per i dettagli vedi <a href=\"handbook://stonequarry-rubblestorageguide\">Guida Deposito Macerie</a>",
   "game:block-toolmold-raw-sq_plugandfeather": "Stampo di perno divisore crudo",
   "game:block-toolmold-burned-sq_plugandfeather": "Stampo di perno divisore",
   "item-chisel-finishing-copper": "Scalpello rifinitura di rame",

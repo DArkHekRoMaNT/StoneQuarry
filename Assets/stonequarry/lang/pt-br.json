@@ -22,7 +22,7 @@
   "stonequarry:block-handbooktext-stonequarry:stoneslab-*": "Quando colocado no mundo, é possível interagir com isto enquanto segura um <a href=\"handbook://item-stonequarry:finishingchisel-copper\">cinzel de acabamento</a>, <a href=\"handbook://item-stonequarry:roughcutchisel-copper\">cinzel de corte grosseiro</a>, <a href=\"handbook://item-stonequarry:wedgechisel-copper\">cinzel em cunha</a>, ou o <a href=\"handbook://item-stonequarry:rubblehammer-copper\">martelo de entulho</a> para conseguir uma variedade de recursos. Veja o <a href=\"handbook://stonequarry-masonguide\">Guia de Corte de Pedras</a> para mais detalhes",
   "block-rubblestorage-*": "Armazenamento de entulho",
   "stonequarry:block-handbooktitle-stonequarry:rubblestorage-*": "Usos",
-  "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "Quando colocado no mundo, isto pode ser usado para guardar rocha, cascalho, e areia. Você pode também quebrar o conteúdo com um <a href=\"handbook://item-stonequarry:rubblehammer-copper\">martelo de entulho</a>. Veja <a href=\"handbook://stonequarry-quarryguide\">Guia de Armazenagem de Entulho</a> para mais detalhes",
+  "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "Quando colocado no mundo, isto pode ser usado para guardar rocha, cascalho, e areia. Você pode também quebrar o conteúdo com um <a href=\"handbook://item-stonequarry:rubblehammer-copper\">martelo de entulho</a>. Veja <a href=\"handbook://stonequarry-rubblestorageguide\">Guia de Armazenagem de Entulho</a> para mais detalhes",
   "game:block-toolmold-raw-sq_plugandfeather": "Molde cru de plugue separador",
   "game:block-toolmold-burned-sq_plugandfeather": "Molde de plugue separador",
   "item-chisel-finishing-copper": "Cinzel de acabamento de cobre",

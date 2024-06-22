@@ -29,7 +29,7 @@
 
   "block-rubblestorage-*": "Rubble storage",
   "stonequarry:block-handbooktitle-stonequarry:rubblestorage-*": "Uses",
-  "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "Once placed in the world, this can be used to store stone, gravel, and sand. You can also crashing content with a <a href=\"handbook://item-stonequarry:rubblehammer-copper\">rubble hammer</a>. See <a href=\"handbook://stonequarry-quarryguide\">Rubble Storage Guide</a> for details",
+  "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "Once placed in the world, this can be used to store stone, gravel, and sand. You can also crashing content with a <a href=\"handbook://item-stonequarry:rubblehammer-copper\">rubble hammer</a>. See <a href=\"handbook://stonequarry-rubblestorageguide\">Rubble Storage Guide</a> for details",
 
   "game:block-toolmold-raw-sq_plugandfeather": "Raw splitter plug mold",
   "game:block-toolmold-burned-sq_plugandfeather": "Splitter plug mold",

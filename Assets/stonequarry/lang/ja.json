@@ -24,7 +24,7 @@
   "stonequarry:block-handbooktext-stonequarry:stoneslab-*": "地面に配置すると、<a href=\"handbook://item-stonequarry:chisel-finishing-copper\">仕上げノミ</a>、<a href=\"handbook://item-stonequarry:chisel-roughcut-copper\">荒削りノミ</a>、<a href=\"handbook://item-stonequarry:chisel-wedge-copper\">楔ノミ</a>、<a href=\"handbook://item-stonequarry:rubblehammer-copper\">瓦礫ハンマー</a>を持つことで相互作用し、様々な資源を得ることが出来ます。詳細は<a href=\"handbook://stonequarry-masonguide\">石の切り出しガイド</a>をご覧下さい。",
   "block-rubblestorage-*": "瓦礫入れ",
   "stonequarry:block-handbooktitle-stonequarry:rubblestorage-*": "使い方",
-  "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "地面に配置すると、石や砂利、砂を保管することが出来ます。また、<a href=\"handbook://item-stonequarry:rubblehammer-copper\">瓦礫ハンマー</a>で中身を砕くことが出来ます。詳細は<a href=\"handbook://stonequarry-quarryguide\">瓦礫入れガイド</a>をご覧下さい。",
+  "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "地面に配置すると、石や砂利、砂を保管することが出来ます。また、<a href=\"handbook://item-stonequarry:rubblehammer-copper\">瓦礫ハンマー</a>で中身を砕くことが出来ます。詳細は<a href=\"handbook://stonequarry-rubblestorageguide\">瓦礫入れガイド</a>をご覧下さい。",
   "game:block-toolmold-raw-sq_plugandfeather": "セリ矢の鋳型(未焼成)",
   "game:block-toolmold-burned-sq_plugandfeather": "セリ矢の鋳型",
   "item-chisel-finishing-copper": "銅の仕上げノミ",

@@ -24,7 +24,7 @@
   "stonequarry:block-handbooktext-stonequarry:stoneslab-*": "Una vez colocado en el suelo, se puede interactuar con esto sosteniendo el <a href=\"handbook://item-stonequarry:chisel-finishing-copper\">Cincel de Pulido</a>, <a href=\"handbook://item-stonequarry:chisel-roughcut-copper\">Cincel de Corte en Cuña</a>, <a href=\"handbook://item-stonequarry:chisel-wedge-copper\">Cincel de Corte en Bruto</a> o el <a href=\"handbook://item-stonequarry:rubblehammer-copper\">Martillo para Fragmentar</a> para obtener una variedad de recursos. Consulta <a href=\"handbook://stonequarry-masonguide\">Guía de Corte de Roca</a> para más detalles",
   "block-rubblestorage-*": "Almacenamiento de Escombros",
   "stonequarry:block-handbooktitle-stonequarry:rubblestorage-*": "Usos",
-  "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "Una vez colocado en el mundo, esto se puede usar para almacenar piedra, grava y arena. Puedes triturar el contenido con un <a href=\"handbook://item-stonequarry:rubblehammer-copper\">Martillo para Fragmentar</a>. Consulta <a href=\"handbook://stonequarry-quarryguide\">Guía de Almacenamiento de Escombros</a> para más detalles",
+  "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "Una vez colocado en el mundo, esto se puede usar para almacenar piedra, grava y arena. Puedes triturar el contenido con un <a href=\"handbook://item-stonequarry:rubblehammer-copper\">Martillo para Fragmentar</a>. Consulta <a href=\"handbook://stonequarry-rubblestorageguide\">Guía de Almacenamiento de Escombros</a> para más detalles",
   "game:block-toolmold-raw-sq_plugandfeather": "Molde de Cuña en crudo",
   "game:block-toolmold-burned-sq_plugandfeather": "Molde de Cuña",
   "item-chisel-finishing-copper": "Cincel de Pulido de Cobre",

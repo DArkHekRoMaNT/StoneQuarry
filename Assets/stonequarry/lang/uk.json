@@ -24,7 +24,7 @@
   "stonequarry:block-handbooktext-stonequarry:stoneslab-*": "Після розміщення у світі з нею можна взаємодіяти, тримаючи <a href=\"handbook://item-stonequarry:chisel-finishing-copper\">полірувальне зубило</a>, <a href=\"handbook://item- stonequarry:chisel-roughcut-copper\">грубе зубило</a>, <a href=\"handbook://item-stonequarry:chisel-wedge-copper\">клинчасте зубило</a> або <a href=\"handbook://item-stonequarry:rubblehammer-copper\">молот для щебеню</a>, щоб отримати різноманітні ресурси. Огляньте <a href=\"handbook://stonequarry-masonguide\">Керівництво з різьблення каменю</a> для подробиць.",
   "block-rubblestorage-*": "Сховище щебеню",
   "stonequarry:block-handbooktitle-stonequarry:rubblestorage-*": "Використання",
-  "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "Після розміщення в світі його можна використовувати для зберігання каменю, гравію та піску. Ви також можете дробити вміст за допомогою <a href=\"handbook://item-stonequarry:rubblehammer-copper\">молота для щебеню</a>. Огляньте <a href=\"handbook://stonequarry-quarryguide\">Керівництво зі зберігання щебеню</a> для подробиць.",
+  "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "Після розміщення в світі його можна використовувати для зберігання каменю, гравію та піску. Ви також можете дробити вміст за допомогою <a href=\"handbook://item-stonequarry:rubblehammer-copper\">молота для щебеню</a>. Огляньте <a href=\"handbook://stonequarry-rubblestorageguide\">Керівництво зі зберігання щебеню</a> для подробиць.",
   "game:block-toolmold-raw-sq_plugandfeather": "Сира форма клину",
   "game:block-toolmold-burned-sq_plugandfeather": "Форма клину",
   "item-chisel-finishing-copper": "Полірувальне зубило з міді",
