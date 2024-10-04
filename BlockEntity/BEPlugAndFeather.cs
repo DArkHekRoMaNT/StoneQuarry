@@ -7,6 +7,7 @@ using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
+using Vintagestory.GameContent;
 
 namespace StoneQuarry
 {
@@ -168,6 +169,7 @@ namespace StoneQuarry
             {
                 var quantitiesByRock = new Dictionary<AssetLocation, int>();
                 IRockManager manager = Api.ModLoader.GetModSystem<RockManager>();
+                var reinforcementSystem = Api.ModLoader.GetModSystem<ModSystemBlockReinforcement>();
                 int maxQuantity = 0;
                 foreach (BlockPos pos in GetAllBlocksInside())
                 {
@@ -175,6 +177,18 @@ namespace StoneQuarry
                     blockCode = blockCode.WildCardReplace(new AssetLocation("crackedrock-*"), new AssetLocation("rock-*")) ?? blockCode;
                     if (manager.IsSuitableRock(blockCode))
                     {
+                        var reinforcment = reinforcementSystem.GetReinforcment(pos);
+                        if (reinforcment != null && reinforcment.Strength > 0)
+                        {
+                            world.PlaySoundAt(new AssetLocation("sounds/tool/breakreinforced"), pos, 0.0, byPlayer);
+                            if (!byPlayer.HasPrivilege("denybreakreinforced"))
+                            {
+                                reinforcementSystem.ConsumeStrength(pos, 1);
+                                world.BlockAccessor.MarkBlockDirty(pos);
+                            }
+                            continue;
+                        }
+
                         if (world.Claims.TryAccess(byPlayer, pos, EnumBlockAccessFlags.BuildOrBreak))
                         {
                             world.BlockAccessor.SetBlock(0, pos);
