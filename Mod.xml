@@ -4,8 +4,8 @@
 		<ModId>stonequarry</ModId>
 		<Version>3.3.1</Version>
 		<Authors>DArkHekRoMaNT</Authors>
-		<MinimalGameVersion>1.19.0</MinimalGameVersion>
-		<GameVersion>1.19.8</GameVersion>
+		<MinimalGameVersion>1.20.0-pre.4</MinimalGameVersion>
+		<GameVersion>1.20.0-pre.4</GameVersion>
 		<Website>https://github.com/DArkHekRoMaNT/StoneQuarry</Website>
 	</PropertyGroup>
 	<ItemGroup>

@@ -86,7 +86,7 @@ namespace StoneQuarry
         {
             if (api is ICoreServerAPI sapi)
             {
-                sapi.Network.SendBlockEntityPacket(byPlayer as IServerPlayer, pos.X, pos.Y, pos.Z, Constants.PreviewPacketId);
+                  sapi.Network.SendBlockEntityPacket(byPlayer as IServerPlayer, pos, Constants.PreviewPacketId);
             }
 
             if (world.BlockAccessor.GetBlockEntity(pos) is BEPlugAndFeather be && be.IsNetworkPart)
