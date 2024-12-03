@@ -86,9 +86,22 @@ namespace StoneQuarry
 
         public BlockSounds GetSounds(IBlockAccessor blockAccessor, BlockSelection blockSel, ItemStack stack, Vec3i offset)
         {
+            if (blockSel == null) return null;
             BlockSelection coreBlockSel = blockSel.Clone();
             coreBlockSel.Position += offset.AsBlockPos;
-            return GetSounds(blockAccessor, coreBlockSel, stack, offset);
+            if (offset == Vec3i.Zero)
+            {
+                return base.GetSounds(blockAccessor, coreBlockSel, stack);
+            }
+            try
+            {
+                return base.GetSounds(blockAccessor, coreBlockSel, stack);
+            }
+            catch (Exception ex)
+            {
+                api.Logger.Error("Error in GetSounds: {0}", ex);
+                return null;
+            }
         }
     }
 }
