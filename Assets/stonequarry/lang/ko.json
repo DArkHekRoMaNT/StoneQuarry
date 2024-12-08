@@ -24,7 +24,7 @@
   "stonequarry:block-handbooktext-stonequarry:stoneslab-*": "일단 세계에 내려놓고 나면, <a href=\"handbook://item-stonequarry:chisel-finishing-copper\">평끌</a>, <a href=\"handbook://item-stonequarry:chisel-roughcut-copper\">장부끌</a>, <a href=\"handbook://item-stonequarry:chisel-wedge-copper\">쐐기끌</a>이나 <a href=\"handbook://item-stonequarry:rubblehammer-copper\">돌더미 망치</a>를 사용해 상호작용하여 다양한 자원을 얻을 수 있습니다. \n자세한 내용은 <a href=\"handbook://stonequarry-masonguide\">석재 절단 가이드</a>를 참조하세요.",
   "block-rubblestorage-*": "돌더미 저장고",
   "stonequarry:block-handbooktitle-stonequarry:rubblestorage-*": "용도",
-  "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "일단 세계에 내려놓고 나면, 돌, 자갈, 모래를 저장하는데에 사용 할 수 있습니다. 또한 <a href=\"handbook://item-stonequarry:rubblehammer-copper\">돌더미 망치</a>를 사용해 내용물을 분쇄 할 수 있습니다.\n자세한 내용은 <a href=\"handbook://stonequarry-quarryguide\">돌더미 저장고 가이드</a>를 참조하세요.",
+  "stonequarry:block-handbooktext-stonequarry:rubblestorage-*": "일단 세계에 내려놓고 나면, 돌, 자갈, 모래를 저장하는데에 사용 할 수 있습니다. 또한 <a href=\"handbook://item-stonequarry:rubblehammer-copper\">돌더미 망치</a>를 사용해 내용물을 분쇄 할 수 있습니다.\n자세한 내용은 <a href=\"handbook://stonequarry-rubblestorageguide\">돌더미 저장고 가이드</a>를 참조하세요.",
   "game:block-toolmold-raw-sq_plugandfeather": "굽지 않은 쪼개기용 쐐기 거푸집",
   "game:block-toolmold-burned-sq_plugandfeather": "쪼개기용 쐐기 거푸집",
   "item-chisel-finishing-copper": "구리 평끌",
