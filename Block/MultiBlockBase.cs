@@ -88,7 +88,7 @@ namespace StoneQuarry
         {
             BlockSelection coreBlockSel = blockSel.Clone();
             coreBlockSel.Position += offset.AsBlockPos;
-            return GetSounds(blockAccessor, coreBlockSel, stack, offset);
+            return base.GetSounds(blockAccessor, coreBlockSel, stack);
         }
     }
 }
