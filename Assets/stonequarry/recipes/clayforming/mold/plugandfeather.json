@@ -1,5 +1,5 @@
 {
-  "ingredient": { "type": "item", "code": "game:clay-*", "name": "type", "allowedVariants": ["blue", "fire"] },
+  "ingredient": { "type": "item", "code": "game:clay-*", "name": "type", "allowedVariants": ["blue", "fire", "red"] },
   "pattern": [
     [
       "##############",
@@ -35,5 +35,5 @@
     ]
   ],
   "name": "PlugAndFeather Mold",
-  "output": { "type": "block", "code": "game:toolmold-raw-sq_plugandfeather" }
+  "output": { "type": "block", "code": "game:toolmold-raw-stonequarry_plugandfeather-north" }
 }

@@ -3,7 +3,7 @@
     "file": "game:blocktypes/clay/mold/toolmold.json",
     "op": "add",
     "path": "/variantgroups/1/states/-",
-    "value": "sq_plugandfeather"
+    "value": "stonequarry_plugandfeather"
   },
   {
     "file": "game:blocktypes/clay/mold/toolmold.json",
@@ -14,7 +14,7 @@
   {
     "file": "game:blocktypes/clay/mold/toolmold.json",
     "op": "add",
-    "path": "/attributesByType/toolmold-burned-sq_plugandfeather",
+    "path": "/attributesByType/toolmold-burned-stonequarry_plugandfeather-*",
     "value": {
       "requiredUnits": 100,
       "fillHeight": 1,
@@ -33,6 +33,6 @@
     "file": "game:blocktypes/clay/mold/toolmold.json",
     "op": "add",
     "path": "/creativeinventory/stonequarry",
-    "value": [ "*-sq_plugandfeather" ]
+    "value": [ "*-stonequarry_plugandfeather-north" ]
   }
 ]
