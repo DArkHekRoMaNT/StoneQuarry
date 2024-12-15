@@ -34,7 +34,7 @@ namespace StoneQuarry
 
         public virtual float MBOnGettingBroken(IPlayer player, BlockSelection blockSel, ItemSlot itemslot, float remainingResistance, float dt, int counter, Vec3i offsetInv)
         {
-            BlockSelection coreBlockSel = blockSel.Clone();
+            var coreBlockSel = blockSel.Clone();
             coreBlockSel.Position += offsetInv.AsBlockPos;
             return OnGettingBroken(player, coreBlockSel, itemslot, remainingResistance, dt, counter);
         }
@@ -84,11 +84,11 @@ namespace StoneQuarry
             return OnPickBlock(world, pos + offset.AsBlockPos);
         }
 
-        public BlockSounds GetSounds(IBlockAccessor blockAccessor, BlockSelection blockSel, ItemStack stack, Vec3i offset)
+        public BlockSounds MBGetSounds(IBlockAccessor blockAccessor, BlockSelection blockSel, ItemStack stack, Vec3i offset)
         {
-            BlockSelection coreBlockSel = blockSel.Clone();
+            var coreBlockSel = blockSel.Clone();
             coreBlockSel.Position += offset.AsBlockPos;
-            return base.GetSounds(blockAccessor, coreBlockSel, stack);
+            return GetSounds(blockAccessor, coreBlockSel, stack);
         }
     }
 }

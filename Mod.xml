@@ -2,10 +2,10 @@
 	<PropertyGroup>
 		<Name>Stone Quarry</Name>
 		<ModId>stonequarry</ModId>
-		<Version>3.4.1</Version>
+		<Version>3.4.2</Version>
 		<Authors>DArkHekRoMaNT</Authors>
-		<MinimalGameVersion>1.20.0-rc.1</MinimalGameVersion>
-		<GameVersion>1.20.0-rc.1</GameVersion>
+		<MinimalGameVersion>1.20.0-rc.4</MinimalGameVersion>
+		<GameVersion>1.20.0-rc.4</GameVersion>
 		<Website>https://github.com/DArkHekRoMaNT/StoneQuarry</Website>
 	</PropertyGroup>
 	<ItemGroup>
