@@ -234,7 +234,7 @@ namespace StoneQuarry
 
             if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BEPlugAndFeather be)
             {
-                if (byPlayer.Entity.Controls.Sneak)
+                if (byPlayer.Entity.Controls.CtrlKey)
                 {
                     _previewManager?.TogglePreview(blockSel.Position);
                     return true;
@@ -554,7 +554,7 @@ namespace StoneQuarry
                 {
                     ActionLangCode = $"{Core.ModId}:wi-plugandfeather-togglepreview",
                     MouseButton = EnumMouseButton.Right,
-                    HotKeyCode = "sneak"
+                    HotKeyCode = "ctrl"
                 })
                 .Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
         }
