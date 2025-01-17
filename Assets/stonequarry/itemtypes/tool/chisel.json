@@ -13,9 +13,9 @@
   "attributes": {
     "handbook": { "groupBy": [ "chisel-{type}-*" ] },
     "slabtoolByType": {
-      "*-finishing-*": { "type": "rockpolished", "quantity": { "avg": 1 } },
-      "*-roughcut-*": { "type": "rock", "quantity": { "avg": 1 } },
-      "*-wedge-*": { "type": "stonebrick", "quantity": { "avg": 8 } }
+      "*-finishing-*": { "type": "rockpolished", "quantity": { "avg": 1 }, "requiresHammer": true },
+      "*-roughcut-*": { "type": "rock", "quantity": { "avg": 1 }, "requiresHammer": true },
+      "*-wedge-*": { "type": "stonebrick", "quantity": { "avg": 8 }, "requiresHammer": true }
     },
     "toolrackTransform": {
       "translationByType": {

@@ -10,7 +10,7 @@
     "handbook": {
       "groupBy": [ "rubblehammer-*" ]
     },
-    "slabtool": { "type": "stone", "quantity": { "avg": 2.5, "var": 0.5 } },
+    "slabtool": { "type": "stone", "quantity": { "avg": 2.5, "var": 0.5 }, "requiresHammer": false },
     "rubbleable": true,
     "toolrackTransform": {
       "rotation": { "y": 2.5, "z": -1 },

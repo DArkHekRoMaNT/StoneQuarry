@@ -79,7 +79,8 @@ namespace StoneQuarry
                 if (be.Inventory != null && !be.Inventory.Empty &&
                     activeStack?.Collectible?.Attributes?["slabtool"] is not null)
                 {
-                    if (byPlayer.Entity.LeftHandItemSlot?.Itemstack?.Collectible?.Tool != EnumTool.Hammer &&
+                    if (activeStack.Collectible.Attributes["slabtool"]["requiresHammer"].AsBool(true) &&
+                        byPlayer.Entity.LeftHandItemSlot?.Itemstack?.Collectible?.Tool != EnumTool.Hammer &&
                         byPlayer?.WorldData.CurrentGameMode != EnumGameMode.Creative)
                     {
                         (api as ICoreClientAPI)?.TriggerIngameError(this, "nohammer", Lang.Get("Requires a hammer in the off hand"));
