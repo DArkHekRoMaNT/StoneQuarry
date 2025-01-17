@@ -38,6 +38,35 @@ namespace StoneQuarry
 
             var configs = api.ModLoader.GetModSystem<ConfigManager>();
             Config = configs.GetConfig<Config>();
+
+            if (SelectionBoxes != null && api.Side == EnumAppSide.Server)
+            {
+                for (int i = 0; i < SelectionBoxes.Length; i++)
+                {
+                    var rotationIndex = BlockFacing.FromCode(Direction).Index;
+
+                    var rotYDeg = 0;
+                    var rotZDeg = 0;
+
+                    switch (Orientation)
+                    {
+                        case "down":
+                            rotYDeg = (rotationIndex + 1) * 90;
+                            break;
+
+                        case "horizontal":
+                            rotYDeg = 90 + (4 - rotationIndex) * 90;
+                            rotZDeg = 90;
+                            break;
+
+                        case "up":
+                            rotYDeg = (rotationIndex + 1) * 90;
+                            rotZDeg = 180;
+                            break;
+                    }
+                    SelectionBoxes[i] = SelectionBoxes[i].RotatedCopy(0, rotYDeg, rotZDeg, new Vec3d(0.5, 0.5, 0.5));
+                }
+            }
         }
 
         public override int GetMaxDurability(ItemStack itemstack)
