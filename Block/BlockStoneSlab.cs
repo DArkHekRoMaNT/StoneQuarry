@@ -101,54 +101,13 @@ namespace StoneQuarry
 
         public override bool MBOnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, Vec3i offset)
         {
-            ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
+            var activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
             if (activeStack?.Collectible?.Attributes?["slabtool"] != null)
             {
-                if (api.Side == EnumAppSide.Client)
-                {
-                    if (activeStack.Collectible.FirstCodePart() == "rubblehammer")
-                    {
-                        RubbleHammerTransform();
-                    }
-                    else
-                    {
-                        ChiselsTransform();
-                    }
-                }
-
                 return secondsUsed < _config.SlabInteractionTime;
             }
 
             return base.OnBlockInteractStep(secondsUsed, world, byPlayer, blockSel);
-
-            void ChiselsTransform()
-            {
-                BlockPos pos = blockSel.Position + offset.AsBlockPos;
-                if (world.BlockAccessor.GetBlockEntity(pos) is BEStoneSlab be)
-                {
-                    float hitTime = 0.2f;
-                    var tf = ModelTransform.NoTransform;
-                    tf.Translation.Set(secondsUsed % hitTime, 0, 0);
-                    byPlayer.Entity.Controls.UsingHeldItemTransformBefore = tf;
-
-                    int times = byPlayer.Entity.WatchedAttributes.GetInt("sq_slab_times", 1);
-                    if (secondsUsed > times * hitTime)
-                    {
-                        be.InteractParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
-                        world.SpawnParticles(be.InteractParticles, byPlayer);
-                        world.PlaySoundAt(SQSounds.RockHit, byPlayer, byPlayer, true, 32, .5f);
-                        byPlayer.Entity.WatchedAttributes.SetInt("sq_slab_times", times + 1);
-                    }
-                }
-            }
-
-            void RubbleHammerTransform()
-            {
-                var tf = ModelTransform.NoTransform;
-                float tfOffset = secondsUsed / _config.SlabInteractionTime;
-                tf.Translation.Set(tfOffset * .25f, 0, tfOffset * .5f);
-                byPlayer.Entity.Controls.UsingHeldItemTransformBefore = tf;
-            }
         }
 
         public override void OnBlockInteractStop(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
@@ -158,13 +117,8 @@ namespace StoneQuarry
 
         public override void MBOnBlockInteractStop(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, Vec3i offset)
         {
-            if (api.Side == EnumAppSide.Client)
-            {
-                byPlayer.Entity.WatchedAttributes.SetInt("sq_slab_times", 1);
-            }
-
-            ItemStack activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
-            JsonObject? slabtool = activeStack?.Collectible.Attributes["slabtool"];
+            var activeStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
+            var slabtool = activeStack?.Collectible.Attributes["slabtool"];
             if (secondsUsed < _config.SlabInteractionTime || slabtool == null)
             {
                 base.OnBlockInteractStop(secondsUsed, world, byPlayer, blockSel);
@@ -175,37 +129,24 @@ namespace StoneQuarry
             {
                 if (be.Inventory?.Empty is not true)
                 {
-                    RubbleHammerHit();
-                    DropItem();
-                }
-            }
-
-            void RubbleHammerHit()
-            {
-                if (activeStack?.Collectible.FirstCodePart() == "rubblehammer")
-                {
                     be.InteractParticles.MinPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
                     world.SpawnParticles(be.InteractParticles, byPlayer);
                     world.PlaySoundAt(SQSounds.RockHit, byPlayer, byPlayer, true, 32, .5f);
-                }
-            }
 
-            void DropItem()
-            {
-                if (api.Side == EnumAppSide.Server)
-                {
-                    string? dropType = slabtool["type"]?.AsString();
-                    NatFloat quantity = slabtool["quantity"]?.AsObject<NatFloat>() ?? NatFloat.One;
-
-                    if (dropType != null)
+                    if (api.Side == EnumAppSide.Server)
                     {
-                        var dropStack = be.Inventory!.GetContent(byPlayer, dropType, quantity);
-                        if (dropStack != null)
-                        {
-                            var dropPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
-                            var dropVel = new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z);
+                        string? dropType = slabtool["type"]?.AsString();
+                        NatFloat quantity = slabtool["quantity"]?.AsObject<NatFloat>() ?? NatFloat.One;
 
-                            world.PlaySoundAt(SQSounds.Crack, byPlayer, byPlayer, true, 32, .05f);
+                        if (dropType != null)
+                        {
+                            var dropStack = be.Inventory!.GetContent(byPlayer, dropType, quantity);
+                            if (dropStack != null)
+                            {
+                                var dropPos = blockSel.Position.ToVec3d() + blockSel.HitPosition;
+                                var dropVel = new Vec3d(.05 * blockSel.Face.Normalf.ToVec3d().X, .1, .05 * blockSel.Face.Normalf.ToVec3d().Z);
+
+                                world.PlaySoundAt(SQSounds.Crack, byPlayer, byPlayer, true, 32, .05f);
 
                                 // Split drop stack
                                 for (int i = 0; i < dropStack.StackSize; i++)
@@ -220,12 +161,13 @@ namespace StoneQuarry
                                     world.SpawnItemEntity(stack, dropPos, dropVel + randVelocityOffset);
                                 }
 
-                            if (be.Inventory!.Empty)
-                            {
-                                world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
-                            }
+                                if (be.Inventory!.Empty)
+                                {
+                                    world.BlockAccessor.BreakBlock(blockSel.Position, byPlayer);
+                                }
 
-                            activeStack?.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
+                                activeStack?.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 1);
+                            }
                         }
                     }
                 }
