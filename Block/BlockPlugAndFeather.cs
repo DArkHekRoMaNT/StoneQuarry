@@ -411,9 +411,10 @@ namespace StoneQuarry
                     return null;
                 }
 
-                for (int i = 1; i <= MaxSearchRange; i++)
+                var maxSquare = MaxSearchRange * MaxSearchRange;
+                for (int i = 1; i <= maxSquare; i++)
                 {
-                    for (int j = 1; j <= MaxSearchRange; j++)
+                    for (int j = 1; j * i <= maxSquare; j++)
                     {
                         BlockPos pos1 = pos + mainDir * i + subDir * j;
                         BlockPos pos2 = pos + mainDir * i - subDir * j;
@@ -521,7 +522,7 @@ namespace StoneQuarry
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
             dsc.AppendLineOnce();
-            dsc.Append(Lang.Get($"{Core.ModId}:info-plugandfeather-heldinfo(range={{0}})", MaxSearchRange));
+            dsc.Append(Lang.Get($"{Core.ModId}:info-plugandfeather-heldinfo(range={{0}},thinrange={{1}})", MaxSearchRange, MaxSearchRange * MaxSearchRange));
         }
 
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
