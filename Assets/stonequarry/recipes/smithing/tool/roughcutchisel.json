@@ -6,5 +6,6 @@
     "allowedVariants": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "silver", "gold", "iron", "meteoriciron", "steel" ]
   },
   "pattern": [["######"]],
+  "name": "Rough Cut Chisel",
   "output": { "type": "item", "code": "chisel-roughcut-{metal}" }
 }

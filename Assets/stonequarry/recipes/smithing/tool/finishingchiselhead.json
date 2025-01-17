@@ -6,9 +6,9 @@
     "allowedVariants": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "silver", "gold", "iron", "meteoriciron", "steel" ]
   },
   "pattern": [[
-    "#_____",
-    "######",
-    "#_____"
+    "_###__",
+    "###___",
+    "_###__"
   ]],
   "output": { "type": "item", "code": "finishingchiselhead-{metal}" }
 }
