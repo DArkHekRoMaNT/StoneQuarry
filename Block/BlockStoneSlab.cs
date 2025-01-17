@@ -207,7 +207,18 @@ namespace StoneQuarry
 
                             world.PlaySoundAt(SQSounds.Crack, byPlayer, byPlayer, true, 32, .05f);
 
-                            world.SpawnItemEntity(dropStack, dropPos, dropVel);
+                                // Split drop stack
+                                for (int i = 0; i < dropStack.StackSize; i++)
+                                {
+                                    var randVelocityOffset = new Vec3d(
+                                        world.Rand.NextDouble() * 0.05f - 0.025f,
+                                        world.Rand.NextDouble() * 0.05f - 0.025f,
+                                        world.Rand.NextDouble() * 0.05f - 0.025f);
+
+                                    ItemStack stack = dropStack.Clone();
+                                    stack.StackSize = 1;
+                                    world.SpawnItemEntity(stack, dropPos, dropVel + randVelocityOffset);
+                                }
 
                             if (be.Inventory!.Empty)
                             {
