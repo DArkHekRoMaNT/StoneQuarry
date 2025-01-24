@@ -103,7 +103,6 @@
     "ingameerror-stoneslab-unknown-drop": "此岩石不存在此类型",
     "ingameerror-stoneslab-unknown-tool": "未知工具",
     "info-stoneslab-heldinfo(count={0},stone={1})": "x{0} {1}",
-    "info-plugandfeather-heldinfo(range={0})": "范围：{0}x{0}x{0}",
     "info-rubblestorage-type(type={0})": "岩石：{0}",
     "info-rubblestorage-stone(count={0})": "石块：{0}",
     "info-rubblestorage-gravel(count={0})": "砂砾：{0}",

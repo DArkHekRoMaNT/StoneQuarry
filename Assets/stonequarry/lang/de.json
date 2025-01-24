@@ -103,7 +103,7 @@
     "ingameerror-stoneslab-unknown-drop": "Dieser Typ existiert nicht für diesen Stein.",
     "ingameerror-stoneslab-unknown-tool": "Unbekanntes Werkzeug",
     "info-stoneslab-heldinfo(count={0},stone={1})": "x{0} {1}",
-    "info-plugandfeather-heldinfo(range={0})": "Reichweite: {0}x{0}x{0}",
+    "info-plugandfeather-heldinfo(range={0},thinrange={1})": "Reichweite: {0}x{0}x{0}, 1x{0}x{1}",
     "info-rubblestorage-type(type={0})": "Felsen: {0}",
     "info-rubblestorage-stone(count={0})": "Stein: {0}",
     "info-rubblestorage-gravel(count={0})": "Kies: {0}",
