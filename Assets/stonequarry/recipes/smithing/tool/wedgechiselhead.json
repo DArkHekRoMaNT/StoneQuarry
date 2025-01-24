@@ -3,35 +3,20 @@
     "type": "item",
     "code": "game:ingot-*",
     "name": "metal",
-    "allowedVariants": [
-      "copper",
-      "tinbronze",
-      "bismuthbronze",
-      "blackbronze",
-      "silver",
-      "gold",
-      "iron",
-      "meteoriciron",
-      "steel"
-    ]
+    "allowedVariants": [ "copper", "tinbronze", "bismuthbronze", "blackbronze", "silver", "gold", "iron", "meteoriciron", "steel" ]
   },
   "pattern": [
     [
-      "_##___",
-      "_##___",
-      "_##___"
+      "__##__",
+      "##____",
+      "__##__"
     ],
     [
-      "#_____",
-      "######",
-      "#_____"
-    ],
-    [
-      "_##___",
-      "_##___",
-      "_##___"
+      "__##__",
+      "##____",
+      "__##__"
     ]
   ],
-  "name": "Finishing Chisle",
+  "name": "Wedge Chisel",
   "output": { "type": "item", "code": "wedgechiselhead-{metal}" }
 }

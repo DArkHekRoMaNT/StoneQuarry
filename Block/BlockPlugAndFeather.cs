@@ -38,6 +38,35 @@ namespace StoneQuarry
 
             var configs = api.ModLoader.GetModSystem<ConfigManager>();
             Config = configs.GetConfig<Config>();
+
+            if (SelectionBoxes != null && api.Side == EnumAppSide.Server)
+            {
+                for (int i = 0; i < SelectionBoxes.Length; i++)
+                {
+                    var rotationIndex = BlockFacing.FromCode(Direction).Index;
+
+                    var rotYDeg = 0;
+                    var rotZDeg = 0;
+
+                    switch (Orientation)
+                    {
+                        case "down":
+                            rotYDeg = (rotationIndex + 1) * 90;
+                            break;
+
+                        case "horizontal":
+                            rotYDeg = 90 + (4 - rotationIndex) * 90;
+                            rotZDeg = 90;
+                            break;
+
+                        case "up":
+                            rotYDeg = (rotationIndex + 1) * 90;
+                            rotZDeg = 180;
+                            break;
+                    }
+                    SelectionBoxes[i] = SelectionBoxes[i].RotatedCopy(0, rotYDeg, rotZDeg, new Vec3d(0.5, 0.5, 0.5));
+                }
+            }
         }
 
         public override int GetMaxDurability(ItemStack itemstack)
@@ -205,7 +234,7 @@ namespace StoneQuarry
 
             if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BEPlugAndFeather be)
             {
-                if (byPlayer.Entity.Controls.Sneak)
+                if (byPlayer.Entity.Controls.CtrlKey)
                 {
                     _previewManager?.TogglePreview(blockSel.Position);
                     return true;
@@ -382,9 +411,10 @@ namespace StoneQuarry
                     return null;
                 }
 
-                for (int i = 1; i <= MaxSearchRange; i++)
+                var maxSquare = MaxSearchRange * MaxSearchRange;
+                for (int i = 1; i <= maxSquare; i++)
                 {
-                    for (int j = 1; j <= MaxSearchRange; j++)
+                    for (int j = 1; j * i <= maxSquare; j++)
                     {
                         BlockPos pos1 = pos + mainDir * i + subDir * j;
                         BlockPos pos2 = pos + mainDir * i - subDir * j;
@@ -492,7 +522,7 @@ namespace StoneQuarry
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
             dsc.AppendLineOnce();
-            dsc.Append(Lang.Get($"{Core.ModId}:info-plugandfeather-heldinfo(range={{0}})", MaxSearchRange));
+            dsc.Append(Lang.Get($"{Core.ModId}:info-plugandfeather-heldinfo(range={{0}},thinrange={{1}})", MaxSearchRange, MaxSearchRange * MaxSearchRange));
         }
 
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
@@ -525,7 +555,7 @@ namespace StoneQuarry
                 {
                     ActionLangCode = $"{Core.ModId}:wi-plugandfeather-togglepreview",
                     MouseButton = EnumMouseButton.Right,
-                    HotKeyCode = "sneak"
+                    HotKeyCode = "ctrl"
                 })
                 .Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
         }

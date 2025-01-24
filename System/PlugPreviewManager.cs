@@ -72,7 +72,12 @@ namespace StoneQuarry
 
         private void UpdatePreview()
         {
-            _api.World.HighlightBlocks(_api.World.Player, Constants.PreviewHighlightSlotId, _highlightBlocks);
+            var colors = new List<int>(_highlightBlocks.Count);
+            for (int i = 0; i < _highlightBlocks.Count; i++)
+            {
+                colors.Add(ColorUtil.ToRgba(150, 100, 200, 200));
+            }
+            _api.World.HighlightBlocks(_api.World.Player, Constants.PreviewHighlightSlotId, _highlightBlocks, colors);
         }
     }
 }
