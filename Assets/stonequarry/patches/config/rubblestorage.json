@@ -3,6 +3,7 @@
     "file": "blocktypes/rubblestorage.json",
     "op": "replace",
     "path": "/attributes/maxStorable",
-    "condition": { "when": "SQ_RubbleStorageMaxSize", "useValue": "true" }
+    "condition": { "when": "stonequarry:RubbleStorageMaxSize", "useValue": "true" },
+    "side": "Server"
   }
 ]

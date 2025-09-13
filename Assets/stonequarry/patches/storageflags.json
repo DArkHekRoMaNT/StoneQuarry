@@ -1,0 +1,16 @@
+[
+  {
+    "file": "blocktypes/stoneslab.json",
+    "op": "replace",
+    "path": "/storageFlags",
+    "condition": { "when": "stonequarry:SlabStorageFlags", "useValue": "true"  },
+    "side": "Server"
+  },
+  {
+    "file": "blocktypes/rubblestorage.json",
+    "op": "replace",
+    "path": "/storageFlags",
+    "condition": { "when": "stonequarry:RubbleStorageStorageFlags", "useValue": "true"  },
+    "side": "Server"
+  }
+]

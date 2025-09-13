@@ -46,5 +46,15 @@ namespace StoneQuarry
         [Description("0 - unlimited")]
         [Range(0, int.MaxValue)]
         public int SteelPlugDurability { get; set; } = 20;
+
+        [Description($"Allowed slab containers: " +
+            $"1 - general (chest, hotbar, common backpack content slots), 2 - backpack slots, 4 - mining bag content slots, 256 - offhand. " +
+            $"You can combine it, for example 5 (1+4) is general or mining bag")]
+        public int SlabStorageFlags { get; set; } = 5;
+
+        [Description($"Allowed rubble storage containers: " +
+            $"1 - general (chest, hotbar, common backpack content slots), 2 - backpack slots, 4 - mining bag content slots, 256 - offhand. " +
+            $"You can combine it, for example 5 (1+4) is general or mining bag")]
+        public int RubbleStorageStorageFlags { get; set; } = 5;
     }
 }

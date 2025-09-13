@@ -13,7 +13,10 @@ namespace StoneQuarry
         {
             var configs = api.ModLoader.GetModSystem<ConfigManager>();
             var config = configs.GetConfig<Config>();
-            api.World.Config.SetInt($"SQ_RubbleStorageMaxSize", config.RubbleStorageMaxSize);
+
+            api.World.Config.SetInt($"{Mod.Info.ModID}:RubbleStorageMaxSize", config.RubbleStorageMaxSize);
+            api.World.Config.SetInt($"{Mod.Info.ModID}:SlabStorageFlags", config.SlabStorageFlags);
+            api.World.Config.SetInt($"{Mod.Info.ModID}:RubbleStorageStorageFlags", config.RubbleStorageStorageFlags);
 
             if (api is ICoreClientAPI capi)
             {
