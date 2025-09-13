@@ -26,35 +26,35 @@ namespace StoneQuarry
 
         public override bool OnHeldAttackStep(float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
+            if (blockSel == null)
+                return false;
+
             if (TryGetConvertedBlock(blockSel.Position, out var block))
             {
-
+                if (((EntityPlayer)byEntity)?.Player is IPlayer player)
                 {
-                    if (((EntityPlayer)byEntity)?.Player is IPlayer player)
+                    var reinforcementSystem = api.ModLoader.GetModSystem<ModSystemBlockReinforcement>();
+                    var reinforcment = reinforcementSystem.GetReinforcment(blockSel.Position);
+                    if (reinforcment != null && reinforcment.Strength > 0)
                     {
-                        var reinforcementSystem = api.ModLoader.GetModSystem<ModSystemBlockReinforcement>();
-                        var reinforcment = reinforcementSystem.GetReinforcment(blockSel.Position);
-                        if (reinforcment != null && reinforcment.Strength > 0)
+                        if (secondsPassed > 1)
                         {
-                            if (secondsPassed > 1)
+                            api.World.PlaySoundAt(new AssetLocation("sounds/tool/breakreinforced"), blockSel.Position, 0.0, player);
+                            if (!player.HasPrivilege("denybreakreinforced") && api.Side == EnumAppSide.Server)
                             {
-                                api.World.PlaySoundAt(new AssetLocation("sounds/tool/breakreinforced"), blockSel.Position, 0.0, player);
-                                if (!player.HasPrivilege("denybreakreinforced") && api.Side == EnumAppSide.Server)
-                                {
-                                    reinforcementSystem.ConsumeStrength(blockSel.Position, 1);
-                                    api.World.BlockAccessor.MarkBlockDirty(blockSel.Position);
-                                }
-                            }
-                            else
-                            {
-                                return true;
+                                reinforcementSystem.ConsumeStrength(blockSel.Position, 1);
+                                api.World.BlockAccessor.MarkBlockDirty(blockSel.Position);
                             }
                         }
-                        else if (api.World.Claims.TryAccess(player, blockSel.Position, EnumBlockAccessFlags.BuildOrBreak))
+                        else
                         {
-                            api.World.BlockAccessor.SetBlock(block.BlockId, blockSel.Position);
-                            api.World.BlockAccessor.MarkBlockModified(blockSel.Position);
+                            return true;
                         }
+                    }
+                    else if (api.World.Claims.TryAccess(player, blockSel.Position, EnumBlockAccessFlags.BuildOrBreak))
+                    {
+                        api.World.BlockAccessor.SetBlock(block.BlockId, blockSel.Position);
+                        api.World.BlockAccessor.MarkBlockModified(blockSel.Position);
                     }
                 }
                 return false;
