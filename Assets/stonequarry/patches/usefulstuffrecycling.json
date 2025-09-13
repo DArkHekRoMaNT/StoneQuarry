@@ -8,7 +8,8 @@
       }
     },
     "file": "stonequarry:itemtypes/toolhead/*",
-    "condition": { "when": "UStoolRecyclingEnabled", "isValue": "true" }
+    "condition": { "when": "UStoolRecyclingEnabled", "isValue": "true" },
+    "side": "Server"
   },
   {
     "op": "add",
@@ -19,7 +20,8 @@
       }
     },
     "file": "stonequarry:itemtypes/tool/chisel.json",
-    "condition": { "when": "UStoolRecyclingEnabled", "isValue": "true" }
+    "condition": { "when": "UStoolRecyclingEnabled", "isValue": "true" },
+    "side": "Server"
   },
   {
     "op": "add",
@@ -30,6 +32,7 @@
       }
     },
     "file": "stonequarry:itemtypes/tool/rubblehammer.json",
-    "condition": { "when": "UStoolRecyclingEnabled", "isValue": "true" }
+    "condition": { "when": "UStoolRecyclingEnabled", "isValue": "true" },
+    "side": "Server"
   },
 ]

@@ -3,12 +3,14 @@
     "file": "game:itemtypes/tool/hammer",
     "op": "replace",
     "path": "/storageFlags",
-    "value": 261
+    "value": 261,
+    "side": "Server"
   },
   {
     "file": "game:itemtypes/tool/chisel",
     "op": "add",
     "path": "/storageFlags",
-    "value": 5
+    "value": 5,
+    "side": "Server"
   }
 ]

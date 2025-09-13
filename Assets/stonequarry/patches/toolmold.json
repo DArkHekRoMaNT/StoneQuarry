@@ -1,38 +1,62 @@
 [
+  // Add new mold type
   {
-    "file": "game:blocktypes/clay/mold/toolmold.json",
+    "file": "game:blocktypes/clay/raw/toolmold.json",
     "op": "add",
-    "path": "/variantgroups/1/states/-",
-    "value": "stonequarry_plugandfeather"
+    "path": "/variantgroups/2/states/-",
+    "value": "stonequarry_plugandfeather",
+    "side": "Server"
   },
   {
-    "file": "game:blocktypes/clay/mold/toolmold.json",
+    "file": "game:blocktypes/clay/fired/toolmold.json",
+    "op": "add",
+    "path": "/variantgroups/2/states/-",
+    "value": "stonequarry_plugandfeather",
+    "side": "Server"
+  },
+
+  // Add tool drop and other attributes
+  {
+    "file": "game:blocktypes/clay/fired/toolmold.json",
     "op": "move",
-    "frompath": "/attributesByType/toolmold-burned-*",
-    "path": "/temp"
+    "frompath": "/attributesByType/toolmold-*-fired-*",
+    "path": "/temp",
+    "side": "Server"
   },
   {
-    "file": "game:blocktypes/clay/mold/toolmold.json",
+    "file": "game:blocktypes/clay/fired/toolmold.json",
     "op": "add",
-    "path": "/attributesByType/toolmold-burned-stonequarry_plugandfeather-*",
+    "path": "/attributesByType/toolmold-*-fired-stonequarry_plugandfeather",
     "value": {
       "requiredUnits": 100,
       "fillHeight": 1,
       "moldrackable": true,
       "onmoldrackTransform": { "rotation": { "z": 90 } },
       "drop": { "type": "block", "code": "stonequarry:plugandfeather-{metal}-0-down-north" }
-    }
+    },
+    "side": "Server"
   },
   {
-    "file": "game:blocktypes/clay/mold/toolmold.json",
+    "file": "game:blocktypes/clay/fired/toolmold.json",
     "op": "move",
     "frompath": "/temp",
-    "path": "/attributesByType/toolmold-burned-*"
+    "path": "/attributesByType/toolmold-*-fired-*",
+    "side": "Server"
   },
+
+  // Add to mod creative inventory
   {
-    "file": "game:blocktypes/clay/mold/toolmold.json",
+    "file": "game:blocktypes/clay/raw/toolmold.json",
     "op": "add",
     "path": "/creativeinventory/stonequarry",
-    "value": [ "*-stonequarry_plugandfeather-north" ]
+    "value": [ "*-stonequarry_plugandfeather" ],
+    "side": "Server"
+  },
+  {
+    "file": "game:blocktypes/clay/fired/toolmold.json",
+    "op": "add",
+    "path": "/creativeinventory/stonequarry",
+    "value": [ "*-stonequarry_plugandfeather" ],
+    "side": "Server"
   }
 ]

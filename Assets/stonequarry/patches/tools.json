@@ -3,6 +3,7 @@
     "file": "game:itemtypes/tool/hammer",
     "op": "add",
     "path": "/attributes/plugimpact",
-    "value": 10
+    "value": 10,
+    "side": "Server"
   }
 ]
